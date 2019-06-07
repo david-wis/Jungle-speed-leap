@@ -6,7 +6,6 @@ public class Jugador
     Stack<Carta> pilaCartas;
     Carta cartaActual;
 
-
     public Jugador()
     {
         pilaCartas = new Stack<Carta>();
