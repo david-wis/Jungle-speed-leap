@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class Main : MonoBehaviour {
     const int CANTCARTAS = 80;
-    public GameObject[] prefabCartas = new GameObject[CANTCARTAS];
+    public GameObject[] prefabCartas = new GameObject[CANTCARTAS]; //Recibe los prefabs desde Unity
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
     Jugador[] jugadores = new Jugador[4];
     public GameObject[] cartasEstaticas = new GameObject[4];
@@ -15,7 +15,7 @@ public class Main : MonoBehaviour {
     int iCantJugadores;
     int iIndexJugActual;
 
-    UnityAction eventolistener;
+    UnityAction eventoListener;
 
     // Use this for initialization
     void Start() {
@@ -23,13 +23,11 @@ public class Main : MonoBehaviour {
          * para hostear partidas y elegir cant de jugadores
          */
         LlenarMazo();
-        eventolistener = new UnityAction(PonerCarta);
-        EventManager.StartListening("agarrarcarta", eventolistener);
+        eventoListener = new UnityAction(PonerCarta);
+        EventManager.StartListening("agarrarcarta", eventoListener);
         
-
         //RepartirMazo();
         iIndexJugActual = 0;
-
 
         //En el futuro eligiremos el jugador inicial de manera aleatoria
         //iIndexJugActual = ObtenerRandom(4);
@@ -38,13 +36,12 @@ public class Main : MonoBehaviour {
 
     void PonerCarta()
     {
-        Debug.Log("holissss");
+        Debug.Log("Poniendo carta");
         Vector3 pos = new Vector3(-0.2686f, 0.1245f, -0.493f);
-        Instantiate(prefabCartas[0],
-            transform.position += pos,
+        Instantiate(prefabCartas[0], 
+            transform.position += pos, 
             Quaternion.identity);
     }
-
 
     private void RepartirMazo(int iCantJugadores = 4)
     {
@@ -66,7 +63,6 @@ public class Main : MonoBehaviour {
             int iRand = ObtenerRandom(arrayMazoTotal.Length);
             arrayMazoTotal[i] = arrayMazoTotal[iRand];
             arrayMazoTotal[iRand] = cAux;
-
         }
     }
 
@@ -74,7 +70,7 @@ public class Main : MonoBehaviour {
     {
         for (int i = 0; i < CANTCARTAS; i++)
         {
-            arrayMazoTotal[i] = new Carta(i+1);
+            arrayMazoTotal[i] = new Carta(i + 1);
             arrayMazoTotal[i].prefab = prefabCartas[i];
         }
     }
