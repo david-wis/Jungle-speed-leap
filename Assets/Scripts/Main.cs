@@ -6,16 +6,17 @@ using UnityEngine.Events;
 
 
 public class Main : MonoBehaviour {
-    const int CANTCARTAS = 80;
+    public const int CANTCARTAS = 80;
     public GameObject[] prefabCartas = new GameObject[CANTCARTAS]; //Recibe los prefabs desde Unity
-    Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
-    Jugador[] jugadores = new Jugador[4];
+    public Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
+    public Jugador[] jugadores = new Jugador[4];
     public GameObject[] cartasEstaticas = new GameObject[4];
+    public RuntimeAnimatorController contrAnimCartaDesdeMazo;
 
-    int iCantJugadores;
-    int iIndexJugActual;
+    public int iCantJugadores;
+    public int iIndexJugActual;
 
-    UnityAction eventoListener;
+    public UnityAction eventoListener;
 
     // Use this for initialization
     void Start() {
@@ -25,7 +26,11 @@ public class Main : MonoBehaviour {
         LlenarMazo();
         eventoListener = new UnityAction(PonerCarta);
         EventManager.StartListening("agarrarcarta", eventoListener);
-        
+
+        //Solo para Debug
+        EventManager.TriggerEvent("agarrarcarta");
+
+
         //RepartirMazo();
         iIndexJugActual = 0;
 
@@ -37,10 +42,21 @@ public class Main : MonoBehaviour {
     void PonerCarta()
     {
         Debug.Log("Poniendo carta");
-        Vector3 pos = new Vector3(-0.2686f, 0.1245f, -0.493f);
+        Vector3 posicEstatico = new Vector3(-0.2686f, 0.1245f, -0.493f);
         Instantiate(prefabCartas[0], 
-            transform.position += pos, 
+            transform.position += posicEstatico, 
             Quaternion.identity);
+
+        Vector3 posicDesdeMazo = new Vector3(0.161f, 1.5f, -0.484f);
+        Vector3 rotacDesdeMazo = new Vector3(270f, 185f, 0f);
+        GameObject cartaDesdeMazo = Instantiate(
+            prefabCartas[0],
+            posicDesdeMazo,
+            Quaternion.Euler(rotacDesdeMazo), 
+            null);
+        cartaDesdeMazo.AddComponent<Animator>();
+        Animator elAnimador = cartaDesdeMazo.GetComponent<Animator>();
+        elAnimador.runtimeAnimatorController = contrAnimCartaDesdeMazo;
     }
 
     private void RepartirMazo(int iCantJugadores = 4)
