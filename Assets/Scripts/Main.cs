@@ -43,12 +43,7 @@ public class Main : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        string txt = "";
-        for (int i = 0; i < 2; i++)
-        {
-            jugadores[0].ObtenerCartaActual();
-            Debug.Log(jugadores[0].cartaActual);
-        }
+        Debug.Log(arrayMazoTotal[0].img.name);
     }
 
     void PonerCarta()
@@ -56,7 +51,7 @@ public class Main : MonoBehaviour {
         Vector3 pos = new Vector3(-0.2686f, 0.1245f, -0.493f);
         Instantiate(jugadores[iIndexJugActual].ObtenerCartaActual().img,
             transform.position += pos,
-            Quaternion.identity);
+            Quaternion.Euler(new Vector3(180f, 0f, 0f)));
         /*
          * 
          * TODO: Animacion echi carta se da vuelta

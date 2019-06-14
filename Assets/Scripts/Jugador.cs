@@ -3,7 +3,7 @@
 
 public class Jugador
 {
-    private Stack<Carta> _pilaCartas;
+    public Stack<Carta> _pilaCartas;
     public Carta cartaActual;
 
     public Jugador()
