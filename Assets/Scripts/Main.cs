@@ -13,6 +13,8 @@ public class Main : MonoBehaviour {
     public GameObject[] cartasEstaticas = new GameObject[4];
     public RuntimeAnimatorController contrAnimCartaDesdeMazo;
 
+    Animator elAnimador;
+
     public int iCantJugadores;
     public int iIndexJugActual;
 
@@ -41,7 +43,7 @@ public class Main : MonoBehaviour {
 
     void PonerCarta()
     {
-        Debug.Log("Poniendo carta");
+        //Debug.Log("Poniendo carta");
         Vector3 posicEstatico = new Vector3(-0.2686f, 0.1245f, -0.493f);
         Instantiate(prefabCartas[0], 
             transform.position += posicEstatico, 
@@ -55,8 +57,8 @@ public class Main : MonoBehaviour {
             Quaternion.Euler(rotacDesdeMazo), 
             null);
         cartaDesdeMazo.AddComponent<Animator>();
-        Animator elAnimador = cartaDesdeMazo.GetComponent<Animator>();
-        elAnimador.runtimeAnimatorController = contrAnimCartaDesdeMazo;
+        elAnimador = cartaDesdeMazo.GetComponent<Animator>();
+        elAnimador.runtimeAnimatorController = contrAnimCartaDesdeMazo;        
     }
 
     private void RepartirMazo(int iCantJugadores = 4)
@@ -99,6 +101,6 @@ public class Main : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
-	}
+        
+    }
 }
