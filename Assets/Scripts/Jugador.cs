@@ -3,21 +3,22 @@
 
 public class Jugador
 {
-    Stack<Carta> pilaCartas;
-    Carta cartaActual;
+    private Stack<Carta> _pilaCartas;
+    public Carta cartaActual;
 
     public Jugador()
     {
-        pilaCartas = new Stack<Carta>();
+        _pilaCartas = new Stack<Carta>();
     }
 
     public void AgregarCarta(Carta carta)
     {
-        pilaCartas.Push(carta);
+        _pilaCartas.Push(carta);
     }
 
-    public void ObtenerCartaActual()
+    public Carta ObtenerCartaActual()
     {
-        cartaActual = pilaCartas.Pop();
+        cartaActual = _pilaCartas.Pop();
+        return cartaActual;
     }
 }

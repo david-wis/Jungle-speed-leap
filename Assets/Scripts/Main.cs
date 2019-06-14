@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEditor;
 
 
 public class Main : MonoBehaviour {
-    const int CANTCARTAS = 80;
-    public GameObject[] prefabCartas = new GameObject[CANTCARTAS];
+    const int CANTCARTAS = 8;
+    //public GameObject[] prefabCartas = new GameObject[CANTCARTAS];
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
     Jugador[] jugadores = new Jugador[4];
     public GameObject[] cartasEstaticas = new GameObject[4];
@@ -16,6 +17,8 @@ public class Main : MonoBehaviour {
     int iIndexJugActual;
 
     UnityAction eventolistener;
+
+    //Carta[] todasCartas = new Carta[CANTCARTAS];
 
     // Use this for initialization
     void Start() {
@@ -26,30 +29,41 @@ public class Main : MonoBehaviour {
         eventolistener = new UnityAction(PonerCarta);
         EventManager.StartListening("agarrarcarta", eventolistener);
         
+        
 
         //RepartirMazo();
+        //En el futuro eligiremos el jugador inicial de manera aleatoria
+        //iIndexJugActual = ObtenerRandom(4);
         iIndexJugActual = 0;
 
 
-        //En el futuro eligiremos el jugador inicial de manera aleatoria
-        //iIndexJugActual = ObtenerRandom(4);
 
-	}
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //Debug.Log(todasCartas[0].Forma);
+    }
 
     void PonerCarta()
     {
-        Debug.Log("holissss");
         Vector3 pos = new Vector3(-0.2686f, 0.1245f, -0.493f);
-        Instantiate(prefabCartas[0],
+        Instantiate(jugadores[iIndexJugActual].ObtenerCartaActual(),
             transform.position += pos,
             Quaternion.identity);
+        /*
+         * 
+         * TODO: Animacion echi carta se da vuelta
+         * 
+         */
+        iIndexJugActual++;
     }
 
 
     private void RepartirMazo(int iCantJugadores = 4)
     {
-        Mezclar(ref arrayMazoTotal);
-        Mezclar(ref arrayMazoTotal);
+        Mezclar();
         for (int i = 0; i < arrayMazoTotal.Length; i++)
         {
             //TODO: dividirlo por iCantJugadores, cuando permitamos elegir la cantidad de jugadores
@@ -58,7 +72,7 @@ public class Main : MonoBehaviour {
         }
     }
 
-    private void Mezclar(ref Carta[] arrayMazoTotal)
+    private void Mezclar()
     {
         for (int i = 0; i < arrayMazoTotal.Length; i++)
         {
@@ -72,10 +86,11 @@ public class Main : MonoBehaviour {
 
     private void LlenarMazo()
     {
-        for (int i = 0; i < CANTCARTAS; i++)
+        string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
+        for (int i = 0; i < rutaCartitas.Length; i++)
         {
-            arrayMazoTotal[i] = new Carta(i+1);
-            arrayMazoTotal[i].prefab = prefabCartas[i];
+            string ruta = AssetDatabase.GUIDToAssetPath(rutaCartitas[i]);
+            arrayMazoTotal[i] = (Carta)AssetDatabase.LoadAssetAtPath(ruta, typeof(Carta));
         }
     }
 
@@ -85,8 +100,5 @@ public class Main : MonoBehaviour {
         return r.Next(iMax);
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+
 }
