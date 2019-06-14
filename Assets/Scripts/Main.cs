@@ -57,7 +57,7 @@ public class Main : MonoBehaviour {
          * TODO: Animacion echi carta se da vuelta
          * 
          */
-        iIndexJugActual++;
+        //iIndexJugActual++;
     }
 
 
