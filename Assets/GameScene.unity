@@ -1131,7 +1131,7 @@ Transform:
   m_LocalScale: {x: 0.1, y: 0.03, z: 0.1}
   m_Children: []
   m_Father: {fileID: 562917531}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -66.243004, z: 0}
 --- !u!114 &124275137
 MonoBehaviour:
@@ -4096,8 +4096,8 @@ Transform:
   m_LocalPosition: {x: 0.16144867, y: -0.0036006868, z: 0.00765872}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1502224814}
   - {fileID: 124275136}
+  - {fileID: 1502224814}
   - {fileID: 1592257975}
   - {fileID: 2058988303}
   - {fileID: 1851959304}
@@ -7332,7 +7332,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -7340,11 +7340,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.99999994
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.99999994
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_Name
@@ -9218,7 +9218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabCartas:
-  - {fileID: 100000, guid: 2d15d6083aeed504f9b90229a91bcdfb, type: 3}
+  - {fileID: 100000, guid: ba730478f3ac6264398b5e0094b31b2b, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
