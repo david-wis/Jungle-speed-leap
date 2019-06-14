@@ -10,7 +10,7 @@ public class Main : MonoBehaviour {
     const int CANTCARTAS = 8;
     //public GameObject[] prefabCartas = new GameObject[CANTCARTAS];
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
-    Jugador[] jugadores = new Jugador[4];
+    Jugador[] jugadores = {new Jugador(), new Jugador(), new Jugador(), new Jugador()};
     public GameObject[] cartasEstaticas = new GameObject[4];
 
     int iCantJugadores;
@@ -31,7 +31,7 @@ public class Main : MonoBehaviour {
         
         
 
-        //RepartirMazo();
+        RepartirMazo();
         //En el futuro eligiremos el jugador inicial de manera aleatoria
         //iIndexJugActual = ObtenerRandom(4);
         iIndexJugActual = 0;
@@ -43,13 +43,18 @@ public class Main : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(todasCartas[0].Forma);
+        string txt = "";
+        for (int i = 0; i < 2; i++)
+        {
+            jugadores[0].ObtenerCartaActual();
+            Debug.Log(jugadores[0].cartaActual);
+        }
     }
 
     void PonerCarta()
     {
         Vector3 pos = new Vector3(-0.2686f, 0.1245f, -0.493f);
-        Instantiate(jugadores[iIndexJugActual].ObtenerCartaActual(),
+        Instantiate(jugadores[iIndexJugActual].ObtenerCartaActual().img,
             transform.position += pos,
             Quaternion.identity);
         /*
@@ -80,7 +85,6 @@ public class Main : MonoBehaviour {
             int iRand = ObtenerRandom(arrayMazoTotal.Length);
             arrayMazoTotal[i] = arrayMazoTotal[iRand];
             arrayMazoTotal[iRand] = cAux;
-
         }
     }
 

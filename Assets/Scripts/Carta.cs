@@ -7,7 +7,7 @@ public class Carta : ScriptableObject {
     //public new string name;
     public GameObject img;
     public Color color;
-    public int Forma;
+    public int forma;
 
     public enum Color
     {
@@ -15,5 +15,11 @@ public class Carta : ScriptableObject {
         Amarillo,
         Rojo,
         Violeta
+    }
+
+    override public string ToString()
+    {
+        string txt = color.ToString() + "-" + forma;
+        return txt;
     }
 }

@@ -11,6 +11,11 @@ public class Jugador
         _pilaCartas = new Stack<Carta>();
     }
 
+    public int ObtenerCantCartas()
+    {
+        return _pilaCartas.Count;
+    }
+
     public void AgregarCarta(Carta carta)
     {
         _pilaCartas.Push(carta);

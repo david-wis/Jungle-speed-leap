@@ -17,8 +17,7 @@ public class CrearCarta : MonoBehaviour {
     }
 
     void Update () {
-        Debug.Log("isPrimaryHovered: " + _intObj.isPrimaryHovered);
-        //Debug.Log("usePrimaryHover: " + usePrimaryHover);
+        //Debug.Log("isPrimaryHovered: " + _intObj.isPrimaryHovered);
         if (_intObj.isPrimaryHovered)
         {
             GenerarCarta(); 
