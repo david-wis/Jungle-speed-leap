@@ -1,10 +1,19 @@
 ﻿using System.Collections.Generic;
-
+using UnityEngine;
 
 public class Jugador
 {
-    public Stack<Carta> _pilaCartas;
-    public Carta cartaActual;
+    private Stack<Carta> _pilaCartas;
+    private Carta _cartaActual;
+    public GameObject Manos;
+
+    public Carta CartaActual
+    {
+        get
+        {
+            return _cartaActual;
+        }
+    }
 
     public Jugador()
     {
@@ -23,7 +32,12 @@ public class Jugador
 
     public Carta ObtenerCartaActual()
     {
-        cartaActual = _pilaCartas.Pop();
-        return cartaActual;
+        if (_pilaCartas.Count > 0) { 
+            _cartaActual = _pilaCartas.Pop();
+        } else
+        {
+            _cartaActual = null;
+        }
+        return CartaActual;
     }
 }

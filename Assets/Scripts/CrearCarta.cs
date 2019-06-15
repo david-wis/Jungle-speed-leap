@@ -26,10 +26,7 @@ public class CrearCarta : MonoBehaviour {
 
     public void GenerarCarta()
     {
-        if (!bCartaCreada) {
-            //Carta cartita = new Carta(0f, 5f, 0f);
-            EventManager.TriggerEvent("agarrarcarta");
-            bCartaCreada = true;
-        }
+        EventManager.TriggerEvent("agarrarcarta");
+        bCartaCreada = true;
     }
 }

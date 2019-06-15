@@ -1,37 +1,51 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEditor;
 
-
 public class Main : MonoBehaviour {
-    const int CANTCARTAS = 8;
-    //public GameObject[] prefabCartas = new GameObject[CANTCARTAS];
+    public const int CANTCARTAS = 8;
+    public const int CANTJUGADORES = 4;
+
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
-    Jugador[] jugadores = {new Jugador(), new Jugador(), new Jugador(), new Jugador()};
+    Jugador[] jugadores = new Jugador[CANTJUGADORES];
     public GameObject[] cartasEstaticas = new GameObject[4];
 
-    int iCantJugadores;
     int iIndexJugActual;
-
     UnityAction eventolistener;
-
-    //Carta[] todasCartas = new Carta[CANTCARTAS];
 
     // Use this for initialization
     void Start() {
         /* Aca en algun momento vamos a meter un menu 
          * para hostear partidas y elegir cant de jugadores
          */
+
+        //Llenado de mazo
         LlenarMazo();
+
+        //Referenciar cartas estaticas
+        cartasEstaticas = GameObject.FindGameObjectsWithTag("CartasEstaticas");
+
+        //Creacion de jugadores
+        GameObject[] manos = GameObject.FindGameObjectsWithTag("Jugador");
+        for (int i = 0; i < CANTJUGADORES; i++)
+        {
+            jugadores[i] = new Jugador();
+            jugadores[i].Manos = manos[i];
+            Debug.Log(i + ": " + manos[i].name);
+        }
+
+        //Se reparten las cartas entre los jugadores
+        RepartirMazo();
+
+        //Creacion de eventos
         eventolistener = new UnityAction(PonerCarta);
-        EventManager.StartListening("agarrarcarta", eventolistener);
-        
+        EventManager.StartListening("agarrarcarta", eventolistener); //Evento que se produce cuando un jugador toca un mazo
+
         
 
-        RepartirMazo();
         //En el futuro eligiremos el jugador inicial de manera aleatoria
         //iIndexJugActual = ObtenerRandom(4);
         iIndexJugActual = 0;
@@ -40,24 +54,38 @@ public class Main : MonoBehaviour {
 
     }
 
+    float fTimer = 0.0f; //Bereishit
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(arrayMazoTotal[0].img.name);
+        fTimer += Time.deltaTime;
+        if (iIndexJugActual != 0)
+        {
+
+        }
     }
 
+    float fLastTime = 0.0f; //Ultima vez que se tocó el mazo
+    const float fCoolDown = 2.0f; //2 segundos
     void PonerCarta()
     {
-        Vector3 pos = new Vector3(-0.2686f, 0.1245f, -0.493f);
-        Instantiate(jugadores[iIndexJugActual].ObtenerCartaActual().img,
-            transform.position += pos,
-            Quaternion.Euler(new Vector3(180f, 0f, 0f)));
+        /*Vector3 pos = new Vector3(0.25f, 0.2f, 0.4f);
+        Instantiate(jugadores[iIndexJugActual].ObtenerCartaActual().img3D,
+            jugadores[iIndexJugActual].Manos.transform.position += pos,
+            Quaternion.Euler(new Vector3(180f, 0f, 0f)));*/
+        if (fTimer - fLastTime >= fCoolDown) { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
+            Carta cartaActual = jugadores[iIndexJugActual].ObtenerCartaActual();
+            Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
+            imagen.sprite = cartaActual.img2D;
+            fLastTime = fTimer;
+        }
+
         /*
          * 
          * TODO: Animacion echi carta se da vuelta
          * 
          */
-        //iIndexJugActual++;
+        iIndexJugActual = (iIndexJugActual < 3)? iIndexJugActual+1 : 0;
     }
 
 
@@ -95,9 +123,13 @@ public class Main : MonoBehaviour {
 
     private int ObtenerRandom(int iMax)
     {
-        System.Random r = new System.Random();
-        return r.Next(iMax);
+        return Random.Range(0, iMax);
     }
 
+
+    void CargarCartasEstaticas()
+    {
+
+    }
 
 }
