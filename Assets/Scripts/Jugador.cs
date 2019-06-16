@@ -1,23 +1,43 @@
 ﻿using System.Collections.Generic;
-
+using UnityEngine;
 
 public class Jugador
 {
-    Stack<Carta> pilaCartas;
-    Carta cartaActual;
+    private Stack<Carta> _pilaCartas;
+    private Carta _cartaActual;
+    public GameObject Manos;
+
+    public Carta CartaActual
+    {
+        get
+        {
+            return _cartaActual;
+        }
+    }
 
     public Jugador()
     {
-        pilaCartas = new Stack<Carta>();
+        _pilaCartas = new Stack<Carta>();
+    }
+
+    public int ObtenerCantCartas()
+    {
+        return _pilaCartas.Count;
     }
 
     public void AgregarCarta(Carta carta)
     {
-        pilaCartas.Push(carta);
+        _pilaCartas.Push(carta);
     }
 
-    public void ObtenerCartaActual()
+    public Carta ObtenerCartaActual()
     {
-        cartaActual = pilaCartas.Pop();
+        if (_pilaCartas.Count > 0) { 
+            _cartaActual = _pilaCartas.Pop();
+        } else
+        {
+            _cartaActual = null;
+        }
+        return CartaActual;
     }
 }

@@ -11,7 +11,12 @@ ModelImporter:
     2300000: root 1
     3300000: root 1
     4300000: root
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_87
+    second: {fileID: 2100000, guid: aad900e0f7ca97844898a6710168bc0e, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -42,7 +47,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 25
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
