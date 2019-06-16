@@ -2825,27 +2825,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.920008
+      value: -0.9200081
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0011166596
+      value: 0.0011166598
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.5372985
+      value: 0.53729844
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0018340066
+      value: -0.0018340069
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.84338945
+      value: -0.8433895
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -2853,15 +2853,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.99999994
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.99999994
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_Name
-      value: Mazo 4
+      value: Mazo 3
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2874,6 +2874,10 @@ Prefab:
     - target: {fileID: 100000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_TagString
       value: Mazo
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
@@ -4022,9 +4026,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1502224814}
-  - {fileID: 2058988303}
   - {fileID: 730003875}
   - {fileID: 359864838}
+  - {fileID: 2058988303}
   m_Father: {fileID: 134797215}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5043,7 +5047,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -5059,11 +5063,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_Name
-      value: Mazo 3
+      value: Mazo 2
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_TagString
       value: Mazo
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 93f13487b2f627e4d946124a79979088, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
@@ -9077,7 +9085,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -9093,7 +9101,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_Name
-      value: Mazo 2
+      value: Mazo 4
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 93f13487b2f627e4d946124a79979088, type: 3}
       propertyPath: m_TagString
