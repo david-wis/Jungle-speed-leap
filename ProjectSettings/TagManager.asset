@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CartasEstaticas
   - Jugador
+  - Mazo
   layers:
   - Default
   - TransparentFX

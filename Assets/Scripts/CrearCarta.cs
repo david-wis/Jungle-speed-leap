@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class CrearCarta : MonoBehaviour {
     private InteractionBehaviour _intObj;
-    public static bool bCartaCreada = false;
+    //public static bool bCartaCreada = false;
+    public int iNroMazo; 
 
     //[Tooltip("If enabled, the object will use its primaryHoverColor when the primary hover of an InteractionHand.")]
     //public bool usePrimaryHover = false;
@@ -26,7 +27,7 @@ public class CrearCarta : MonoBehaviour {
 
     public void GenerarCarta()
     {
-        EventManager.TriggerEvent("agarrarcarta");
-        bCartaCreada = true;
+        EventManager.TriggerEvent("agarrarcarta"+iNroMazo);
+        //bCartaCreada = true;
     }
 }
