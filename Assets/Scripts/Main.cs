@@ -15,13 +15,16 @@ public class Main : MonoBehaviour {
     public GameObject[] cartasEstaticas = new GameObject[4];
     GameObject[] mazos = new GameObject[4];
 
+    GameObject totem;
+
     Mesa mesa = new Mesa();
 
     int iIndexJugActual;
-    UnityAction eventolistener0;
-    UnityAction eventolistener1;
-    UnityAction eventolistener2;
-    UnityAction eventolistener3;
+    UnityAction eventoListenerMazo0;
+    UnityAction eventoListenerMazo1;
+    UnityAction eventoListenerMazo2;
+    UnityAction eventoListenerMazo3;
+    UnityAction eventoListenerTotem;
 
     // Use this for initialization
     void Start() {
@@ -41,16 +44,19 @@ public class Main : MonoBehaviour {
         /*
          * OPTIMIZAR (si es posible :v) EN VERSION FUTURA
          */
-        eventolistener0 = new UnityAction(delegate() { PonerCarta(0); });
-        eventolistener1 = new UnityAction(delegate () { PonerCarta(1); });
-        eventolistener2 = new UnityAction(delegate () { PonerCarta(2); });
-        eventolistener3 = new UnityAction(delegate () { PonerCarta(3); });
-        EventManager.StartListening("agarrarcarta0", eventolistener0); //Evento que se produce cuando un jugador toca un mazo
-        EventManager.StartListening("agarrarcarta1", eventolistener1); //Evento que se produce cuando un jugador toca un mazo
-        EventManager.StartListening("agarrarcarta2", eventolistener2); //Evento que se produce cuando un jugador toca un mazo
-        EventManager.StartListening("agarrarcarta3", eventolistener3); //Evento que se produce cuando un jugador toca un mazo
+        eventoListenerMazo0 = new UnityAction(delegate () { PonerCarta(0); });
+        eventoListenerMazo1 = new UnityAction(delegate () { PonerCarta(1); });
+        eventoListenerMazo2 = new UnityAction(delegate () { PonerCarta(2); });
+        eventoListenerMazo3 = new UnityAction(delegate () { PonerCarta(3); });
 
+        eventoListenerTotem = new UnityAction(AgarrarTotem);
 
+        EventManager.StartListening("agarrarcarta0", eventoListenerMazo0); //Evento que se produce cuando un jugador toca un mazo
+        EventManager.StartListening("agarrarcarta1", eventoListenerMazo1); 
+        EventManager.StartListening("agarrarcarta2", eventoListenerMazo2); 
+        EventManager.StartListening("agarrarcarta3", eventoListenerMazo3); 
+
+        EventManager.StartListening("agarrartotem", eventoListenerTotem); //Evento que se produce cuando un jugador agarra el totem
 
         //En el futuro eligiremos el jugador inicial de manera aleatoria
         //iIndexJugActual = ObtenerRandom(4);
@@ -65,41 +71,65 @@ public class Main : MonoBehaviour {
     void Update()
     {
         fTimer += Time.deltaTime;
-        Debug.Log(mazos[0].name + " - " + mazos[1].name + " - " + mazos[2].name + " - " + mazos[3].name);
         if (iIndexJugActual != 0)
         {
-
+            /*
+             * TODO: bots :v
+             */
         }
     }
 
     float fLastTime = 0.0f; //Ultima vez que se tocó el mazo
     const float fCoolDown = 2.0f; //2 segundos
-    void PonerCarta(int x)
+    void PonerCarta(int iIndexMazo)
     {
         /*Vector3 pos = new Vector3(0.25f, 0.2f, 0.4f);
         Instantiate(jugadores[iIndexJugActual].ObtenerCartaActual().img3D,
             jugadores[iIndexJugActual].Manos.transform.position += pos,
             Quaternion.Euler(new Vector3(180f, 0f, 0f)));*/
-        if (fTimer - fLastTime >= fCoolDown) { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
-            Carta cartaActual = jugadores[iIndexJugActual].ObtenerCartaActual();
-            if (cartaActual != null)
-            {
-                mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
-                /*
-                    * 
-                    * TODO: Animacion echi carta se da vuelta
-                    * 
-                */
-                Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
-                imagen.sprite = cartaActual.img2D;
-                fLastTime = fTimer;
-                //Debug.Log("Jugador " + iIndexJugActual + " - " + cartaActual.img2D.name + " - " + imagen.name + " - " + mazos[iIndexJugActual].name);
-                if (jugadores[iIndexJugActual].ObtenerCantCartas() == 0)
+        if (iIndexJugActual == iIndexMazo) { 
+            if (fTimer - fLastTime >= fCoolDown) { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
+                Carta cartaActual = jugadores[iIndexJugActual].ObtenerCartaActual();
+                if (cartaActual != null)
                 {
-                    mazos[iIndexJugActual].SetActive(false);
+                    mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
+                    /*
+                        * 
+                        * TODO: Animacion echi carta se da vuelta
+                        * 
+                    */
+                    Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
+                    imagen.sprite = cartaActual.img2D;
+                    fLastTime = fTimer;
+                    //Debug.Log("Jugador " + iIndexJugActual + " - " + cartaActual.img2D.name + " - " + imagen.name + " - " + mazos[iIndexJugActual].name);
+                    if (jugadores[iIndexJugActual].ObtenerCantCartas() == 0)
+                    {
+                        mazos[iIndexJugActual].SetActive(false);
+                    }
+                    iIndexJugActual = (iIndexJugActual < 3) ? iIndexJugActual + 1 : 0;
                 }
-                iIndexJugActual = (iIndexJugActual < 3) ? iIndexJugActual + 1 : 0;
             }
+        }
+    }
+
+    /*
+     *  Hasta que hagamos el multiplayer, iJugadorTotem va a ser una variable
+     *  que se va a modificar siempre por alguna funcion del mismo main.
+     *  Si armamos el multiplayer, vamos a tener que pasarle un parametro a AgarrarTotem
+     *  que indique que jugador realizo el grasp, ya que no va a ser tan facil 
+     *  predecirlo como en este caso, en el que o bien decidimos nosotros que bot 
+     *  agarra el totem, o por defecto lo hace el único jugador.
+     */
+    int iJugadorTotem = 0; //Jugador que agarro el totem
+    void AgarrarTotem()
+    {
+        bool bHizoBien = mesa.VerificarIgualdadConResto(iJugadorTotem);
+        if (bHizoBien)
+        {
+            Debug.Log("Well done!");
+        } else
+        {
+            Debug.Log("wtf, sacame la manito bro");
         }
     }
 
@@ -150,7 +180,7 @@ public class Main : MonoBehaviour {
     void ReferenciarMazos()
     {
         mazos = GameObject.FindGameObjectsWithTag("Mazo");
-        Array.Sort(mazos, CompareObNames); //Ordenar por nombre
+        Array.Sort(mazos, CompareObNames); 
     }
 
     public void CrearJugadores()
@@ -164,7 +194,8 @@ public class Main : MonoBehaviour {
         }
     }
 
-    int CompareObNames(GameObject x, GameObject y)
+    int CompareObNames(GameObject x, GameObject y) //Ordenar por nombre
     {
         return x.name.CompareTo(y.name);
-    }}
+    }
+}
