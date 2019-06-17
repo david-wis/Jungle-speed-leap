@@ -730,7 +730,7 @@ namespace Leap.Unity.Interaction {
           try {
             graspButton = Input.GetAxis(graspButtonAxis) > graspDepressedValue;
           } catch {
-            Debug.LogError("INPUT AXIS NOT SET UP.  Go to your Input Manager and add a definition for " + graspButtonAxis + " on the " + (isLeft ? "9" : "10") + "th Joystick Axis.");
+            //Debug.LogError("INPUT AXIS NOT SET UP.  Go to your Input Manager and add a definition for " + graspButtonAxis + " on the " + (isLeft ? "9" : "10") + "th Joystick Axis.");
             graspButton = Input.GetKey(isLeft ? KeyCode.JoystickButton14: KeyCode.JoystickButton15);
           }
         }
