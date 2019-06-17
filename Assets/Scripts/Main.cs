@@ -99,7 +99,10 @@ public class Main : MonoBehaviour {
                         * 
                     */
                     Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
+                    var color = imagen.color;
+                    color.a = 1;
                     imagen.sprite = cartaActual.img2D;
+                    imagen.color = color;
                     fLastTime = fTimer;
                     //Debug.Log("Jugador " + iIndexJugActual + " - " + cartaActual.img2D.name + " - " + imagen.name + " - " + mazos[iIndexJugActual].name);
                     if (jugadores[iIndexJugActual].ObtenerCantCartas() == 0)
