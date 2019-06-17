@@ -30,7 +30,7 @@ public class Jugador
         _pilaCartas.Push(carta);
     }
 
-    public Carta ObtenerCartaActual()
+    public Carta ObtenerSiguienteCarta()
     {
         if (_pilaCartas.Count > 0) { 
             _cartaActual = _pilaCartas.Pop();
@@ -38,6 +38,6 @@ public class Jugador
         {
             _cartaActual = null;
         }
-        return CartaActual;
+        return _cartaActual;
     }
 }

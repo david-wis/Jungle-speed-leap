@@ -27,7 +27,7 @@ public class CrearCarta : MonoBehaviour {
 
     public void GenerarCarta()
     {
-        EventManager.TriggerEvent("agarrarcarta"+iNroMazo);
+        EventManager.TriggerEvent("agarrarcarta" + iNroMazo);
         //bCartaCreada = true;
     }
 }

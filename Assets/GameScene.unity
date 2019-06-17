@@ -1259,7 +1259,7 @@ GameObject:
   - component: {fileID: 229255503}
   - component: {fileID: 229255502}
   m_Layer: 0
-  m_Name: Jugador 2
+  m_Name: Jugador 3
   m_TagString: Jugador
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1311,7 +1311,7 @@ Transform:
   - {fileID: 1057600456}
   - {fileID: 1441053858}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &231715267
 Prefab:
@@ -2090,7 +2090,7 @@ GameObject:
   - component: {fileID: 302852185}
   - component: {fileID: 302852184}
   m_Layer: 0
-  m_Name: Jugador 3
+  m_Name: Jugador 2
   m_TagString: Jugador
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2142,7 +2142,7 @@ Transform:
   - {fileID: 1619365525}
   - {fileID: 1723181395}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &310837794
 GameObject:
@@ -9035,6 +9035,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cartasEstaticas: []
+  contrAnimac:
+  - {fileID: 9100000, guid: e8839755c6e06164abceaf18db57c3b5, type: 2}
+  - {fileID: 9100000, guid: ca48ca2942877f7428b1642de6ffa635, type: 2}
+  - {fileID: 9100000, guid: 403a2134af605c74691766d2a9f55338, type: 2}
+  - {fileID: 9100000, guid: 74f5b12d5b793b447977eaa4c3d56363, type: 2}
 --- !u!4 &2022951903
 Transform:
   m_ObjectHideFlags: 0

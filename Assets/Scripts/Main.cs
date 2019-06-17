@@ -9,7 +9,7 @@ using System;
 public class Main : MonoBehaviour {
     public const int CANTCARTAS = 8;
     public const int CANTJUGADORES = 4;
-
+    
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
     Jugador[] jugadores = new Jugador[CANTJUGADORES];
     public GameObject[] cartasEstaticas = new GameObject[4];
@@ -18,6 +18,16 @@ public class Main : MonoBehaviour {
     GameObject totem;
 
     Mesa mesa = new Mesa();
+
+    Vector3[] posicCartasDelMazo = { new Vector3(0.13f, 1.5f, -0.43f),
+                                     new Vector3(0.2f, 1.5f, -0.09f),
+                                     new Vector3(-0.235f, 1.5f, 0.15f),
+                                     new Vector3(-0.38f, 1.5f, -0.25f)};
+    Vector3[] rotacCartasDelMazo = { new Vector3(-90f, 0f, -175f),
+                                     new Vector3(-90f, -90f, -175f),
+                                     new Vector3(-90f, -90f, 95f),
+                                     new Vector3(-90f, -90f, 5f)};
+    public RuntimeAnimatorController[] contrAnimac = new RuntimeAnimatorController[4];
 
     int iIndexJugActual;
     UnityAction eventoListenerMazo0;
@@ -54,19 +64,17 @@ public class Main : MonoBehaviour {
         EventManager.StartListening("agarrarcarta0", eventoListenerMazo0); //Evento que se produce cuando un jugador toca un mazo
         EventManager.StartListening("agarrarcarta1", eventoListenerMazo1); 
         EventManager.StartListening("agarrarcarta2", eventoListenerMazo2); 
-        EventManager.StartListening("agarrarcarta3", eventoListenerMazo3); 
+        EventManager.StartListening("agarrarcarta3", eventoListenerMazo3);
 
         EventManager.StartListening("agarrartotem", eventoListenerTotem); //Evento que se produce cuando un jugador agarra el totem
 
         //En el futuro eligiremos el jugador inicial de manera aleatoria
-        //iIndexJugActual = ObtenerRandom(4);
+        //iIndexJugActual = ObtenerRandom(4); 
         iIndexJugActual = 0;
-
-
-
     }
 
     float fTimer = 0.0f; //Bereishit
+    
     // Update is called once per frame
     void Update()
     {
@@ -81,23 +89,16 @@ public class Main : MonoBehaviour {
 
     float fLastTime = 0.0f; //Ultima vez que se tocó el mazo
     const float fCoolDown = 2.0f; //2 segundos
+
     void PonerCarta(int iIndexMazo)
     {
-        /*Vector3 pos = new Vector3(0.25f, 0.2f, 0.4f);
-        Instantiate(jugadores[iIndexJugActual].ObtenerCartaActual().img3D,
-            jugadores[iIndexJugActual].Manos.transform.position += pos,
-            Quaternion.Euler(new Vector3(180f, 0f, 0f)));*/
-        if (iIndexJugActual == iIndexMazo) { 
+        if (iIndexJugActual == iIndexMazo) {
             if (fTimer - fLastTime >= fCoolDown) { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
-                Carta cartaActual = jugadores[iIndexJugActual].ObtenerCartaActual();
+                Carta cartaActual = jugadores[iIndexJugActual].ObtenerSiguienteCarta();
                 if (cartaActual != null)
                 {
                     mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
-                    /*
-                        * 
-                        * TODO: Animacion echi carta se da vuelta
-                        * 
-                    */
+                    AnimarCarta(cartaActual);
                     Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
                     imagen.sprite = cartaActual.img2D;
                     fLastTime = fTimer;
@@ -166,6 +167,32 @@ public class Main : MonoBehaviour {
         }
     }
 
+    /* La carta Violeta 0 funciona bien con todas las animaciones
+    private Carta agarrarCartaVioleta0()
+    {
+        string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
+        bool bEncontrado = false;
+        int iCantCartas = rutaCartitas.Length, iPosi = 0;
+        Carta cartaViol0 = null;
+        while (!bEncontrado && iPosi < iCantCartas)
+        {
+            string ruta = AssetDatabase.GUIDToAssetPath(rutaCartitas[iPosi]);
+            Carta cartaAux = (Carta)AssetDatabase.LoadAssetAtPath(ruta, typeof(Carta));
+            if (cartaAux.ToString().Equals("Violeta-0"))
+            {
+                bEncontrado = true;
+                cartaViol0 = cartaAux;
+            }
+            else
+            {
+                iPosi++;
+            }
+        }
+        return cartaViol0;
+
+    }
+    */
+
     private int ObtenerRandom(int iMax)
     {
         return UnityEngine.Random.Range(0, iMax);
@@ -192,6 +219,17 @@ public class Main : MonoBehaviour {
             jugadores[i] = new Jugador();
             jugadores[i].Manos = manos[i];
         }
+    }
+
+    public void AnimarCarta(Carta cartaActual)
+    {
+        Debug.Log(cartaActual.ToString());
+        GameObject cartaCreada = Instantiate(cartaActual.img3D, 
+                            posicCartasDelMazo[iIndexJugActual], 
+                            Quaternion.Euler(rotacCartasDelMazo[iIndexJugActual]));
+        cartaCreada.AddComponent<Animator>();
+        Animator elAnimador = cartaCreada.GetComponent<Animator>();
+        elAnimador.runtimeAnimatorController = contrAnimac[iIndexJugActual];
     }
 
     int CompareObNames(GameObject x, GameObject y) //Ordenar por nombre
