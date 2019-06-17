@@ -2,41 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Carta : MonoBehaviour {
-    private int iDCarta = -1;
-    public GameObject prefab;
-    private string Color;
-    private string Forma;
+[CreateAssetMenu(fileName = "CartaX", menuName ="Carta")]
+public class Carta : ScriptableObject {
+    //public new string name;
+    public GameObject img3D;
+    public Sprite img2D;
+    public Color color;
+    public int forma;
 
-    public Carta()
+    public enum Color
     {
+        Verde, 
+        Amarillo,
+        Rojo,
+        Violeta
     }
 
-    public Carta(int id)
+    override public string ToString()
     {
-        iDCarta = id;
+        string txt = color.ToString() + "-" + forma;
+        return txt;
     }
-
-    public int IDCarta
-    {
-        get
-        {
-            return IDCarta;
-        }
-
-        set
-        {
-            IDCarta = value;
-        }
-    }
-
-    /*public Carta(float x, float y, float z)
-    {
-        //Instantiate(objCarta, new Vector3(x, y, z), Quaternion.identity);
-        objCarta = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        objCarta.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
-        objCarta.transform.position = new Vector3(x, y, z);
-        objCarta.AddComponent<Rigidbody>();
-        objCarta.GetComponentInChildren<Renderer>().material.color = Color.red; //Cambiarlo por textura cuando Abril termine
-    }*/
 }
