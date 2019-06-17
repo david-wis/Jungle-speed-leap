@@ -98,7 +98,7 @@ public class Main : MonoBehaviour {
                 if (cartaActual != null)
                 {
                     mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
-                    AnimarCarta(cartaActual);
+                    AnimarCarta(cartaActual); //Crea la carta y la anima
                     Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
                     var color = imagen.color;
                     color.a = 1;
