@@ -87,7 +87,7 @@ public class Main : MonoBehaviour {
         }
     }
 
-    float fLastTime = 0.0f; //Ultima vez que se tocó el mazo
+    float fLastTime = -2.0f; //Ultima vez que se tocó el mazo
     const float fCoolDown = 2.0f; //2 segundos
 
     void PonerCarta(int iIndexMazo)
