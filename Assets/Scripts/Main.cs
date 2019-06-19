@@ -28,7 +28,7 @@ public class Main : MonoBehaviour {
                                      new Vector3(-90f, -90f, 95f),
                                      new Vector3(-90f, -90f, 5f)};
     public RuntimeAnimatorController[] contrAnimac = new RuntimeAnimatorController[4];
-
+    
     int iIndexJugActual;
     UnityAction eventoListenerMazo0;
     UnityAction eventoListenerMazo1;
@@ -70,7 +70,7 @@ public class Main : MonoBehaviour {
 
         //En el futuro eligiremos el jugador inicial de manera aleatoria
         //iIndexJugActual = ObtenerRandom(4); 
-        iIndexJugActual = 0;
+        iIndexJugActual = 0;        
     }
 
     float fTimer = 0.0f; //Bereishit
@@ -81,13 +81,12 @@ public class Main : MonoBehaviour {
         fTimer += Time.deltaTime;
         if (iIndexJugActual != 0)
         {
-            /*
-             * TODO: bots :v
-             */
-        }
+            //TODO: bots :v
+        }        
     }
 
     float fLastTime = 0.0f; //Ultima vez que se tocó el mazo
+
     const float fCoolDown = 2.0f; //2 segundos
 
     void PonerCarta(int iIndexMazo)
@@ -192,9 +191,7 @@ public class Main : MonoBehaviour {
             }
         }
         return cartaViol0;
-
-    }
-    */
+    }*/
 
     private int ObtenerRandom(int iMax)
     {
@@ -226,10 +223,14 @@ public class Main : MonoBehaviour {
 
     public void AnimarCarta(Carta cartaActual)
     {
-        Debug.Log(cartaActual.ToString());
+        //Debug.Log(cartaActual.ToString());
         GameObject cartaCreada = Instantiate(cartaActual.img3D, 
                             posicCartasDelMazo[iIndexJugActual], 
                             Quaternion.Euler(rotacCartasDelMazo[iIndexJugActual]));
+        //BoxCollider boxCollider = cartaCreada.AddComponent<BoxCollider>();
+        //boxCollider.size = new Vector3(0.115f, 0.11f, 0.001f);
+        //boxCollider.center = new Vector3(0f, 0f, 0.05f);
+        //Rigidbody rigidbody = cartaCreada.AddComponent<Rigidbody>();
         cartaCreada.AddComponent<Animator>();
         Animator elAnimador = cartaCreada.GetComponent<Animator>();
         elAnimador.runtimeAnimatorController = contrAnimac[iIndexJugActual];
