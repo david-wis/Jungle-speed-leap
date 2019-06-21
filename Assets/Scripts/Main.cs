@@ -126,8 +126,8 @@ public class Main : MonoBehaviour {
     int iJugadorTotem = 0; //Jugador que agarro el totem
     void AgarrarTotem()
     {
-        bool bHizoBien = mesa.VerificarIgualdadConResto(iJugadorTotem);
-        if (bHizoBien)
+        List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
+        if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
         {
             Debug.Log("Well done!");
         } else
@@ -235,7 +235,7 @@ public class Main : MonoBehaviour {
         elAnimador.runtimeAnimatorController = contrAnimac[iIndexJugActual];
     }
 
-    int CompareObNames(GameObject x, GameObject y) //Ordenar por nombre
+    public static int CompareObNames(GameObject x, GameObject y) //Ordenar por nombre
     {
         return x.name.CompareTo(y.name);
     }

@@ -1,4 +1,5 @@
 ﻿using Leap.Unity.Interaction;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +7,21 @@ using UnityEngine;
 public class TotemBehaviour : MonoBehaviour {
     InteractionBehaviour _intObj;
     private bool bForceGrasp;
+    //private GameObject[] manos;
+    private Collider colisionador;
+    private Collider[] colManos = new Collider[4];
 
     // Use this for initialization
     void Start () {
         _intObj = GetComponent<InteractionBehaviour>();
         bForceGrasp = false;
+        GameObject[] manos = GameObject.FindGameObjectsWithTag("Jugador");
+        Array.Sort(manos, Main.CompareObNames);
+        for (int i = 0; i < 4; i++)
+        {
+            colManos[i] = manos[i].GetComponent<Collider>(); 
+        }
+        colisionador = GetComponent<Collider>();        
     }
 	
 	// Update is called once per frame
@@ -22,7 +33,12 @@ public class TotemBehaviour : MonoBehaviour {
              * Para eso deberiamos usar los atributos de graspingcontroller/hands
              */
             EventManager.TriggerEvent("agarrartotem");
-            bForceGrasp = false;
+            bForceGrasp = false;            
         }
 	}
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision.collider.name);
+    }
 }
