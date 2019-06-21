@@ -93,6 +93,7 @@ public class Main : MonoBehaviour {
         if (iIndexJugActual == iIndexMazo) {
             if (fTimer - fLastTime >= fCoolDown) { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
                 Carta cartaActual = jugadores[iIndexJugActual].ObtenerSiguienteCarta();
+                //Carta cartaActual = agarrarCartaVioleta0();
                 if (cartaActual != null)
                 {
                     mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
@@ -168,7 +169,6 @@ public class Main : MonoBehaviour {
         }
     }
 
-    /* La carta Violeta 0 funciona bien con todas las animaciones
     private Carta agarrarCartaVioleta0()
     {
         string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
@@ -190,7 +190,7 @@ public class Main : MonoBehaviour {
             }
         }
         return cartaViol0;
-    }*/
+    }
 
     private int ObtenerRandom(int iMax)
     {

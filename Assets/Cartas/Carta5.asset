@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b9681c8c714984d81052f4f500ede6, type: 3}
   m_Name: Carta5
   m_EditorClassIdentifier: 
-  img3D: {fileID: 100000, guid: e65e6e063f39d10419b3218ad1152c84, type: 3}
+  img3D: {fileID: 100000, guid: 95ca6da655e3fcc4d9e8ba9522c3b36b, type: 3}
   img2D: {fileID: 21300000, guid: a12093108854b3a479c1e6d9468dfb14, type: 3}
   color: 3
   forma: 1
