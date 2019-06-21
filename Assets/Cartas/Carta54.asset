@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80b9681c8c714984d81052f4f500ede6, type: 3}
+  m_Name: Carta54
+  m_EditorClassIdentifier: 
+  img3D: {fileID: 100000, guid: f6b349bc531c1674a92de10ae3376e12, type: 3}
+  img2D: {fileID: 21300000, guid: aced6d1ba7d5a504b9a8d672ab7a4974, type: 3}
+  color: 0
+  forma: 13

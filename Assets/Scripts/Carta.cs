@@ -15,7 +15,8 @@ public class Carta : ScriptableObject {
         Verde, 
         Amarillo,
         Rojo,
-        Violeta
+        Violeta,
+        Especial
     }
 
     override public string ToString()
