@@ -7,7 +7,7 @@ using UnityEditor;
 using System;
 
 public class Main : MonoBehaviour {
-    public const int CANTCARTAS = 8;
+    public const int CANTCARTAS = 72; //Por ahora las cartas especiales no estan metidas
     public const int CANTJUGADORES = 4;
     
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
@@ -162,14 +162,14 @@ public class Main : MonoBehaviour {
     private void LlenarMazo()
     {
         string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
-        for (int i = 0; i < rutaCartitas.Length; i++)
+        for (int i = 0; i < CANTCARTAS; i++)
         {
             string ruta = AssetDatabase.GUIDToAssetPath(rutaCartitas[i]);
             arrayMazoTotal[i] = (Carta)AssetDatabase.LoadAssetAtPath(ruta, typeof(Carta));
         }
     }
 
-    private Carta agarrarCartaVioleta0()
+    /*private Carta agarrarCartaVioleta0()
     {
         string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
         bool bEncontrado = false;
@@ -190,7 +190,7 @@ public class Main : MonoBehaviour {
             }
         }
         return cartaViol0;
-    }
+    }*/
 
     private int ObtenerRandom(int iMax)
     {
