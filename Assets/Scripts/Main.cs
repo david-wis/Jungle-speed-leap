@@ -9,7 +9,8 @@ using System;
 public class Main : MonoBehaviour {
     public const int CANTCARTAS = 72; //Por ahora las cartas especiales no estan metidas
     public const int CANTJUGADORES = 4;
-    
+    public RuntimeAnimatorController[] contrAnimac = new RuntimeAnimatorController[4];
+
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
     Jugador[] jugadores = new Jugador[CANTJUGADORES];
     public GameObject[] cartasEstaticas = new GameObject[4];
@@ -27,13 +28,12 @@ public class Main : MonoBehaviour {
                                      new Vector3(-90f, -90f, -175f),
                                      new Vector3(-90f, -90f, 95f),
                                      new Vector3(-90f, -90f, 5f)};
-    public RuntimeAnimatorController[] contrAnimac = new RuntimeAnimatorController[4];
-    
+    GameObject cartaCreada = null; //El gameObject que se crea con la carta del mazo
+    float fTimerAnimacion = 0f; //Cuando llega a 1s (la animacion termino), le pongo gravedad a la carta
+    bool seEstaAnimando = false;
+
     int iIndexJugActual;
-    UnityAction eventoListenerMazo0;
-    UnityAction eventoListenerMazo1;
-    UnityAction eventoListenerMazo2;
-    UnityAction eventoListenerMazo3;
+    UnityAction eventoListenerMazo0, eventoListenerMazo1, eventoListenerMazo2, eventoListenerMazo3;
     UnityAction eventoListenerTotem;
 
     // Use this for initialization
@@ -70,7 +70,7 @@ public class Main : MonoBehaviour {
 
         //En el futuro eligiremos el jugador inicial de manera aleatoria
         //iIndexJugActual = ObtenerRandom(4); 
-        iIndexJugActual = 0;        
+        iIndexJugActual = 0;
     }
 
     float fTimer = 0.0f; //Bereishit
@@ -87,7 +87,70 @@ public class Main : MonoBehaviour {
                 StartCoroutine(PonerCartaBot(iIndexJugActual));
                 bCartaEsperando = true;
             }
-        }        
+        }
+        if (seEstaAnimando) //Si esta la animacion, cuento cuanto tiempo va pasando
+        {
+            fTimerAnimacion += Time.deltaTime;
+            if (fTimerAnimacion >= 1.0f) //Si ya paso 1s de animacion (terminó), hago que la carta caiga
+            {
+                finAnimacion();
+            }
+        }
+    }
+
+    private void LlenarMazo()
+    {
+        string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
+        for (int i = 0; i < CANTCARTAS; i++)
+        {
+            string ruta = AssetDatabase.GUIDToAssetPath(rutaCartitas[i]);
+            arrayMazoTotal[i] = (Carta)AssetDatabase.LoadAssetAtPath(ruta, typeof(Carta));
+        }
+    }
+
+    void ReferenciarCartasEstaticas()
+    {
+        cartasEstaticas = GameObject.FindGameObjectsWithTag("CartasEstaticas");
+        Array.Sort(cartasEstaticas, CompareObNames);
+    }
+
+    void ReferenciarMazos()
+    {
+        mazos = GameObject.FindGameObjectsWithTag("Mazo");
+        Array.Sort(mazos, CompareObNames);
+    }
+
+    public void CrearJugadores()
+    {
+        GameObject[] manos = GameObject.FindGameObjectsWithTag("Jugador");
+        Array.Sort(manos, CompareObNames); //Supuestamente ya estaban en orden pero x las dudas
+        for (int i = 0; i < CANTJUGADORES; i++)
+        {
+            jugadores[i] = new Jugador();
+            jugadores[i].Manos = manos[i];
+        }
+    }
+
+    private void RepartirMazo(int iCantJugadores = 4)
+    {
+        Mezclar();
+        for (int i = 0; i < arrayMazoTotal.Length; i++)
+        {
+            //TODO: dividirlo por iCantJugadores, cuando permitamos elegir la cantidad de jugadores
+            int iIndexJug = i % 4;
+            jugadores[iIndexJug].AgregarCarta(arrayMazoTotal[i]);
+        }
+    }
+
+    private void Mezclar()
+    {
+        for (int i = 0; i < arrayMazoTotal.Length; i++)
+        {
+            Carta cAux = arrayMazoTotal[i];
+            int iRand = ObtenerRandom(arrayMazoTotal.Length);
+            arrayMazoTotal[i] = arrayMazoTotal[iRand];
+            arrayMazoTotal[iRand] = cAux;
+        }
     }
 
     const float fCoolDown = 1.0f; //1 segundo
@@ -161,40 +224,7 @@ public class Main : MonoBehaviour {
         Debug.Log("Chupate esta! " + ids.Substring(2));
     }
 
-
-    private void RepartirMazo(int iCantJugadores = 4)
-    {
-        Mezclar();
-        for (int i = 0; i < arrayMazoTotal.Length; i++)
-        {
-            //TODO: dividirlo por iCantJugadores, cuando permitamos elegir la cantidad de jugadores
-            int iIndexJug = i % 4;
-            jugadores[iIndexJug].AgregarCarta(arrayMazoTotal[i]);
-        }
-    }
-
-    private void Mezclar()
-    {
-        for (int i = 0; i < arrayMazoTotal.Length; i++)
-        {
-            Carta cAux = arrayMazoTotal[i];
-            int iRand = ObtenerRandom(arrayMazoTotal.Length);
-            arrayMazoTotal[i] = arrayMazoTotal[iRand];
-            arrayMazoTotal[iRand] = cAux;
-        }
-    }
-
-    private void LlenarMazo()
-    {
-        string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
-        for (int i = 0; i < CANTCARTAS; i++)
-        {
-            string ruta = AssetDatabase.GUIDToAssetPath(rutaCartitas[i]);
-            arrayMazoTotal[i] = (Carta)AssetDatabase.LoadAssetAtPath(ruta, typeof(Carta));
-        }
-    }
-
-    /*private Carta agarrarCartaVioleta0()
+    private Carta agarrarCartaVioleta0()
     {
         string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
         bool bEncontrado = false;
@@ -215,49 +245,33 @@ public class Main : MonoBehaviour {
             }
         }
         return cartaViol0;
-    }*/
+    }
 
     private int ObtenerRandom(int iMax)
     {
         return UnityEngine.Random.Range(0, iMax);
     }
 
-    void ReferenciarCartasEstaticas()
-    {
-        cartasEstaticas = GameObject.FindGameObjectsWithTag("CartasEstaticas");
-        Array.Sort(cartasEstaticas, CompareObNames);
-    }
-
-    void ReferenciarMazos()
-    {
-        mazos = GameObject.FindGameObjectsWithTag("Mazo");
-        Array.Sort(mazos, CompareObNames); 
-    }
-
-    public void CrearJugadores()
-    {
-        GameObject[] manos = GameObject.FindGameObjectsWithTag("Jugador");
-        Array.Sort(manos, CompareObNames); //Supuestamente ya estaban en orden pero x las dudas
-        for (int i = 0; i < CANTJUGADORES; i++)
-        {
-            jugadores[i] = new Jugador();
-            jugadores[i].Manos = manos[i];
-        }
-    }
-
     public void AnimarCarta(Carta cartaActual)
     {
-        //Debug.Log(cartaActual.ToString());
-        GameObject cartaCreada = Instantiate(cartaActual.img3D, 
+        cartaCreada = Instantiate(cartaActual.img3D, 
                             posicCartasDelMazo[iIndexJugActual], 
                             Quaternion.Euler(rotacCartasDelMazo[iIndexJugActual]));
-        //BoxCollider boxCollider = cartaCreada.AddComponent<BoxCollider>();
-        //boxCollider.size = new Vector3(0.115f, 0.11f, 0.001f);
-        //boxCollider.center = new Vector3(0f, 0f, 0.05f);
-        //Rigidbody rigidbody = cartaCreada.AddComponent<Rigidbody>();
-        cartaCreada.AddComponent<Animator>();
-        Animator elAnimador = cartaCreada.GetComponent<Animator>();
+        Animator elAnimador = cartaCreada.AddComponent<Animator>();
         elAnimador.runtimeAnimatorController = contrAnimac[iIndexJugActual];
+        seEstaAnimando = true;
+    }
+
+    public void finAnimacion()
+    {
+        seEstaAnimando = false;
+        fTimerAnimacion = 0f;
+        cartaCreada.GetComponent<Animator>().enabled = false; //Desactivo la animacion
+        BoxCollider boxCollider = cartaCreada.AddComponent<BoxCollider>(); //Creo un BoxCollider para que choque con el piso y con las cartas que caen despues
+        boxCollider.center = new Vector3(0, 0, 0.065f);
+        boxCollider.size = new Vector3(0.115f, 0.13f, 0.005f);
+        Rigidbody rigidbody = cartaCreada.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
+        rigidbody.drag = 10f; //Para que la caida sea mas lenta
     }
 
     public static int CompareObNames(GameObject x, GameObject y) //Ordenar por nombre

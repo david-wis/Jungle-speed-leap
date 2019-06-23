@@ -30,6 +30,6 @@ public class SimuladorAnimaciones : MonoBehaviour
         {
             Debug.Log("Apretaste 4");
             EventManager.TriggerEvent("agarrarcarta3");
-        }        
+        }
     }
 }
