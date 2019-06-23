@@ -74,19 +74,28 @@ public class Main : MonoBehaviour {
     }
 
     float fTimer = 0.0f; //Bereishit
-    
+    bool bCartaEsperando = false;
+    float fLastTime = -2.0f; //Ultima vez que se tocó el mazo
     // Update is called once per frame
     void Update()
     {
         fTimer += Time.deltaTime;
         if (iIndexJugActual != 0)
         {
-            //TODO: bots :v
+            if (!bCartaEsperando)
+            {
+                StartCoroutine(PonerCartaBot(iIndexJugActual));
+                bCartaEsperando = true;
+            }
         }        
     }
 
-    float fLastTime = -2.0f; //Ultima vez que se tocó el mazo
-    const float fCoolDown = 2.0f; //2 segundos
+    const float fCoolDown = 1.0f; //1 segundo
+    IEnumerator PonerCartaBot(int iIndex)
+    {
+        yield return new WaitForSeconds(fCoolDown);
+        PonerCarta(iIndex);
+    } 
 
     void PonerCarta(int iIndexMazo)
     {
@@ -110,6 +119,7 @@ public class Main : MonoBehaviour {
                         mazos[iIndexJugActual].SetActive(false);
                     }
                     iIndexJugActual = (iIndexJugActual < 3) ? iIndexJugActual + 1 : 0;
+                    bCartaEsperando = false;
                 }
             }
         }
@@ -124,16 +134,31 @@ public class Main : MonoBehaviour {
      *  agarra el totem, o por defecto lo hace el único jugador.
      */
     int iJugadorTotem = 0; //Jugador que agarro el totem
+    UnityAction eventoListenerTotemTraido;
     void AgarrarTotem()
     {
         List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
         if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
         {
-            Debug.Log("Well done!");
+            Debug.Log("Totem agarrado, ahora es momento de llevarlo a su lugar");
+            EventManager.TriggerEvent("totemagarrado");
+            eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(listaJugadoresEnemigos); });
+            EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
         } else
         {
             Debug.Log("wtf, sacame la manito bro");
         }
+    }
+
+    void DarCartas(List<int> jugadoresEnemigos)
+    {
+        //TODO: se les meten las cartas a los demas
+        string ids = "";
+        for (int i = 0; i < jugadoresEnemigos.Count; i++)
+        {
+            ids += ", Jugador " + (jugadoresEnemigos[i]+1);
+        }
+        Debug.Log("Chupate esta! " + ids.Substring(2));
     }
 
 

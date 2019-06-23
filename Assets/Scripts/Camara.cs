@@ -31,19 +31,19 @@ public class Camara : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            transform.Translate(new Vector3(0, -speed * Time.deltaTime, 0));
+            transform.Translate(new Vector3(0, 0, -speed * Time.deltaTime));
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            transform.Translate(new Vector3(0, speed * Time.deltaTime, 0));
+            transform.Translate(new Vector3(0, 0, speed * Time.deltaTime));
         }
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(new Vector3(0, 0, speed * Time.deltaTime));
+            transform.Translate(new Vector3(0, speed * Time.deltaTime, 0));
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(new Vector3(0, 0, -speed * Time.deltaTime));
+            transform.Translate(new Vector3(0, -speed * Time.deltaTime, 0));
         }
     }
 }
