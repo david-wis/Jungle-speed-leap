@@ -20,7 +20,8 @@ public class TotemBehaviour : MonoBehaviour {
     // Use this for initialization
     void Start () {
         _intObj = GetComponent<InteractionBehaviour>();
-        bAgarrado = false;
+        //bAgarrado = false;
+        bAgarrado = true;
         GameObject[] manos = GameObject.FindGameObjectsWithTag("Jugador");
         Array.Sort(manos, Main.CompareObNames);
         for (int i = 0; i < 4; i++)

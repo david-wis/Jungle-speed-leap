@@ -4,21 +4,29 @@ using UnityEngine;
 class Mesa
 {
     Stack<Carta>[] cartasEnJuego = new Stack<Carta>[4];
-    int iTope = 0;
+    //Stack<GameObject>[] gameObjectsEnJuego = new Stack<GameObject>[4];
+    int iTopeCartas = 0/*, iTopeGameObjects = 0*/;
 
     public Mesa()
     {
         for (int i = 0; i < 4; i++)
         {
             cartasEnJuego[i] = new Stack<Carta>();
+            //gameObjectsEnJuego[i] = new Stack<GameObject>();
         }
     }
 
     public void AgregarCarta(Carta c)
     {
-        cartasEnJuego[iTope].Push(c);
-        iTope = (iTope < 3) ? iTope + 1 : 0;
+        cartasEnJuego[iTopeCartas].Push(c);
+        iTopeCartas = (iTopeCartas < 3) ? iTopeCartas + 1 : 0;
     }
+
+    /*public void AgregarGameObject(GameObject gameObject)
+    {
+        gameObjectsEnJuego[iTopeGameObjects].Push(gameObject);
+        iTopeGameObjects = (iTopeGameObjects < 3) ? iTopeGameObjects + 1 : 0;
+    }*/
 
     //Metodo deprecado para verificar igualdad entre cartas
     /*public bool VerificarIgualdadConResto(int iIndexJugador)
@@ -60,6 +68,16 @@ class Mesa
             }
         }
         return listaCoincidencias;
+    }
+
+    /*public Stack<GameObject> obtenerGameObjectsDelJugador(int idJugador)
+    {
+        return gameObjectsEnJuego[idJugador];
+    }*/
+
+    public Stack<Carta> obtenerCartasDelJugador(int idJugador)
+    {
+        return cartasEnJuego[idJugador];
     }
 }
 

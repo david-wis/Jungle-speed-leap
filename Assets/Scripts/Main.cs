@@ -9,7 +9,8 @@ using System;
 public class Main : MonoBehaviour {
     public const int CANTCARTAS = 72; //Por ahora las cartas especiales no estan metidas
     public const int CANTJUGADORES = 4;
-    public RuntimeAnimatorController[] contrAnimac = new RuntimeAnimatorController[4];
+    public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
+    public RuntimeAnimatorController[] contrAnimac0HaciaMazos = new RuntimeAnimatorController[3];
 
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
     Jugador[] jugadores = new Jugador[CANTJUGADORES];
@@ -30,7 +31,7 @@ public class Main : MonoBehaviour {
                                      new Vector3(-90f, -90f, 5f)};
     GameObject cartaCreada = null; //El gameObject que se crea con la carta del mazo
     float fTimerAnimacion = 0f; //Cuando llega a 1s (la animacion termino), le pongo gravedad a la carta
-    bool seEstaAnimando = false;
+    bool seEstaAnimandoDesdeMazo = false;
 
     int iIndexJugActual;
     UnityAction eventoListenerMazo0, eventoListenerMazo1, eventoListenerMazo2, eventoListenerMazo3;
@@ -88,7 +89,7 @@ public class Main : MonoBehaviour {
                 bCartaEsperando = true;
             }
         }
-        if (seEstaAnimando) //Si esta la animacion, cuento cuanto tiempo va pasando
+        if (seEstaAnimandoDesdeMazo) //Si esta la animacion, cuento cuanto tiempo va pasando
         {
             fTimerAnimacion += Time.deltaTime;
             if (fTimerAnimacion >= 1.0f) //Si ya paso 1s de animacion (terminó), hago que la carta caiga
@@ -158,7 +159,7 @@ public class Main : MonoBehaviour {
     {
         yield return new WaitForSeconds(fCoolDown);
         PonerCarta(iIndex);
-    } 
+    }
 
     void PonerCarta(int iIndexMazo)
     {
@@ -201,12 +202,14 @@ public class Main : MonoBehaviour {
     void AgarrarTotem()
     {
         List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
+        listaJugadoresEnemigos.Add(1); //SOLO PARA DEBUG
         if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
         {
             Debug.Log("Totem agarrado, ahora es momento de llevarlo a su lugar");
             EventManager.TriggerEvent("totemagarrado");
             eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(listaJugadoresEnemigos); });
             EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
+            //EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG
         } else
         {
             Debug.Log("wtf, sacame la manito bro");
@@ -219,9 +222,10 @@ public class Main : MonoBehaviour {
         string ids = "";
         for (int i = 0; i < jugadoresEnemigos.Count; i++)
         {
-            ids += ", Jugador " + (jugadoresEnemigos[i]+1);
+            ids += ", Jugador " + (jugadoresEnemigos[i] + 1);
         }
         Debug.Log("Chupate esta! " + ids.Substring(2));
+        StartCoroutine(llevarCartasAOtroMazo(iJugadorTotem, jugadoresEnemigos));
     }
 
     private Carta agarrarCartaVioleta0()
@@ -258,13 +262,14 @@ public class Main : MonoBehaviour {
                             posicCartasDelMazo[iIndexJugActual], 
                             Quaternion.Euler(rotacCartasDelMazo[iIndexJugActual]));
         Animator elAnimador = cartaCreada.AddComponent<Animator>();
-        elAnimador.runtimeAnimatorController = contrAnimac[iIndexJugActual];
-        seEstaAnimando = true;
+        elAnimador.runtimeAnimatorController = contrAnimacDelMazo[iIndexJugActual];
+        seEstaAnimandoDesdeMazo = true;
+        //mesa.AgregarGameObject(cartaCreada);
     }
 
     public void finAnimacion()
     {
-        seEstaAnimando = false;
+        seEstaAnimandoDesdeMazo = false;
         fTimerAnimacion = 0f;
         cartaCreada.GetComponent<Animator>().enabled = false; //Desactivo la animacion
         BoxCollider boxCollider = cartaCreada.AddComponent<BoxCollider>(); //Creo un BoxCollider para que choque con el piso y con las cartas que caen despues
@@ -272,6 +277,45 @@ public class Main : MonoBehaviour {
         boxCollider.size = new Vector3(0.115f, 0.13f, 0.005f);
         Rigidbody rigidbody = cartaCreada.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
         rigidbody.drag = 10f; //Para que la caida sea mas lenta
+    }
+
+    public IEnumerator llevarCartasAOtroMazo(int idJugadorGanador, List<int> jugadoresEnemigos)
+    {
+        /* Recibe el ID del ganador y los IDs de los perdedores, y manda las cartas del ganador 
+         * a los mazos de los perdedores */
+        Debug.Log("En llevarCartasAOtroMazo()");
+        //idJugadorGanador = 0; //SOLO PARA DEBUG
+
+        //Stack<GameObject> gameObjectsEnMesaDelJugador = mesa.obtenerGameObjectsDelJugador(idJugadorGanador);
+        Stack<Carta> cartasEnMesaDelJugador = mesa.obtenerCartasDelJugador(idJugadorGanador);
+        RuntimeAnimatorController[] contrAnimacionesGanador = obtenerContrAnimacionesDelGanador(idJugadorGanador);
+        foreach (Carta carta in cartasEnMesaDelJugador)
+        {
+            GameObject gameObject = carta.img3D;
+            //Debug.Log("GameObj en mesa: " + gameObject.name);
+            Animator animator = gameObject.GetComponent<Animator>();
+            //Hacer que la animacion dependa de los enemigos
+            animator.runtimeAnimatorController = contrAnimacionesGanador[0];
+            animator.enabled = true;
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+    public RuntimeAnimatorController[] obtenerContrAnimacionesDelGanador(int idJugadorGanador)
+    {
+        switch (idJugadorGanador)
+        {
+            case 0:
+                return contrAnimac0HaciaMazos;
+            /*case 1:
+                return contrAnimac1HaciaMazos;
+            case 2:
+                return contrAnimac2HaciaMazos;
+            case 3:
+                return contrAnimac3HaciaMazos;*/
+            default:
+                return null;
+        }
     }
 
     public static int CompareObNames(GameObject x, GameObject y) //Ordenar por nombre

@@ -8009,6 +8009,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!95 &1502224822
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1502224813}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 344d92e946d57e045abef1dedcf9ebb6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1522113331
 GameObject:
   m_ObjectHideFlags: 0
@@ -9108,12 +9126,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a204f2958819134a8ce1d98f979f03a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cartasEstaticas: []
-  contrAnimac:
+  contrAnimacDelMazo:
   - {fileID: 9100000, guid: e8839755c6e06164abceaf18db57c3b5, type: 2}
   - {fileID: 9100000, guid: ca48ca2942877f7428b1642de6ffa635, type: 2}
   - {fileID: 9100000, guid: 403a2134af605c74691766d2a9f55338, type: 2}
   - {fileID: 9100000, guid: 74f5b12d5b793b447977eaa4c3d56363, type: 2}
+  contrAnimac0HaciaMazos:
+  - {fileID: 9100000, guid: 344d92e946d57e045abef1dedcf9ebb6, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  cartasEstaticas: []
 --- !u!4 &2022951903
 Transform:
   m_ObjectHideFlags: 0
