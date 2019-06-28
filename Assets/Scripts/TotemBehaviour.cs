@@ -34,7 +34,7 @@ public class TotemBehaviour : MonoBehaviour {
 
     Vector3 PosAnterior;
 	void Update ()
-    {    
+    {
         if (bAgarrado)
         {
             //Debug.Log(iIndexViejo + " - " + iIndexApretado);
@@ -47,11 +47,11 @@ public class TotemBehaviour : MonoBehaviour {
 
             if (bAgarradoCorrecto)
             {
-
+                Debug.Log(transform.position);
                 switch (iIndexApretado)
                 {
                     case 0: //Caso del jugador, es el unico que probe asi que despues fijense xd
-                        if (PosAnterior.z - transform.position.z >= 0.2)
+                        if (/*PosAnterior.z - transform.position.z >= 0.15*/ transform.position.z <= -0.3)
                         {
                             Debug.Log("Totem robado por el jugador 1");
                             bAgarradoCorrecto = false;
