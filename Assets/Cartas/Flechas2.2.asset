@@ -14,4 +14,4 @@ MonoBehaviour:
   img3D: {fileID: 100000, guid: 347d042723e13a94fb23344e66abc41f, type: 3}
   img2D: {fileID: 21300000, guid: 94aaeaba1e794af4e8933f03b24d9f6f, type: 3}
   color: 4
-  forma: -1
+  forma: -2
