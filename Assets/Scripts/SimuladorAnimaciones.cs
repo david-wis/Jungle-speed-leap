@@ -40,6 +40,11 @@ public class SimuladorAnimaciones : MonoBehaviour
                 EventManager.TriggerEvent("agarrartotem");
                 fTimer = 0f;
             }
+            if (Input.GetKey(KeyCode.R))
+            {
+                EventManager.TriggerEvent("restablecertotem");
+                fTimer = 0f;
+            }
         }
         
     }

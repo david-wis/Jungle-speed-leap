@@ -17,7 +17,7 @@ public class Main : MonoBehaviour {
     public GameObject[] cartasEstaticas = new GameObject[4];
     GameObject[] mazos = new GameObject[4];
 
-    GameObject totem;
+    public GameObject totem;
 
     Mesa mesa = new Mesa();
 
@@ -36,13 +36,14 @@ public class Main : MonoBehaviour {
     int iIndexJugActual;
     UnityAction eventoListenerMazo0, eventoListenerMazo1, eventoListenerMazo2, eventoListenerMazo3;
     UnityAction eventoListenerTotem;
+    UnityAction eventoListenerRestablecerTotem;
 
     // Use this for initialization
     void Start() {
         /* Aca en algun momento vamos a meter un menu 
          * para hostear partidas y elegir cant de jugadores
          */
-
+        totem.transform.position += new Vector3(0, 3, 0);
         LlenarMazo();
         ReferenciarCartasEstaticas();
         ReferenciarMazos();
@@ -62,12 +63,16 @@ public class Main : MonoBehaviour {
 
         eventoListenerTotem = new UnityAction(AgarrarTotem);
 
+        eventoListenerRestablecerTotem = new UnityAction(ReiniciarTotem);
+
         EventManager.StartListening("agarrarcarta0", eventoListenerMazo0); //Evento que se produce cuando un jugador toca un mazo
         EventManager.StartListening("agarrarcarta1", eventoListenerMazo1); 
         EventManager.StartListening("agarrarcarta2", eventoListenerMazo2); 
         EventManager.StartListening("agarrarcarta3", eventoListenerMazo3);
 
         EventManager.StartListening("agarrartotem", eventoListenerTotem); //Evento que se produce cuando un jugador agarra el totem
+
+        EventManager.StartListening("restablecertotem", eventoListenerRestablecerTotem); //Evento de debug para restablecer la posicion del totem
 
         //En el futuro eligiremos el jugador inicial de manera aleatoria
         //iIndexJugActual = ObtenerRandom(4); 
@@ -141,7 +146,6 @@ public class Main : MonoBehaviour {
         Mezclar();
         for (int i = 0; i < arrayMazoTotal.Length; i++)
         {
-            //TODO: dividirlo por iCantJugadores, cuando permitamos elegir la cantidad de jugadores
             int iIndexJug = i % 4;
             jugadores[iIndexJug].AgregarCarta(arrayMazoTotal[i]);
         }
@@ -156,6 +160,12 @@ public class Main : MonoBehaviour {
             arrayMazoTotal[i] = arrayMazoTotal[iRand];
             arrayMazoTotal[iRand] = cAux;
         }
+    }
+
+    private void ReiniciarTotem()
+    {
+        TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
+        totemBehaviour.ReiniciarPosicion();
     }
 
     const float fCoolDown = 1.0f; //1 segundo
@@ -206,13 +216,15 @@ public class Main : MonoBehaviour {
     UnityAction eventoListenerTotemTraido;
     void AgarrarTotem()
     {
-        //List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
-        List<int> listaJugadoresEnemigos = new List<int>();
-        listaJugadoresEnemigos.Add(1); //SOLO PARA DEBUG
+        List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
+        //List<int> listaJugadoresEnemigos = new List<int>(); //SOLO PARA DEBUG
+        //listaJugadoresEnemigos.Add(1); //SOLO PARA DEBUG
         if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
         {
             Debug.Log("Totem agarrado, ahora es momento de llevarlo a su lugar");
-            EventManager.TriggerEvent("totemagarrado");
+            TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
+            totemBehaviour.SetAgarradoCorrecto();
+            //EventManager.TriggerEvent("totemagarrado");
             eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(listaJugadoresEnemigos); });
             EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
             //EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG

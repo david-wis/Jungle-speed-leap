@@ -9,33 +9,38 @@ public class TotemBehaviour : MonoBehaviour {
     InteractionBehaviour _intObj; //Permite obtener el isgrasped (puede servir para multiplayer)
     private bool bAgarrado; //Si algun jugador lo tiene en la mano
     private string[] sManos = new string[4];
-    private static int iIndexApretado = -1;
+    private static int iIndexApretado = -2;
     /* 0-4 -> id del jugador / -1 -> no lo tiene nadie / -2 -> init 
      * Evitar que la funcion agarrar totem se llame cada frame que el jugador tenga el totem
      */
-    private int iIndexViejo = -2;
+    private int iIndexViejo = -1;
     private bool bAgarradoCorrecto = false;
-    UnityAction eventoListenerAgarrado;
+    public Vector3 posicionInicial;
+    public Quaternion rotacionInicial;
+    //UnityAction eventoListenerAgarrado;
 
     // Use this for initialization
     void Start () {
         _intObj = GetComponent<InteractionBehaviour>();
-        //bAgarrado = false;
-        bAgarrado = true;
+        posicionInicial = transform.position;
+        rotacionInicial = transform.rotation;
+        bAgarrado = false;
+        //bAgarrado = true;
         GameObject[] manos = GameObject.FindGameObjectsWithTag("Jugador");
         Array.Sort(manos, Main.CompareObNames);
         for (int i = 0; i < 4; i++)
         {
             sManos[i] = manos[i].name;
         }
-        eventoListenerAgarrado = new UnityAction(SetAgarradoCorrecto);
-        EventManager.StartListening("totemagarrado", eventoListenerAgarrado);
+        //eventoListenerAgarrado = new UnityAction(SetAgarradoCorrecto);
+        //EventManager.StartListening("totemagarrado", eventoListenerAgarrado);
     }
 
 
     Vector3 PosAnterior;
-	void Update ()
+    void Update()
     {
+        //Debug.Log(transform.position);
         if (bAgarrado)
         {
             //Debug.Log(iIndexViejo + " - " + iIndexApretado);
@@ -87,10 +92,27 @@ public class TotemBehaviour : MonoBehaviour {
         }
 	}
 
-    void SetAgarradoCorrecto()
+    public void SetAgarradoCorrecto()
     {
         bAgarradoCorrecto = true;
         PosAnterior = transform.position;
+    }
+
+    public void ReiniciarPosicion()
+    {
+        transform.rotation = rotacionInicial;
+        transform.position = posicionInicial;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.name == "floor") //dato: tuve que meterle un box collider xq no funciona con el mesh
+        {
+            ReiniciarPosicion();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
