@@ -111,6 +111,10 @@ public class Main : MonoBehaviour {
     void ReferenciarCartasEstaticas()
     {
         cartasEstaticas = GameObject.FindGameObjectsWithTag("CartasEstaticas");
+        for (int i = 0; i < 4; i++)
+        {
+            cartasEstaticas[i].transform.parent.gameObject.SetActive(false);
+        }
         Array.Sort(cartasEstaticas, CompareObNames);
     }
 
@@ -170,6 +174,7 @@ public class Main : MonoBehaviour {
                 {
                     mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
                     AnimarCarta(cartaActual); //Crea la carta y la anima
+                    cartasEstaticas[iIndexJugActual].transform.parent.gameObject.SetActive(true);
                     Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
                     var color = imagen.color;
                     color.a = 1;
