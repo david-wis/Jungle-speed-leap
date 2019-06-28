@@ -4,15 +4,15 @@ using UnityEngine;
 class Mesa
 {
     Stack<Carta>[] cartasEnJuego = new Stack<Carta>[4];
-    //Stack<GameObject>[] gameObjectsEnJuego = new Stack<GameObject>[4];
-    int iTopeCartas = 0/*, iTopeGameObjects = 0*/;
+    Stack<GameObject>[] gameObjectsEnJuego = new Stack<GameObject>[4];
+    int iTopeCartas = 0, iTopeGameObjects = 0;
 
     public Mesa()
     {
         for (int i = 0; i < 4; i++)
         {
             cartasEnJuego[i] = new Stack<Carta>();
-            //gameObjectsEnJuego[i] = new Stack<GameObject>();
+            gameObjectsEnJuego[i] = new Stack<GameObject>();
         }
     }
 
@@ -22,11 +22,11 @@ class Mesa
         iTopeCartas = (iTopeCartas < 3) ? iTopeCartas + 1 : 0;
     }
 
-    /*public void AgregarGameObject(GameObject gameObject)
+    public void AgregarGameObject(GameObject gameObject)
     {
         gameObjectsEnJuego[iTopeGameObjects].Push(gameObject);
         iTopeGameObjects = (iTopeGameObjects < 3) ? iTopeGameObjects + 1 : 0;
-    }*/
+    }
 
     //Metodo deprecado para verificar igualdad entre cartas
     /*public bool VerificarIgualdadConResto(int iIndexJugador)
@@ -70,10 +70,12 @@ class Mesa
         return listaCoincidencias;
     }
 
-    /*public Stack<GameObject> obtenerGameObjectsDelJugador(int idJugador)
+    public GameObject[] obtenerGameObjectsDelJugador(int idJugador)
     {
-        return gameObjectsEnJuego[idJugador];
-    }*/
+        GameObject[] gameObjects = gameObjectsEnJuego[idJugador].ToArray();
+        return gameObjects;
+                
+    }
 
     public Stack<Carta> obtenerCartasDelJugador(int idJugador)
     {

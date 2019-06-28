@@ -206,7 +206,8 @@ public class Main : MonoBehaviour {
     UnityAction eventoListenerTotemTraido;
     void AgarrarTotem()
     {
-        List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
+        //List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
+        List<int> listaJugadoresEnemigos = new List<int>();
         listaJugadoresEnemigos.Add(1); //SOLO PARA DEBUG
         if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
         {
@@ -269,7 +270,7 @@ public class Main : MonoBehaviour {
         Animator elAnimador = cartaCreada.AddComponent<Animator>();
         elAnimador.runtimeAnimatorController = contrAnimacDelMazo[iIndexJugActual];
         seEstaAnimandoDesdeMazo = true;
-        //mesa.AgregarGameObject(cartaCreada);
+        mesa.AgregarGameObject(cartaCreada);
     }
 
     public void finAnimacion()
@@ -288,21 +289,19 @@ public class Main : MonoBehaviour {
     {
         /* Recibe el ID del ganador y los IDs de los perdedores, y manda las cartas del ganador 
          * a los mazos de los perdedores */
-        Debug.Log("En llevarCartasAOtroMazo()");
-        //idJugadorGanador = 0; //SOLO PARA DEBUG
-
-        //Stack<GameObject> gameObjectsEnMesaDelJugador = mesa.obtenerGameObjectsDelJugador(idJugadorGanador);
-        Stack<Carta> cartasEnMesaDelJugador = mesa.obtenerCartasDelJugador(idJugadorGanador);
+        
+        GameObject[] gameObjectsEnMesaDelJugador = mesa.obtenerGameObjectsDelJugador(idJugadorGanador);
+        //Stack<Carta> cartasEnMesaDelJugador = mesa.obtenerCartasDelJugador(idJugadorGanador);
         RuntimeAnimatorController[] contrAnimacionesGanador = obtenerContrAnimacionesDelGanador(idJugadorGanador);
-        foreach (Carta carta in cartasEnMesaDelJugador)
+        for (int i = gameObjectsEnMesaDelJugador.Length - 1; i >= 0; i--)
         {
-            GameObject gameObject = carta.img3D;
+            yield return new WaitForSeconds(0.05f);
+            GameObject gameObject = gameObjectsEnMesaDelJugador[i];
             //Debug.Log("GameObj en mesa: " + gameObject.name);
             Animator animator = gameObject.GetComponent<Animator>();
             //Hacer que la animacion dependa de los enemigos
             animator.runtimeAnimatorController = contrAnimacionesGanador[0];
             animator.enabled = true;
-            yield return new WaitForSeconds(0.3f);
         }
     }
 
