@@ -6,11 +6,11 @@ class Mesa
     Stack<Carta>[] cartasEnJuego = new Stack<Carta>[4];
     Stack<GameObject>[] gameObjectsEnJuego = new Stack<GameObject>[4];
     int iTopeCartas = 0, iTopeGameObjects = 0;
-    ModoJuego modo;
+    private ModoJuego _modo;
 
     public Mesa()
     {
-        modo = ModoJuego.Normal;
+        _modo = ModoJuego.Normal;
         for (int i = 0; i < 4; i++)
         {
             cartasEnJuego[i] = new Stack<Carta>();
@@ -18,35 +18,57 @@ class Mesa
         }
     }
 
-    
-    
-    public void AgregarCarta(Carta c)
+    public ModoJuego Modo
     {
-        cartasEnJuego[iTopeCartas].Push(c);
-        VerificarModoColor(c);
-        iTopeCartas = (iTopeCartas < 3) ? iTopeCartas + 1 : 0;
+        get
+        {
+            return _modo;
+        }
     }
 
-    int iIndexJugadorColor = -1;
-    private void VerificarModoColor(Carta c)
+    public void NormalizarModo()
     {
-        if (modo == ModoJuego.Colores)
+        Debug.Log("Modo normalizado exitosamente");
+        _modo = ModoJuego.Normal;
+    }
+
+    public ModoJuego AgregarCarta(Carta c)
+    {
+        cartasEnJuego[iTopeCartas].Push(c);
+        VerificarFinModoColor(); //Se fija (si existe) si terminó la ronda de color
+        VerificarEspecial(c); //Si la carta es especial cambia el modo de juego
+        iTopeCartas = (iTopeCartas < 3) ? iTopeCartas + 1 : 0;
+        return _modo;
+    }
+    
+    private void VerificarFinModoColor()
+    {
+        if (_modo == ModoJuego.Colores)
         {
-            if (iTopeCartas == iIndexJugadorColor)
+            bool bColorActivado = false;
+            int i = 0;
+            while (!bColorActivado && i < 4)
             {
-                //Volvemos al modo normal y ya no hay ningun jugador que haya empezado el tema del color
-                modo = ModoJuego.Normal;
-                iIndexJugadorColor = -1;
+                Carta c = cartasEnJuego[i].Peek();
+                if (c.color == Carta.Color.Especial && c.forma == -1)
+                {
+                    bColorActivado = true;
+                }
+                i++;
+            }
+            if (!bColorActivado)
+            {
+                _modo = ModoJuego.Normal;
             }
         }
+    }
 
+    private void VerificarEspecial(Carta c)
+    {
         if (c.color == Carta.Color.Especial)
         {
-            modo = (ModoJuego) c.forma;
-            if (modo == ModoJuego.Colores)
-            {
-                iIndexJugadorColor = iTopeCartas; //Si se cambia a modo color es necesario saber que jugador lo comenzo
-            }
+            _modo = (ModoJuego)c.forma;
+            Debug.Log("Nos hemos encontrado con una carta especial de tipo " + _modo);
         }
     }
 
@@ -78,11 +100,11 @@ class Mesa
         return bEsCorrecto;
     }*/
 
-    //Este metodo se tiene que llamar cada vez que alguien agarre el totem 
+    //Devuelve los jugadores enemigos en un duelo
     public List<int> VerificarIgualdadConResto(int iIndexJugador)
     {
         List<int> listaCoincidencias = new List<int>();
-        switch (modo)
+        switch (_modo)
         {
             case ModoJuego.Normal: //Modo normal
                 if (cartasEnJuego[iIndexJugador].Count != 0)
@@ -115,7 +137,6 @@ class Mesa
                         }
                     }
                 }
-                modo = ModoJuego.Normal; //Se termino el efecto de color
                 break;
             default:
                 Debug.Log("Esto no deberia pasar nunca :v");
@@ -137,7 +158,7 @@ class Mesa
     }
 }
 
-enum ModoJuego
+public enum ModoJuego
 {
     Normal = 0,
     Colores = -1,

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class TotemBehaviour : MonoBehaviour {
-    InteractionBehaviour _intObj; //Permite obtener el isgrasped (puede servir para multiplayer)
+    //InteractionBehaviour _intObj; //Permite obtener el isgrasped (puede servir para multiplayer)
     private bool bAgarrado; //Si algun jugador lo tiene en la mano
     private string[] sManos = new string[4];
     private static int iIndexApretado = -2;
@@ -17,11 +17,10 @@ public class TotemBehaviour : MonoBehaviour {
     private bool bAgarradoCorrecto = false;
     public Vector3 posicionInicial;
     public Quaternion rotacionInicial;
-    //UnityAction eventoListenerAgarrado;
 
     // Use this for initialization
     void Start () {
-        _intObj = GetComponent<InteractionBehaviour>();
+        //_intObj = GetComponent<InteractionBehaviour>();
         posicionInicial = transform.position;
         rotacionInicial = transform.rotation;
         bAgarrado = false;
@@ -32,8 +31,6 @@ public class TotemBehaviour : MonoBehaviour {
         {
             sManos[i] = manos[i].name;
         }
-        //eventoListenerAgarrado = new UnityAction(SetAgarradoCorrecto);
-        //EventManager.StartListening("totemagarrado", eventoListenerAgarrado);
     }
 
 

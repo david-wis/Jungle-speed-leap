@@ -8,14 +8,14 @@ using System;
 
 public class Main : MonoBehaviour {
     //public const int CANTCARTAS = 8; //SOLO PARA DEBUG - SAIDMAN
-    public const int CANTCARTAS = 72; //Por ahora las cartas especiales no estan metidas
+    public const int CANTCARTAS = 74; //Flechas para adentro y afuera por ahora no van a ser cartas
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
     public RuntimeAnimatorController[] contrAnimac0HaciaMazos = new RuntimeAnimatorController[3];
     public RuntimeAnimatorController[] contrAnimac1HaciaMazos = new RuntimeAnimatorController[3];
     public RuntimeAnimatorController[] contrAnimac2HaciaMazos = new RuntimeAnimatorController[3];
     public RuntimeAnimatorController[] contrAnimac3HaciaMazos = new RuntimeAnimatorController[3];
-    public RuntimeAnimatorController[,] matrizContrAnimacHaciaMazos = new RuntimeAnimatorController[4,3];
+    public RuntimeAnimatorController[,] matrizContrAnimacHaciaMazos = new RuntimeAnimatorController[4, 3];
 
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
     Jugador[] jugadores = new Jugador[CANTJUGADORES];
@@ -42,6 +42,7 @@ public class Main : MonoBehaviour {
     UnityAction eventoListenerMazo0, eventoListenerMazo1, eventoListenerMazo2, eventoListenerMazo3;
     UnityAction eventoListenerTotem;
     UnityAction eventoListenerRestablecerTotem;
+    //UnityAction eventoFlechasAfuera;
 
     // Use this for initialization
     void Start() {
@@ -71,14 +72,23 @@ public class Main : MonoBehaviour {
 
         eventoListenerRestablecerTotem = new UnityAction(ReiniciarTotem);
 
+        /*eventoFlechasAfuera = new UnityAction(delegate() {
+            bPause = true;
+            StartCoroutine(LevantarCartasModoFlechaFuera());
+        });*/
+
         EventManager.StartListening("agarrarcarta0", eventoListenerMazo0); //Evento que se produce cuando un jugador toca un mazo
-        EventManager.StartListening("agarrarcarta1", eventoListenerMazo1); 
-        EventManager.StartListening("agarrarcarta2", eventoListenerMazo2); 
+        EventManager.StartListening("agarrarcarta1", eventoListenerMazo1);
+        EventManager.StartListening("agarrarcarta2", eventoListenerMazo2);
         EventManager.StartListening("agarrarcarta3", eventoListenerMazo3);
 
         EventManager.StartListening("agarrartotem", eventoListenerTotem); //Evento que se produce cuando un jugador agarra el totem
 
         EventManager.StartListening("restablecertotem", eventoListenerRestablecerTotem); //Evento de debug para restablecer la posicion del totem
+
+        //EventManager.StartListening("flechasfuera", eventoFlechasAfuera); //Evento salio una carta de flechas para afuera
+
+
 
         //En el futuro eligiremos el jugador inicial de manera aleatoria
         //iIndexJugActual = ObtenerRandom(4); 
@@ -88,11 +98,12 @@ public class Main : MonoBehaviour {
     float fTimer = 0.0f; //Bereishit
     bool bCartaEsperando = false;
     float fLastTime = -2.0f; //Ultima vez que se tocó el mazo
+    bool bPause = false; //Permite pausar el mundo
     // Update is called once per frame
     void Update()
     {
         fTimer += Time.deltaTime;
-        if (iIndexJugActual != 0)
+        if (iIndexJugActual != 0 && !bPause)
         {
             if (!bCartaEsperando)
             {
@@ -195,15 +206,19 @@ public class Main : MonoBehaviour {
         PonerCarta(iIndex);
     }
 
-    void PonerCarta(int iIndexMazo)
+
+    void PonerCarta(int iIndexMazo, bool bFlechaAfuera = false)
     {
-        if (iIndexJugActual == iIndexMazo) {
-            if (fTimer - fLastTime >= fCoolDown) { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
+        if ((bFlechaAfuera && bPause) || (!bFlechaAfuera && !bPause)) //Creo que se puede optimizar
+        {
+            if (iIndexJugActual == iIndexMazo)
+            {
+                //if (fTimer - fLastTime >= fCoolDown) { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
                 Carta cartaActual = jugadores[iIndexJugActual].ObtenerSiguienteCarta();
                 //Carta cartaActual = agarrarCartaVioleta0();
                 if (cartaActual != null)
                 {
-                    mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
+                    ModoJuego modo = mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
                     Crear_AnimarCarta(cartaActual); //Crea la carta y la anima
                     cartasEstaticas[iIndexJugActual].transform.parent.gameObject.SetActive(true);
                     Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
@@ -219,52 +234,82 @@ public class Main : MonoBehaviour {
                     }
                     iIndexJugActual = (iIndexJugActual < 3) ? iIndexJugActual + 1 : 0;
                     bCartaEsperando = false;
+                    if (modo == ModoJuego.Fuera)
+                    {
+                        bPause = true;
+                        StartCoroutine(LevantarCartasModoFlechaFuera());
+                    }
                 }
+                //}
             }
         }
     }
 
-    /*
-     *  Hasta que hagamos el multiplayer, iJugadorTotem va a ser una variable
-     *  que se va a modificar siempre por alguna funcion del mismo main.
-     *  Si armamos el multiplayer, vamos a tener que pasarle un parametro a AgarrarTotem
-     *  que indique que jugador realizo el grasp, ya que no va a ser tan facil 
-     *  predecirlo como en este caso, en el que o bien decidimos nosotros que bot 
-     *  agarra el totem, o por defecto lo hace el único jugador.
-     */
+    IEnumerator LevantarCartasModoFlechaFuera()
+    {
+        yield return new WaitForSeconds(3f);
+        mesa.NormalizarModo();
+        Debug.Log("Flechas para afuera");
+        int iIndexAux = iIndexJugActual;
+        iIndexJugActual = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            PonerCarta(i, true);
+        }
+        iIndexJugActual = iIndexAux;
+        bPause = false; //El flujo del tiempo retoma su curso :v
+    }
+
     int iJugadorTotem = 0; //Jugador que agarro el totem
     UnityAction eventoListenerTotemTraido;
     void AgarrarTotem()
     {
-        List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
-        if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
+        if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
-            Debug.Log("Totem agarrado, ahora es momento de llevarlo a su lugar");
             TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
             totemBehaviour.SetAgarradoCorrecto();
-            //EventManager.TriggerEvent("totemagarrado");
-            eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(listaJugadoresEnemigos); });
+            eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(true); });
             EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
-            //EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG
+        }
+        else
+        {
+            List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
+            if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
+            {
+                Debug.Log("Totem agarrado, ahora es momento de llevarlo a su lugar");
+                TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
+                totemBehaviour.SetAgarradoCorrecto();
+                eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(false, listaJugadoresEnemigos); });
+                EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
+                //EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG
+            }
+            else
+            {
+                Debug.Log("wtf, sacame la manito bro");
+            }
+        }
+    }
+
+    void DarCartas(bool bAlCentro, List<int> jugadoresEnemigos=null)
+    {
+        if (!bAlCentro) { //Cartas para todos
+            //TODO: se les meten las cartas a los demas
+            string ids = "";
+            for (int i = 0; i < jugadoresEnemigos.Count; i++)
+            {
+                ids += ", Jugador " + (jugadoresEnemigos[i] + 1);
+            }
+            Debug.Log("Chupate esta! " + ids.Substring(2));
+            StartCoroutine(llevarCartasAOtroMazo(iJugadorTotem, jugadoresEnemigos));
         } else
         {
-            Debug.Log("wtf, sacame la manito bro");
+            //TODO: cartas de iIndexJugador para el mazo
         }
+        mesa.NormalizarModo(); //Sea lo que sea siempre que se le den cartas a alguien el modo queda en normal
     }
 
-    void DarCartas(List<int> jugadoresEnemigos)
-    {
-        //TODO: se les meten las cartas a los demas
-        string ids = "";
-        for (int i = 0; i < jugadoresEnemigos.Count; i++)
-        {
-            ids += ", Jugador " + (jugadoresEnemigos[i] + 1);
-        }
-        Debug.Log("Chupate esta! " + ids.Substring(2));
-        StartCoroutine(llevarCartasAOtroMazo(iJugadorTotem, jugadoresEnemigos));
-    }
 
-    private Carta agarrarCartaVioleta0()
+    /*private Carta agarrarCartaVioleta0()
     {
         string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
         bool bEncontrado = false;
@@ -285,7 +330,7 @@ public class Main : MonoBehaviour {
             }
         }
         return cartaViol0;
-    }
+    }*/
 
     private int ObtenerRandom(int iMax)
     {

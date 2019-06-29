@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HandCollision : MonoBehaviour {
     SkinnedMeshRenderer meshRenderer;
-    MeshCollider collider;
+    new MeshCollider collider;
     // Use this for initialization
     void Start () {
         meshRenderer = GetComponent<SkinnedMeshRenderer>();
