@@ -1,0 +1,18 @@
+POSICION DEL MAZO 1 (DEVOLVERLO ACA): 
+0.276, -0.42, -0.698
+0, 110, 0
+
+Posicion y rotacion final de carta 0: 
+-0.0055, 1.75, -0.4736
+84.537, 5, 180
+
+Posicion y rotacion de carta 0 despues de animacion: 
+-0.0048, 1.5875, -0.4661
+90, 1.5875, -0.4653
+
+Posicion y rotacion mazo 1: 
+-0.045, -0.42, -0.548
+
+Posicion y rotacion final de la carta 0: 
+0.21, 1.48, -0.075
+-90, 7.07, 174.983
