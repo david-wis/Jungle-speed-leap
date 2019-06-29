@@ -61,7 +61,7 @@ public class TotemBehaviour : MonoBehaviour {
                         {
                             Debug.Log("Totem robado por el jugador 1");
                             bAgarradoCorrecto = false;
-                            EventManager.TriggerEvent("totemtraido");
+                            EventManager.TriggerEvent("totemtraido");                            
                         }
                         break;
                     case 1:

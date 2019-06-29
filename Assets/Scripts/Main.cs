@@ -7,6 +7,7 @@ using UnityEditor;
 using System;
 
 public class Main : MonoBehaviour {
+    //public const int CANTCARTAS = 8; //SOLO PARA DEBUG - SAIDMAN
     public const int CANTCARTAS = 72; //Por ahora las cartas especiales no estan metidas
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
@@ -184,7 +185,7 @@ public class Main : MonoBehaviour {
                 if (cartaActual != null)
                 {
                     mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
-                    AnimarCarta(cartaActual); //Crea la carta y la anima
+                    Crear_AnimarCarta(cartaActual); //Crea la carta y la anima
                     cartasEstaticas[iIndexJugActual].transform.parent.gameObject.SetActive(true);
                     Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
                     var color = imagen.color;
@@ -274,15 +275,33 @@ public class Main : MonoBehaviour {
         return UnityEngine.Random.Range(0, iMax);
     }
 
-    public void AnimarCarta(Carta cartaActual)
+    public void Crear_AnimarCarta(Carta cartaActual)
     {
-        cartaCreada = Instantiate(cartaActual.img3D, 
-                            posicCartasDelMazo[iIndexJugActual], 
-                            Quaternion.Euler(rotacCartasDelMazo[iIndexJugActual]));
-        Animator elAnimador = cartaCreada.AddComponent<Animator>();
-        elAnimador.runtimeAnimatorController = contrAnimacDelMazo[iIndexJugActual];
+        cartaCreada = crearCarta(cartaActual);
+        animarCarta(cartaCreada, contrAnimacDelMazo[iIndexJugActual]);
         seEstaAnimandoDesdeMazo = true;
         mesa.AgregarGameObject(cartaCreada);
+    }
+
+    public GameObject crearCarta(Carta carta)
+    {
+        GameObject gameObject = Instantiate(carta.img3D,
+                                posicCartasDelMazo[iIndexJugActual],
+                                Quaternion.Euler(rotacCartasDelMazo[iIndexJugActual]));
+        return gameObject;
+    }
+
+    public void animarCarta(GameObject gameObject, RuntimeAnimatorController controller)
+    {
+        /* Agarro el animador del gameObject, o lo creo si no tiene
+         * Le pongo el controller de animacion y lo activo */
+        Animator animator = gameObject.GetComponent<Animator>();
+        if (animator == null)
+        {
+            animator = gameObject.AddComponent<Animator>();
+        }
+        animator.runtimeAnimatorController = controller;
+        animator.enabled = true;        
     }
 
     public void finAnimacion()
@@ -310,11 +329,16 @@ public class Main : MonoBehaviour {
             yield return new WaitForSeconds(0.05f);
             GameObject gameObject = gameObjectsEnMesaDelJugador[i];
             //Debug.Log("GameObj en mesa: " + gameObject.name);
-            Animator animator = gameObject.GetComponent<Animator>();
-            //Hacer que la animacion dependa de los enemigos
-            animator.runtimeAnimatorController = contrAnimacionesGanador[0];
-            animator.enabled = true;
+            sacarCuerpo(gameObject); //Para que en la animacion no se choque con el totem
+            animarCarta(gameObject, contrAnimacionesGanador[2]);
+            //Hacer que la animacion dependa de los enemigos            
         }
+    }
+
+    public void sacarCuerpo(GameObject gameObject)
+    {
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+        gameObject.GetComponent<BoxCollider>().enabled = false;
     }
 
     public RuntimeAnimatorController[] obtenerContrAnimacionesDelGanador(int idJugadorGanador)

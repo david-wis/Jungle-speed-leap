@@ -13,7 +13,7 @@ public class SimuladorAnimaciones : MonoBehaviour
     void Update()
     {
         fTimer += Time.deltaTime;
-        if (fTimer >= 1f)
+        if (fTimer >= 1f) //Para que cada apretada sea con 1s de diferencia minimo
         {
             if (Input.GetKey(KeyCode.Alpha1))
             {

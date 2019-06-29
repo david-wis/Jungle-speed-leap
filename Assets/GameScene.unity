@@ -9056,8 +9056,8 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 74f5b12d5b793b447977eaa4c3d56363, type: 2}
   contrAnimac0HaciaMazos:
   - {fileID: 9100000, guid: 344d92e946d57e045abef1dedcf9ebb6, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 9100000, guid: 1f59e1fd570a6bf47b5e64580b0321ed, type: 2}
+  - {fileID: 9100000, guid: 8af691048f8a3304585a4ba882453e8a, type: 2}
   cartasEstaticas: []
   totem: {fileID: 759419768}
 --- !u!4 &2022951903
