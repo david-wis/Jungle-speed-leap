@@ -12,6 +12,10 @@ public class Main : MonoBehaviour {
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
     public RuntimeAnimatorController[] contrAnimac0HaciaMazos = new RuntimeAnimatorController[3];
+    public RuntimeAnimatorController[] contrAnimac1HaciaMazos = new RuntimeAnimatorController[3];
+    public RuntimeAnimatorController[] contrAnimac2HaciaMazos = new RuntimeAnimatorController[3];
+    public RuntimeAnimatorController[] contrAnimac3HaciaMazos = new RuntimeAnimatorController[3];
+    public RuntimeAnimatorController[,] matrizContrAnimacHaciaMazos = new RuntimeAnimatorController[4,3];
 
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
     Jugador[] jugadores = new Jugador[CANTJUGADORES];
@@ -49,6 +53,7 @@ public class Main : MonoBehaviour {
         ReferenciarCartasEstaticas();
         ReferenciarMazos();
         CrearJugadores();
+        LlenarMatrizAnimaciones();
 
         //Se reparten las cartas entre los jugadores
         RepartirMazo();
@@ -142,6 +147,20 @@ public class Main : MonoBehaviour {
         }
     }
 
+    public void LlenarMatrizAnimaciones()
+    {
+        RuntimeAnimatorController[] contrAnimac;
+        for (int iJugador = 0; iJugador < 4; iJugador++)
+        {
+            contrAnimac = GetType().GetField("contrAnimac" + iJugador + "HaciaMazos").GetValue(this) as RuntimeAnimatorController[];
+            for (int iAnimacion = 0; iAnimacion < 3; iAnimacion++)
+            {
+                matrizContrAnimacHaciaMazos[iJugador, iAnimacion] = contrAnimac[iAnimacion];
+                //Debug.Log(contrAnimac[iAnimacion].name);
+            }
+        }
+    }
+
     private void RepartirMazo(int iCantJugadores = 4)
     {
         Mezclar();
@@ -218,8 +237,6 @@ public class Main : MonoBehaviour {
     void AgarrarTotem()
     {
         List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
-        //List<int> listaJugadoresEnemigos = new List<int>(); //SOLO PARA DEBUG
-        //listaJugadoresEnemigos.Add(1); //SOLO PARA DEBUG
         if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
         {
             Debug.Log("Totem agarrado, ahora es momento de llevarlo a su lugar");
@@ -322,16 +339,21 @@ public class Main : MonoBehaviour {
          * a los mazos de los perdedores */
         
         GameObject[] gameObjectsEnMesaDelJugador = mesa.obtenerGameObjectsDelJugador(idJugadorGanador);
-        //Stack<Carta> cartasEnMesaDelJugador = mesa.obtenerCartasDelJugador(idJugadorGanador);
-        RuntimeAnimatorController[] contrAnimacionesGanador = obtenerContrAnimacionesDelGanador(idJugadorGanador);
-        for (int i = gameObjectsEnMesaDelJugador.Length - 1; i >= 0; i--)
+        List<RuntimeAnimatorController> contrParaUsar = obtenerContrAnimacHaciaMazos(idJugadorGanador, jugadoresEnemigos);
+        
+        int iCantEnemigos = jugadoresEnemigos.Count, 
+            iCantCartas = gameObjectsEnMesaDelJugador.Length,
+            iPosiEnemigos = 0; //Reparto las cartas entre los enemigos de la lista jugadoresEnemigos
+        GameObject gameObject;
+        
+        for (int i = 0; i < iCantCartas; i++)
         {
+            /* Cada GameObject se lo reparto a otro enemigo */
             yield return new WaitForSeconds(0.05f);
-            GameObject gameObject = gameObjectsEnMesaDelJugador[i];
-            //Debug.Log("GameObj en mesa: " + gameObject.name);
-            sacarCuerpo(gameObject); //Para que en la animacion no se choque con el totem
-            animarCarta(gameObject, contrAnimacionesGanador[2]);
-            //Hacer que la animacion dependa de los enemigos            
+            gameObject = gameObjectsEnMesaDelJugador[i];
+            sacarCuerpo(gameObject);
+            animarCarta(gameObject, contrParaUsar[iPosiEnemigos]);
+            iPosiEnemigos = (iPosiEnemigos == iCantEnemigos - 1) ? 0 : iPosiEnemigos + 1;
         }
     }
 
@@ -341,21 +363,22 @@ public class Main : MonoBehaviour {
         gameObject.GetComponent<BoxCollider>().enabled = false;
     }
 
-    public RuntimeAnimatorController[] obtenerContrAnimacionesDelGanador(int idJugadorGanador)
+    public List<RuntimeAnimatorController> obtenerContrAnimacHaciaMazos(int idJugadorGanador, List<int> jugadoresEnemigos)
     {
-        switch (idJugadorGanador)
+        List<RuntimeAnimatorController> contrsParaUsar = new List<RuntimeAnimatorController>();
+        int iCantEnemigos = jugadoresEnemigos.Count;
+        for (int i = 0; i < iCantEnemigos; i++)
         {
-            case 0:
-                return contrAnimac0HaciaMazos;
-            /*case 1:
-                return contrAnimac1HaciaMazos;
-            case 2:
-                return contrAnimac2HaciaMazos;
-            case 3:
-                return contrAnimac3HaciaMazos;*/
-            default:
-                return null;
+            if (jugadoresEnemigos[i] < idJugadorGanador)
+            {
+                contrsParaUsar.Add(matrizContrAnimacHaciaMazos[idJugadorGanador, jugadoresEnemigos[i]]);
+            }
+            else
+            {
+                contrsParaUsar.Add(matrizContrAnimacHaciaMazos[idJugadorGanador, jugadoresEnemigos[i] - 1]);
+            }
         }
+        return contrsParaUsar;
     }
 
     public static int CompareObNames(GameObject x, GameObject y) //Ordenar por nombre

@@ -9058,6 +9058,18 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 344d92e946d57e045abef1dedcf9ebb6, type: 2}
   - {fileID: 9100000, guid: 1f59e1fd570a6bf47b5e64580b0321ed, type: 2}
   - {fileID: 9100000, guid: 8af691048f8a3304585a4ba882453e8a, type: 2}
+  contrAnimac1HaciaMazos:
+  - {fileID: 9100000, guid: 6b3f7ccddabbbf1439a76bcb608f8194, type: 2}
+  - {fileID: 9100000, guid: d9cc1cdd1845c9e45b0189e82c07af3d, type: 2}
+  - {fileID: 9100000, guid: e8a7bb1ecea03ff4bb80f25d0bd54ae5, type: 2}
+  contrAnimac2HaciaMazos:
+  - {fileID: 9100000, guid: c668abb44a4aeed478d0aa98c5d35cff, type: 2}
+  - {fileID: 9100000, guid: c22487d409063c440a1c0a4621bf6974, type: 2}
+  - {fileID: 9100000, guid: 2296ae6b1b5bfb049b6f61a61558e341, type: 2}
+  contrAnimac3HaciaMazos:
+  - {fileID: 9100000, guid: ac91e896f54fe2541a310d4f7349e472, type: 2}
+  - {fileID: 9100000, guid: c86ecc52cabead546b876d84c896eca9, type: 2}
+  - {fileID: 9100000, guid: a3435fc3a0effb64898527b570c95ee1, type: 2}
   cartasEstaticas: []
   totem: {fileID: 759419768}
 --- !u!4 &2022951903
