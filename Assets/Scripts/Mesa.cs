@@ -32,6 +32,11 @@ class Mesa
         _modo = ModoJuego.Normal;
     }
 
+    /// <summary>
+    /// Agrega la Carta al Stack de cartas en juego del Jugador que le toca. 
+    /// Devuelve DAVID COMPLETA ACA
+    /// </summary>
+    /// <param name="c">Carta a agregar al vector de cartas en juego del Jugador actual</param>
     public ModoJuego AgregarCarta(Carta c)
     {
         cartasEnJuego[iTopeCartas].Push(c);
@@ -72,6 +77,10 @@ class Mesa
         }
     }
 
+    /// <summary>
+    /// Agrega el GameObject recibido al Stack de GameObjects en juego del jugador actual
+    /// </summary>
+    /// <param name="gameObject">El GameObject a agregar al Stack</param>
     public void AgregarGameObject(GameObject gameObject)
     {
         gameObjectsEnJuego[iTopeGameObjects].Push(gameObject);
@@ -145,12 +154,21 @@ class Mesa
         return listaCoincidencias;
     }
 
+    public GameObject[] obtener_VaciarGameObjectsDelJugador(int idJugador)
+    {
+        GameObject[] gameObjects = obtenerGameObjectsDelJugador(idJugador);
+        vaciarGameObjectsDelJugador(idJugador);
+        return gameObjects;
+    }
+
+    public void vaciarGameObjectsDelJugador(int idJugador)
+    {
+        gameObjectsEnJuego[idJugador].Clear();
+    }
+
     public GameObject[] obtenerGameObjectsDelJugador(int idJugador)
     {
-        GameObject[] gameObjects = gameObjectsEnJuego[idJugador].ToArray();
-        return gameObjects;
-
-                
+        return gameObjectsEnJuego[idJugador].ToArray();
     }
     
     /// <summary>
@@ -161,6 +179,23 @@ class Mesa
     public GameObject obtenerUltimoGameObjectDelJugador(int idJugador)
     {
         return gameObjectsEnJuego[idJugador].Peek();
+    }
+
+    public Carta[] obtener_VaciarCartasDelJugador(int idJugador)
+    {
+        Carta[] cartas = obtenerCartasDelJugador_Array(idJugador);
+        vaciarCartasDelJugador(idJugador);
+        return cartas;
+    }
+
+    public void vaciarCartasDelJugador(int idJugador)
+    {
+        cartasEnJuego[idJugador].Clear();
+    }
+
+    public Carta[] obtenerCartasDelJugador_Array(int idJugador)
+    {
+        return cartasEnJuego[idJugador].ToArray();
     }
 
     public Stack<Carta> obtenerCartasDelJugador(int idJugador)

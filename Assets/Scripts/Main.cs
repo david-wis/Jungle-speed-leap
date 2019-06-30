@@ -8,8 +8,8 @@ using System;
 
 public class Main : MonoBehaviour {
     //public const int CANTCARTAS = 8; //SOLO PARA DEBUG - SAIDMAN
-    public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
-    //public const int CANTCARTAS = 17;
+    //public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
+    public const int CANTCARTAS = 17;
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
     public RuntimeAnimatorController[] contrAnimac0HaciaMazos = new RuntimeAnimatorController[3];
@@ -35,8 +35,12 @@ public class Main : MonoBehaviour {
                                      new Vector3(-90f, -90f, -175f),
                                      new Vector3(-90f, -90f, 95f),
                                      new Vector3(-90f, -90f, 5f)};
-    
-    float[] vecTimersAnimac = { 0f, 0f, 0f, 0f };
+
+    List<GameObject> gameObjectsAnimandoseHaciaMazo = new List<GameObject>();
+    const float fDuracAnimacionDesdeMazo = 1.0f, fDuracAnimacionHaciaMazo = 1.3f;
+    float fTimerAnimacHaciaMazo = 0f;
+    bool bSeEstaAnimandoHaciaMazo = false;
+    float[] vecTimersAnimacDesdeMazo = { 0f, 0f, 0f, 0f };
     bool[] vecSeEstaAnimandoDesdeMazo = { false, false, false, false };
     
     int iIndexJugActual;
@@ -112,7 +116,8 @@ public class Main : MonoBehaviour {
                 bCartaEsperando = true;
             }
         }
-        verificarAnimacionesDesdeMazo(); //Si alguna carta se esta animando, cuenta para despues sacarle la animacion
+        verificarAnimacionesDesdeMazo(); //Si alguna carta se esta animando desde el mazo, cuenta para despues sacarle la animacion
+        verificarAnimacionesHaciaMazo(); //Si alguna carta se esta animando hacia el mazo, cuenta para despues destruirlo
     }
 
     /// <summary>
@@ -234,10 +239,7 @@ public class Main : MonoBehaviour {
                         imagen.color = color;
                         fLastTime = fTimer;
                         //Debug.Log("Jugador " + iIndexJugActual + " - " + cartaActual.img2D.name + " - " + imagen.name + " - " + mazos[iIndexJugActual].name);
-                        if (jugadores[iIndexJugActual].ObtenerCantCartas() == 0)
-                        {
-                            mazos[iIndexJugActual].SetActive(false);
-                        }
+                        verificarMazoVacioJugador(iIndexJugActual);
                         iIndexJugActual = (iIndexJugActual < 3) ? iIndexJugActual + 1 : 0;
                         bCartaEsperando = false;
                         if (modo == ModoJuego.Fuera)
@@ -248,6 +250,23 @@ public class Main : MonoBehaviour {
                     }
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// Si el mazo del jugador recibido ya no tiene cartas, lo desactiva. 
+    /// Si tiene cartas, lo activa
+    /// </summary>
+    /// <param name="idJugador">El jugador para fijarse su mazo</param>
+    public void verificarMazoVacioJugador(int idJugador)
+    {
+        if (jugadores[idJugador].ObtenerCantCartas() == 0)
+        {
+            mazos[idJugador].SetActive(false);
+        }
+        else
+        {
+            mazos[idJugador].SetActive(true);
         }
     }
 
@@ -354,9 +373,7 @@ public class Main : MonoBehaviour {
     /// <param name="controller">El AnimatorController con el que animar al GameObject</param>
     public void animarCarta(GameObject gameObject, RuntimeAnimatorController controller)
     {
-        /* Agarro el animador del gameObject, o lo creo si no tiene
-         * Le pongo el controller de animacion y lo activo */
-        Debug.Log("AnimandoDesdeMazo: " + gameObject.name);
+        //Debug.Log("AnimandoDesdeMazo: " + gameObject.name);
         Animator animator = gameObject.GetComponent<Animator>();
         if (animator == null)
         {
@@ -364,7 +381,7 @@ public class Main : MonoBehaviour {
         }
         animator.runtimeAnimatorController = controller;
         animator.enabled = true;
-        Debug.Log("AnimeDesdeMazo: " + gameObject.name);
+        //Debug.Log("AnimeDesdeMazo: " + gameObject.name);
     }
 
     /// <summary>
@@ -377,10 +394,10 @@ public class Main : MonoBehaviour {
         {
             if (vecSeEstaAnimandoDesdeMazo[i]) 
             {
-                vecTimersAnimac[i] += Time.deltaTime;
-                if (vecTimersAnimac[i] >= 1.0f) 
+                vecTimersAnimacDesdeMazo[i] += Time.deltaTime;
+                if (vecTimersAnimacDesdeMazo[i] >= fDuracAnimacionDesdeMazo) 
                 {
-                    finAnimacion(i);
+                    finAnimacionDesdeMazo(i);
                 }
             }
         }
@@ -390,19 +407,50 @@ public class Main : MonoBehaviour {
     /// Detiene la animacion de la carta saliendo del mazo del jugador recibido
     /// </summary>
     /// <param name="idJugador">El ID del jugador desde donde sale la carta</param>
-    public void finAnimacion(int idJugador)
+    public void finAnimacionDesdeMazo(int idJugador)
     {
         GameObject gameObjFinalizar = mesa.obtenerUltimoGameObjectDelJugador(idJugador);
-        Debug.Log("FinalizandoAnimacion: " + gameObjFinalizar.name);
+        //Debug.Log("FinalizandoAnimacion: " + gameObjFinalizar.name);
         vecSeEstaAnimandoDesdeMazo[idJugador] = false;
-        vecTimersAnimac[idJugador] = 0f;
+        vecTimersAnimacDesdeMazo[idJugador] = 0f;
         gameObjFinalizar.GetComponent<Animator>().enabled = false; //Desactivo la animacion
         BoxCollider boxCollider = gameObjFinalizar.AddComponent<BoxCollider>(); //Creo un BoxCollider para que choque con el piso y con las cartas que caen despues
         boxCollider.center = new Vector3(0, 0, 0.065f);
         boxCollider.size = new Vector3(0.115f, 0.13f, 0.005f);
         Rigidbody rigidbody = gameObjFinalizar.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
         rigidbody.drag = 10f; //Para que la caida sea mas lenta
-        Debug.Log("FinalizoAnimacion: " + gameObjFinalizar.name);
+        //Debug.Log("FinalizoAnimacion: " + gameObjFinalizar.name);
+    }
+
+    public void verificarAnimacionesHaciaMazo()
+    {
+        if (bSeEstaAnimandoHaciaMazo)
+        {
+            fTimerAnimacHaciaMazo += Time.deltaTime;
+            if (fTimerAnimacHaciaMazo >= fDuracAnimacionHaciaMazo)
+            {
+                finAnimacionHaciaMazo();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Destruyo los GameObjects que iban a sus mazos de destino, y me fijo si 
+    /// algun mazo que se habia quedado sin cartas ahora tiene (y lo hago aparecer)
+    /// </summary>
+    public void finAnimacionHaciaMazo()
+    {
+        foreach (GameObject gameObject in gameObjectsAnimandoseHaciaMazo)
+        {
+            Destroy(gameObject);
+        }
+        gameObjectsAnimandoseHaciaMazo.Clear();
+        bSeEstaAnimandoHaciaMazo = false;
+        fTimerAnimacHaciaMazo = 0f;
+        for (int i = 0; i < 4; i++)
+        {
+            verificarMazoVacioJugador(i);
+        }
     }
 
     /// <summary>
@@ -412,26 +460,41 @@ public class Main : MonoBehaviour {
     /// <param name="jugadoresEnemigos">Lista de los IDs de los jugadores perdedores</param>
     public IEnumerator llevarCartasAOtroMazo(int idJugadorGanador, List<int> jugadoresEnemigos)
     {
-        /* Recibe el ID del ganador y los IDs de los perdedores, y manda las cartas del ganador 
-         * a los mazos de los perdedores */
-        
-        GameObject[] gameObjectsEnMesaDelJugador = mesa.obtenerGameObjectsDelJugador(idJugadorGanador);
+        /* Como le voy a dar todas las cartas tiradas del ganador a los perdedores, 
+         * vacío el Stack de Cartas y de GameObjects del ganador, y se lo meto a cada perdedor
+        */
+        GameObject[] gameObjectsEnMesaDelJugador = mesa.obtener_VaciarGameObjectsDelJugador(idJugadorGanador);
+        Carta[] cartasEnMesaDelJugador = mesa.obtener_VaciarCartasDelJugador(idJugadorGanador);
         List<RuntimeAnimatorController> contrParaUsar = obtenerContrAnimacHaciaMazos(idJugadorGanador, jugadoresEnemigos);
         
         int iCantEnemigos = jugadoresEnemigos.Count, 
             iCantCartas = gameObjectsEnMesaDelJugador.Length,
             iPosiEnemigos = 0; //Reparto las cartas entre los enemigos de la lista jugadoresEnemigos
         GameObject gameObject;
-        
+
+        bSeEstaAnimandoHaciaMazo = true;
         for (int i = 0; i < iCantCartas; i++)
         {
-            /* Cada GameObject se lo reparto a otro enemigo */
             yield return new WaitForSeconds(0.05f);
             gameObject = gameObjectsEnMesaDelJugador[i];
+            gameObjectsAnimandoseHaciaMazo.Add(gameObject);
             sacarCuerpo(gameObject);
             animarCarta(gameObject, contrParaUsar[iPosiEnemigos]);
+            jugadores[jugadoresEnemigos[iPosiEnemigos]].AgregarCarta(cartasEnMesaDelJugador[i]);
             iPosiEnemigos = (iPosiEnemigos == iCantEnemigos - 1) ? 0 : iPosiEnemigos + 1;
         }
+
+        //Para ver si se le agregan las cartas al mazo despues de mandarselas
+        /*
+        Debug.Log("Cartas del jugador 0: " + jugadores[0].ObtenerCantCartas());
+        Debug.Log("Cartas del jugador 1: " + jugadores[1].ObtenerCantCartas());
+        Debug.Log("Cartas del jugador 2: " + jugadores[2].ObtenerCantCartas());
+        Debug.Log("Cartas del jugador 3: " + jugadores[3].ObtenerCantCartas());
+        Debug.Log("Cartas tiradas del jugador 0: " + mesa.obtenerCartasDelJugador_Array(0).Length);
+        Debug.Log("Cartas tiradas del jugador 1: " + mesa.obtenerCartasDelJugador_Array(1).Length);
+        Debug.Log("Cartas tiradas del jugador 2: " + mesa.obtenerCartasDelJugador_Array(2).Length);
+        Debug.Log("Cartas tiradas del jugador 3: " + mesa.obtenerCartasDelJugador_Array(3).Length);
+        */
     }
 
     /// <summary>
