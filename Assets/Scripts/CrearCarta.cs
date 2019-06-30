@@ -25,6 +25,9 @@ public class CrearCarta : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Dispara el evento "agarrarcartaX" dependiendo del mazo tocado
+    /// </summary>
     public void GenerarCarta()
     {
         EventManager.TriggerEvent("agarrarcarta" + iNroMazo);

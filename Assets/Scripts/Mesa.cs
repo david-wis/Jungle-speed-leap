@@ -153,6 +153,11 @@ class Mesa
                 
     }
     
+    /// <summary>
+    /// Devuelve el ultimo GameObject creado del jugador recibido como parametro
+    /// </summary>
+    /// <param name="idJugador">El ID del jugador que se quiere conocer su ultimo GameObject </param>
+    /// <returns>El ultimo GameObject del jugador</returns>
     public GameObject obtenerUltimoGameObjectDelJugador(int idJugador)
     {
         return gameObjectsEnJuego[idJugador].Peek();
