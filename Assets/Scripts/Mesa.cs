@@ -34,28 +34,33 @@ class Mesa
 
     /// <summary>
     /// Agrega la Carta al Stack de cartas en juego del Jugador que le toca. 
-    /// Devuelve DAVID COMPLETA ACA
+    /// Devuelve el modo de juego actual.
     /// </summary>
     /// <param name="c">Carta a agregar al vector de cartas en juego del Jugador actual</param>
     public ModoJuego AgregarCarta(Carta c)
     {
         cartasEnJuego[iTopeCartas].Push(c);
-        VerificarFinModoColor(); //Se fija (si existe) si terminó la ronda de color
+        VerificarFinModo(ModoJuego.Colores); //Se fija (si existe) si terminó la ronda de color
+        VerificarFinModo(ModoJuego.Dentro); //Se fija (si existe) si terminó la ronda de flechas para adentro
         VerificarEspecial(c); //Si la carta es especial cambia el modo de juego
         iTopeCartas = (iTopeCartas < 3) ? iTopeCartas + 1 : 0;
         return _modo;
     }
     
-    private void VerificarFinModoColor()
+    /// <summary>
+    /// Se fija si la ronda de determinado modo sigue vigente. Si no lo está, cambia a modo normal
+    /// </summary>
+    /// <param name="modo">Indica el modo que se quiere verificar</param>
+    private void VerificarFinModo(ModoJuego modo)
     {
-        if (_modo == ModoJuego.Colores)
+        if (_modo == modo)
         {
             bool bColorActivado = false;
             int i = 0;
             while (!bColorActivado && i < 4)
             {
                 Carta c = cartasEnJuego[i].Peek();
-                if (c.color == Carta.Color.Especial && c.forma == -1)
+                if (c.color == Carta.Color.Especial && c.forma == (int) modo)
                 {
                     bColorActivado = true;
                 }
@@ -68,6 +73,10 @@ class Mesa
         }
     }
 
+    /// <summary>
+    /// Cambia el modo de juego si nos encontramos con una carta especial
+    /// </summary>
+    /// <param name="c"></param>
     private void VerificarEspecial(Carta c)
     {
         if (c.color == Carta.Color.Especial)
@@ -109,7 +118,9 @@ class Mesa
         return bEsCorrecto;
     }*/
 
-    //Devuelve los jugadores enemigos en un duelo
+    /// <summary>
+    /// Devuelve los jugadores enemigos en un duelo
+    /// </summary>
     public List<int> VerificarIgualdadConResto(int iIndexJugador)
     {
         List<int> listaCoincidencias = new List<int>();
@@ -204,6 +215,9 @@ class Mesa
     }
 }
 
+/// <summary>
+/// Los 3 modos de juego especiales (flechas colores/dentro/fuera) + el modo normal
+/// </summary>
 public enum ModoJuego
 {
     Normal = 0,

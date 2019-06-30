@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class TotemBehaviour : MonoBehaviour {
-    //InteractionBehaviour _intObj; //Permite obtener el isgrasped (puede servir para multiplayer)
+    InteractionBehaviour _intObj; //Permite obtener el isgrasped (puede servir para multiplayer)
     private bool bAgarrado; //Si algun jugador lo tiene en la mano
     private string[] sManos = new string[4];
     private static int iIndexApretado = -2;
@@ -20,7 +20,7 @@ public class TotemBehaviour : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //_intObj = GetComponent<InteractionBehaviour>();
+        _intObj = GetComponent<InteractionBehaviour>();
         posicionInicial = transform.position;
         rotacionInicial = transform.rotation;
         bAgarrado = false;
@@ -89,19 +89,27 @@ public class TotemBehaviour : MonoBehaviour {
         }
 	}
 
+    /// <summary>
+    /// Establece que el totem fue agarrado con exito
+    /// </summary>
     public void SetAgarradoCorrecto()
     {
         bAgarradoCorrecto = true;
         PosAnterior = transform.position;
     }
 
+    /// <summary>
+    /// Pone el totem en su posicion original
+    /// </summary>
     public void ReiniciarPosicion()
     {
+        _intObj.enabled = false;
         transform.rotation = rotacionInicial;
         transform.position = posicionInicial;
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        _intObj.enabled = true;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -142,6 +150,10 @@ public class TotemBehaviour : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Retorna el indice de jugador actual
+    /// </summary>
+    /// <returns>Indice del jugador actual</returns>
     public static int ObtenerJugador()
     {
         return iIndexApretado;
