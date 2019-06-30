@@ -149,7 +149,13 @@ class Mesa
     {
         GameObject[] gameObjects = gameObjectsEnJuego[idJugador].ToArray();
         return gameObjects;
+
                 
+    }
+    
+    public GameObject obtenerUltimoGameObjectDelJugador(int idJugador)
+    {
+        return gameObjectsEnJuego[idJugador].Peek();
     }
 
     public Stack<Carta> obtenerCartasDelJugador(int idJugador)
