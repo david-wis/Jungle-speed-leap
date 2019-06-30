@@ -8,8 +8,8 @@ using System;
 
 public class Main : MonoBehaviour {
     //public const int CANTCARTAS = 8; //SOLO PARA DEBUG - SAIDMAN
-    //public const int CANTCARTAS = 74; //Flechas para adentro y afuera por ahora no van a ser cartas
-    public const int CANTCARTAS = 17;
+    public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
+    //public const int CANTCARTAS = 17;
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
     public RuntimeAnimatorController[] contrAnimac0HaciaMazos = new RuntimeAnimatorController[3];
@@ -215,7 +215,7 @@ public class Main : MonoBehaviour {
 
     void PonerCarta(int iIndexMazo, bool bFlechaAfuera = false)
     {
-        //REVISAR BUG CON TIMER Y BOOLS
+        //REVISAR BUG CON TIMER Y BOOLS <-- aparentemente funciona
         if (bFlechaAfuera == bPause)
         {
             if (iIndexJugActual == iIndexMazo)
