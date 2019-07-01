@@ -7,8 +7,8 @@ using UnityEditor;
 using System;
 
 public class Main : MonoBehaviour {
-    //public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
-    public const int CANTCARTAS = 17;
+    public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
+    //public const int CANTCARTAS = 17;
     //public const int CANTCARTAS = 16; //SOLO PARA DEBUG
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
@@ -301,8 +301,7 @@ public class Main : MonoBehaviour {
         bPause = false; //El flujo del tiempo retoma su curso :v
     }
 
-    //int iJugadorTotem = 0; //Jugador que agarro el totem
-    int iJugadorTotem = 1; //SOLO PARA DEBUG
+    int iJugadorTotem = 0; //Jugador que agarro el totem
 
     UnityAction eventoListenerTotemTraido;
     /// <summary>
@@ -314,6 +313,7 @@ public class Main : MonoBehaviour {
     /// </summary>
     void AgarrarTotem()
     {
+        iJugadorTotem = ObtenerJugadorAgarroTotem();
         if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
             TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
@@ -332,7 +332,7 @@ public class Main : MonoBehaviour {
                 totemBehaviour.SetAgarradoCorrecto();
                 eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(false, listaJugadoresEnemigos); });
                 EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
-                EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG
+                //EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG
             }
             else
             {
@@ -341,6 +341,12 @@ public class Main : MonoBehaviour {
                 //TODO: meterle las cartas de los otros y del totem al jugador
             }
         }
+    }
+
+    int ObtenerJugadorAgarroTotem()
+    {
+        TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
+        return totemBehaviour.ObtenerJugador();
     }
 
     void mostrarFormasJugadores()
@@ -359,18 +365,18 @@ public class Main : MonoBehaviour {
     void DarCartas(bool bAlCentro, List<int> jugadoresEnemigos = null)
     {
         if (!bAlCentro) { //Cartas para todos
-            string ids = "";
-            for (int i = 0; i < jugadoresEnemigos.Count; i++)
-            {
-                ids += ", Jugador " + (jugadoresEnemigos[i]);
-            }
+            //string ids = "";
+            //for (int i = 0; i < jugadoresEnemigos.Count; i++)
+            //{
+            //    ids += ", Jugador " + (jugadoresEnemigos[i]);
+            //}
             //Debug.Log("Perdedores: " + ids.Substring(2)); //Le saca el primer ", "
             StartCoroutine(llevarCartasAOtroMazo(iJugadorTotem, jugadoresEnemigos));
-            ReiniciarTotem();
         } else
         {
             //TODO: cartas de iIndexJugador para el mazo
         }
+        ReiniciarTotem();
         mesa.NormalizarModo(); //Sea lo que sea siempre que se le den cartas a alguien el modo queda en normal
     }
 
@@ -528,12 +534,31 @@ public class Main : MonoBehaviour {
             iPosiEnemigos = (iPosiEnemigos == iCantEnemigos - 1) ? 0 : iPosiEnemigos + 1;
         }
         //Viendo bug que reparte mal las cartas
-        String strFinDarCartas = "Termine de darle cartas a los jugadores: ";
+        /*String strFinDarCartas = "Termine de darle cartas a los jugadores: ";
         for (int i = 0; i < jugadoresEnemigos.Count; i++)
         {
             strFinDarCartas += jugadoresEnemigos[i] + " - ";
         }
-        Debug.Log(strFinDarCartas);
+        Debug.Log(strFinDarCartas);*/
+        /*
+         *                 _.._    _ 
+         *               ."\__/"./`_\
+         *             _/__<__>__\/
+         *            `"/_/""""\_\\
+         * --------------------------------------------
+         * Dear Saidman, no veo el error xd :v
+         * Disfruta de estas tortugas como compensación
+         * --------------------------------------------
+         *                    _
+         *                   / \
+         *                   ) (
+         *               _  .""". _
+         *             /` /`_\ /_`\ `\
+         *              "`|_> _ <_|`"
+         *                |_/\ /\_|
+         *                /\_-'-_/\
+         *               /_/ `)` \_\
+         */
     }
 
     /// <summary>

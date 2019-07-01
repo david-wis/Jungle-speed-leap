@@ -9,7 +9,7 @@ public class TotemBehaviour : MonoBehaviour {
     InteractionBehaviour _intObj; //Permite obtener el isgrasped (puede servir para multiplayer)
     private bool bAgarrado; //Si algun jugador lo tiene en la mano
     private string[] sManos = new string[4];
-    private static int iIndexApretado = -2;
+    private int iIndexApretado = -2;
     /* 0-4 -> id del jugador / -1 -> no lo tiene nadie / -2 -> init 
      * Evitar que la funcion agarrar totem se llame cada frame que el jugador tenga el totem
      */
@@ -54,7 +54,7 @@ public class TotemBehaviour : MonoBehaviour {
                 switch (iIndexApretado)
                 {
                     case 0: //Caso del jugador, es el unico que probe asi que despues fijense xd
-                        if (/*PosAnterior.z - transform.position.z >= 0.15*/ transform.position.z <= -0.3)
+                        if (/*PosAnterior.z - transform.position.z >= 0.15*/ transform.position.z <= -0.35)
                         {
                             Debug.Log("Totem robado por el jugador 1");
                             bAgarradoCorrecto = false;
@@ -154,7 +154,7 @@ public class TotemBehaviour : MonoBehaviour {
     /// Retorna el indice de jugador actual
     /// </summary>
     /// <returns>Indice del jugador actual</returns>
-    public static int ObtenerJugador()
+    public int ObtenerJugador()
     {
         return iIndexApretado;
     }

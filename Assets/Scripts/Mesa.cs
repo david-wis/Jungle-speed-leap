@@ -28,7 +28,7 @@ class Mesa
 
     public void NormalizarModo()
     {
-        Debug.Log("Modo normalizado exitosamente");
+        //Debug.Log("Modo normalizado exitosamente");
         _modo = ModoJuego.Normal;
     }
 
