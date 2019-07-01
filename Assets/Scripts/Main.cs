@@ -7,8 +7,9 @@ using UnityEditor;
 using System;
 
 public class Main : MonoBehaviour {
-    public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
-    //public const int CANTCARTAS = 17;
+    //public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
+    public const int CANTCARTAS = 17;
+    //public const int CANTCARTAS = 16; //SOLO PARA DEBUG
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
     public RuntimeAnimatorController[] contrAnimac0HaciaMazos = new RuntimeAnimatorController[3];
@@ -88,7 +89,6 @@ public class Main : MonoBehaviour {
         //iIndexJugActual = ObtenerRandom(4); 
         iIndexJugActual = 0;
     }
-
     float fTimer = 0.0f; //Bereishit
     bool bCartaEsperando = false;
     float fLastTime = -2.0f; //Ultima vez que se tocó el mazo
@@ -301,7 +301,9 @@ public class Main : MonoBehaviour {
         bPause = false; //El flujo del tiempo retoma su curso :v
     }
 
-    int iJugadorTotem = 0; //Jugador que agarro el totem
+    //int iJugadorTotem = 0; //Jugador que agarro el totem
+    int iJugadorTotem = 1; //SOLO PARA DEBUG
+
     UnityAction eventoListenerTotemTraido;
     /// <summary>
     ///Funcion que se ejecuta cuando se produce el evento de agarrartotem.
@@ -322,6 +324,7 @@ public class Main : MonoBehaviour {
         else
         {
             List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
+            //mostrarFormasJugadores(); //SOLO PARA DEBUG
             if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
             {
                 Debug.Log("Totem agarrado, ahora es momento de llevarlo a su lugar");
@@ -329,7 +332,7 @@ public class Main : MonoBehaviour {
                 totemBehaviour.SetAgarradoCorrecto();
                 eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(false, listaJugadoresEnemigos); });
                 EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
-                //EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG
+                EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG
             }
             else
             {
@@ -338,6 +341,14 @@ public class Main : MonoBehaviour {
                 //TODO: meterle las cartas de los otros y del totem al jugador
             }
         }
+    }
+
+    void mostrarFormasJugadores()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Debug.Log("Forma del Jugador " + i + ": " + mesa.obtenerCartasDelJugador(i).Peek().forma);
+        }        
     }
 
     /// <summary>
@@ -351,9 +362,9 @@ public class Main : MonoBehaviour {
             string ids = "";
             for (int i = 0; i < jugadoresEnemigos.Count; i++)
             {
-                ids += ", Jugador " + (jugadoresEnemigos[i] + 1);
+                ids += ", Jugador " + (jugadoresEnemigos[i]);
             }
-            Debug.Log("Chupate esta! " + ids.Substring(2)); //Le saca el primer ", "
+            //Debug.Log("Perdedores: " + ids.Substring(2)); //Le saca el primer ", "
             StartCoroutine(llevarCartasAOtroMazo(iJugadorTotem, jugadoresEnemigos));
             ReiniciarTotem();
         } else
@@ -516,18 +527,13 @@ public class Main : MonoBehaviour {
             jugadores[jugadoresEnemigos[iPosiEnemigos]].AgregarCarta(cartasEnMesaDelJugador[i]);
             iPosiEnemigos = (iPosiEnemigos == iCantEnemigos - 1) ? 0 : iPosiEnemigos + 1;
         }
-
-        //Para ver si se le agregan las cartas al mazo despues de mandarselas
-        /*
-        Debug.Log("Cartas del jugador 0: " + jugadores[0].ObtenerCantCartas());
-        Debug.Log("Cartas del jugador 1: " + jugadores[1].ObtenerCantCartas());
-        Debug.Log("Cartas del jugador 2: " + jugadores[2].ObtenerCantCartas());
-        Debug.Log("Cartas del jugador 3: " + jugadores[3].ObtenerCantCartas());
-        Debug.Log("Cartas tiradas del jugador 0: " + mesa.obtenerCartasDelJugador_Array(0).Length);
-        Debug.Log("Cartas tiradas del jugador 1: " + mesa.obtenerCartasDelJugador_Array(1).Length);
-        Debug.Log("Cartas tiradas del jugador 2: " + mesa.obtenerCartasDelJugador_Array(2).Length);
-        Debug.Log("Cartas tiradas del jugador 3: " + mesa.obtenerCartasDelJugador_Array(3).Length);
-        */
+        //Viendo bug que reparte mal las cartas
+        String strFinDarCartas = "Termine de darle cartas a los jugadores: ";
+        for (int i = 0; i < jugadoresEnemigos.Count; i++)
+        {
+            strFinDarCartas += jugadoresEnemigos[i] + " - ";
+        }
+        Debug.Log(strFinDarCartas);
     }
 
     /// <summary>

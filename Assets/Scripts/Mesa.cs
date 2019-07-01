@@ -194,7 +194,7 @@ class Mesa
 
     public Carta[] obtener_VaciarCartasDelJugador(int idJugador)
     {
-        Carta[] cartas = obtenerCartasDelJugador_Array(idJugador);
+        Carta[] cartas = obtenerCartasDelJugador(idJugador).ToArray();
         vaciarCartasDelJugador(idJugador);
         return cartas;
     }
@@ -204,10 +204,10 @@ class Mesa
         cartasEnJuego[idJugador].Clear();
     }
 
-    public Carta[] obtenerCartasDelJugador_Array(int idJugador)
+    /*public Carta[] obtenerCartasDelJugador_Array(int idJugador)
     {
         return cartasEnJuego[idJugador].ToArray();
-    }
+    }*/
 
     public Stack<Carta> obtenerCartasDelJugador(int idJugador)
     {
