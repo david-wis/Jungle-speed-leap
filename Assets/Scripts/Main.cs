@@ -7,9 +7,8 @@ using UnityEditor;
 using System;
 
 public class Main : MonoBehaviour {
-    //public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
-    //public const int CANTCARTAS = 16; //SOLO PARA DEBUG
-    public const int CANTCARTAS = 32;
+    public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
+    //public const int CANTCARTAS = 32;
 
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
@@ -270,6 +269,10 @@ public class Main : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Cambia el sprite del menu de turnos dependiendo del jugador actual y del modo
+    /// </summary>
+    /// <param name="iOpcion">Indice del jugador actual. 4 representa todos y 5 nadie </param>
     void cambiarTurno(int iOpcion)
     {
         TurnosBehaviour turnosBehaviour = turnos.GetComponent<TurnosBehaviour>();

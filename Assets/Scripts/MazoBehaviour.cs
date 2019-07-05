@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrearCarta : MonoBehaviour {
+public class MazoBehaviour : MonoBehaviour {
     private InteractionBehaviour _intObj;
     public int iNroMazo; 
 

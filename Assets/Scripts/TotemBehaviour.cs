@@ -18,6 +18,9 @@ public class TotemBehaviour : MonoBehaviour {
     public Vector3 posicionInicial;
     public Quaternion rotacionInicial;
 
+    UnityAction forzarAgarradoListener;
+    UnityAction terminarForzarAgarradoListener;
+
     // Use this for initialization
     void Start () {
         _intObj = GetComponent<InteractionBehaviour>();
@@ -31,6 +34,10 @@ public class TotemBehaviour : MonoBehaviour {
         {
             sManos[i] = manos[i].name;
         }
+        forzarAgarradoListener = new UnityAction(forzarAgarrado);
+        EventManager.StartListening("forzarAgarrado", forzarAgarradoListener);
+        terminarForzarAgarradoListener = new UnityAction(terminarForzarAgarrado);
+        EventManager.StartListening("terminarForzarAgarrado", terminarForzarAgarradoListener);
     }
 
 
@@ -54,11 +61,11 @@ public class TotemBehaviour : MonoBehaviour {
                 switch (iIndexApretado)
                 {
                     case 0: //Caso del jugador, es el unico que probe asi que despues fijense xd
-                        if (/*PosAnterior.z - transform.position.z >= 0.15*/ transform.position.z <= -0.35)
+                        if (transform.position.z <= -0.35)
                         {
                             Debug.Log("Totem robado por el jugador 1");
                             bAgarradoCorrecto = false;
-                            EventManager.TriggerEvent("totemtraido");                            
+                            EventManager.TriggerEvent("totemtraido");       
                         }
                         break;
                     case 1:
@@ -157,5 +164,31 @@ public class TotemBehaviour : MonoBehaviour {
     public int ObtenerJugador()
     {
         return iIndexApretado;
+    }
+
+    private void forzarAgarrado()
+    {
+        iIndexApretado = 0;
+        bAgarrado = true;
+        if (iIndexViejo != iIndexApretado)
+        {
+            Debug.Log("evento producido agarrartotem");
+            EventManager.TriggerEvent("agarrartotem");
+            iIndexViejo = iIndexApretado;
+            SetAgarradoCorrecto();
+            EventManager.TriggerEvent("totemtraido");
+            bAgarradoCorrecto = false;
+            Debug.Log("Evento de batalla disparado, recorda apretar 6");
+        }
+    }
+
+    private void terminarForzarAgarrado()
+    {
+        if (bAgarrado)
+        {
+            bAgarrado = false;
+            iIndexApretado = -1; //No lo agarra nadie
+            iIndexViejo = -1; //Se reinicia el registro de agarradas
+        }
     }
 }

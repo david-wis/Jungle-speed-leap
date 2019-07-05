@@ -13,6 +13,10 @@ public class TurnosBehaviour : MonoBehaviour {
         imagen = GetComponent<Image>();
 	}
 
+    /// <summary>
+    /// Cambia el sprite
+    /// </summary>
+    /// <param name="iOpcion">Indice del jugador/todos/nadie</param>
     public void cambiarImagen(int iOpcion)
     {
         imagen.sprite = vecEstados[iOpcion];
