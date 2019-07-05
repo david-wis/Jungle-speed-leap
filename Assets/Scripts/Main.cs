@@ -218,6 +218,7 @@ public class Main : MonoBehaviour {
     /// Define el tiempo que tardan los bots en tocar el mazo
     /// </summary>
     const float fCoolDown = 1.0f; //1 segundo
+
     /// <summary>
     /// Llama a la funcion PonerCarta luego de "fCoolDown" segundos
     /// </summary>
@@ -268,7 +269,7 @@ public class Main : MonoBehaviour {
         }
     }
 
-    public void cambiarTurno(int iOpcion)
+    void cambiarTurno(int iOpcion)
     {
         TurnosBehaviour turnosBehaviour = turnos.GetComponent<TurnosBehaviour>();
         if ((bPause && iOpcion == 4) || (!bPause && iOpcion != 4))
@@ -361,13 +362,13 @@ public class Main : MonoBehaviour {
         return totemBehaviour.ObtenerJugador();
     }
 
-    void mostrarFormasJugadores()
+    /*void mostrarFormasJugadores()
     {
         for (int i = 0; i < 4; i++)
         {
             Debug.Log("Forma del Jugador " + i + ": " + mesa.obtenerCartasDelJugador(i).Peek().forma);
         }        
-    }
+    }*/
 
     /// <summary>
     /// Se le meten cartas a los perdedores o al centro de mesa.
@@ -483,7 +484,8 @@ public class Main : MonoBehaviour {
     }
 
     /// <summary>
-    /// SAIDMAN COMENTATE ESTA :V
+    /// Si se estan animando cartas hacia algun mazo, cuento el tiempo. 
+    /// Si ya paso el tiempo establecido, llamo a finAnimacionHaciaMazo() 
     /// </summary>
     public void verificarAnimacionesHaciaMazo()
     {
