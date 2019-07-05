@@ -24,6 +24,7 @@ public class Main : MonoBehaviour {
     GameObject[] mazos = new GameObject[4];
 
     public GameObject totem;
+    public GameObject turnos;
 
     Mesa mesa = new Mesa();
 
@@ -88,6 +89,7 @@ public class Main : MonoBehaviour {
         //En el futuro eligiremos el jugador inicial de manera aleatoria
         //iIndexJugActual = ObtenerRandom(4); 
         iIndexJugActual = 0;
+        cambiarTurno(0);
     }
     float fTimer = 0.0f; //Bereishit
     bool bCartaEsperando = false;
@@ -266,6 +268,15 @@ public class Main : MonoBehaviour {
         }
     }
 
+    public void cambiarTurno(int iOpcion)
+    {
+        TurnosBehaviour turnosBehaviour = turnos.GetComponent<TurnosBehaviour>();
+        if ((bPause && iOpcion == 4) || (!bPause && iOpcion != 4))
+        {
+            turnosBehaviour.cambiarImagen(iOpcion);
+        }
+    }
+
     /// <summary>
     /// Si el mazo del jugador recibido ya no tiene cartas, lo desactiva. 
     /// Si tiene cartas, lo activa
@@ -288,6 +299,7 @@ public class Main : MonoBehaviour {
     /// </summary>
     IEnumerator LevantarCartasModoFlechaFuera()
     {
+        cambiarTurno(4);
         yield return new WaitForSeconds(3f);
         mesa.NormalizarModo();
         Debug.Log("Flechas para afuera");
@@ -467,6 +479,7 @@ public class Main : MonoBehaviour {
         Rigidbody rigidbody = gameObjFinalizar.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
         rigidbody.drag = 10f; //Para que la caida sea mas lenta
         //Debug.Log("FinalizoAnimacion: " + gameObjFinalizar.name);
+        cambiarTurno(iIndexJugActual);
     }
 
     /// <summary>
@@ -533,32 +546,6 @@ public class Main : MonoBehaviour {
             jugadores[jugadoresEnemigos[iPosiEnemigos]].AgregarCarta(cartasEnMesaDelJugador[i]);
             iPosiEnemigos = (iPosiEnemigos == iCantEnemigos - 1) ? 0 : iPosiEnemigos + 1;
         }
-        //Viendo bug que reparte mal las cartas
-        /*String strFinDarCartas = "Termine de darle cartas a los jugadores: ";
-        for (int i = 0; i < jugadoresEnemigos.Count; i++)
-        {
-            strFinDarCartas += jugadoresEnemigos[i] + " - ";
-        }
-        Debug.Log(strFinDarCartas);*/
-        /*
-         *                 _.._    _ 
-         *               ."\__/"./`_\
-         *             _/__<__>__\/
-         *            `"/_/""""\_\\
-         * --------------------------------------------
-         * Dear Saidman, no veo el error xd :v
-         * Disfruta de estas tortugas como compensación
-         * --------------------------------------------
-         *                    _
-         *                   / \
-         *                   ) (
-         *               _  .""". _
-         *             /` /`_\ /_`\ `\
-         *              "`|_> _ <_|`"
-         *                |_/\ /\_|
-         *                /\_-'-_/\
-         *               /_/ `)` \_\
-         */
     }
 
     /// <summary>
