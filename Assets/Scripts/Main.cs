@@ -7,9 +7,10 @@ using UnityEditor;
 using System;
 
 public class Main : MonoBehaviour {
-    public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
-    //public const int CANTCARTAS = 17;
+    //public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
     //public const int CANTCARTAS = 16; //SOLO PARA DEBUG
+    public const int CANTCARTAS = 32;
+
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
     public RuntimeAnimatorController[] contrAnimac0HaciaMazos = new RuntimeAnimatorController[3];
@@ -347,11 +348,29 @@ public class Main : MonoBehaviour {
                 EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
                 //EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG
             }
-            else
+            else //Agarro mal el totem
             {
+                totemMalAgarrado();
                 Debug.Log("wtf, sacame la manito bro");
                 ReiniciarTotem();
                 //TODO: meterle las cartas de los otros y del totem al jugador
+            }
+        }
+    }
+
+    /// <summary>
+    /// Le mete al jugador que agarro mal el totem las cartas de todos los demas
+    /// </summary>
+    void totemMalAgarrado()
+    {
+        /* El jugador que agarro mal el totem es el enemigo, y los demas son ganadores */
+        for (int i = 0; i < CANTJUGADORES; i++)
+        {
+            if (i != iJugadorTotem)
+            {
+                List<int> listaEnemigos = new List<int>();
+                listaEnemigos.Add(iJugadorTotem);
+                StartCoroutine(llevarCartasAOtroMazo(i, listaEnemigos));
             }
         }
     }
@@ -527,7 +546,7 @@ public class Main : MonoBehaviour {
     {
         /* Como le voy a dar todas las cartas tiradas del ganador a los perdedores, 
          * vacío el Stack de Cartas y de GameObjects del ganador, y se lo meto a cada perdedor
-        */
+         */
         GameObject[] gameObjectsEnMesaDelJugador = mesa.obtener_VaciarGameObjectsDelJugador(idJugadorGanador);
         Carta[] cartasEnMesaDelJugador = mesa.obtener_VaciarCartasDelJugador(idJugadorGanador);
         List<RuntimeAnimatorController> contrParaUsar = obtenerContrAnimacHaciaMazos(idJugadorGanador, jugadoresEnemigos);
