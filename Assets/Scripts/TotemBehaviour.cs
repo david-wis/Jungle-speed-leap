@@ -38,7 +38,7 @@ public class TotemBehaviour : MonoBehaviour {
         EventManager.StartListening("forzarAgarrado", forzarAgarradoListener);
         terminarForzarAgarradoListener = new UnityAction(terminarForzarAgarrado);
         EventManager.StartListening("terminarForzarAgarrado", terminarForzarAgarradoListener);
-    }
+     }
 
 
     Vector3 PosAnterior;
