@@ -18,8 +18,7 @@ public class TotemBehaviour : MonoBehaviour {
     public Vector3 posicionInicial;
     public Quaternion rotacionInicial;
 
-    UnityAction forzarAgarradoListener;
-    UnityAction terminarForzarAgarradoListener;
+    UnityAction forzarAgarradoListener, forzarAgarradoCorrectoListener, terminarForzarAgarradoListener;
 
     // Use this for initialization
     void Start () {
@@ -38,6 +37,8 @@ public class TotemBehaviour : MonoBehaviour {
         EventManager.StartListening("forzarAgarrado", forzarAgarradoListener);
         terminarForzarAgarradoListener = new UnityAction(terminarForzarAgarrado);
         EventManager.StartListening("terminarForzarAgarrado", terminarForzarAgarradoListener);
+        forzarAgarradoCorrectoListener = new UnityAction(forzarAgarradoCorrecto);
+        EventManager.StartListening("forzarAgarradoCorrecto", forzarAgarradoCorrectoListener);
     }
 
 
@@ -172,14 +173,18 @@ public class TotemBehaviour : MonoBehaviour {
         bAgarrado = true;
         if (iIndexViejo != iIndexApretado)
         {
-            Debug.Log("evento producido agarrartotem");
+            Debug.Log("Evento de batalla disparado, recorda apretar 6 para un agarrado correcto y 7 para soltar");
             EventManager.TriggerEvent("agarrartotem");
             iIndexViejo = iIndexApretado;
-            SetAgarradoCorrecto();
-            EventManager.TriggerEvent("totemtraido");
-            bAgarradoCorrecto = false;
-            Debug.Log("Evento de batalla disparado, recorda apretar 6");
         }
+    }
+
+    private void forzarAgarradoCorrecto()
+    {
+        SetAgarradoCorrecto();
+        EventManager.TriggerEvent("totemtraido");
+        bAgarradoCorrecto = false;
+        Debug.Log("Evento de agarrado correcto disparado, recorda apretar 7");
     }
 
     private void terminarForzarAgarrado()

@@ -42,6 +42,11 @@ public class SimuladorAnimaciones : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.Alpha6))
             {
+                EventManager.TriggerEvent("forzarAgarradoCorrecto");
+                fTimer = 0f;
+            }
+            if (Input.GetKey(KeyCode.Alpha7))
+            {
                 EventManager.TriggerEvent("terminarForzarAgarrado");
                 fTimer = 0f;
             }
