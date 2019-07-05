@@ -6,7 +6,8 @@ using UnityEngine.Events;
 using UnityEditor;
 using System;
 
-public class Main : MonoBehaviour {
+public class Main : MonoBehaviour
+{
     public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
     //public const int CANTCARTAS = 32;
 
@@ -42,10 +43,7 @@ public class Main : MonoBehaviour {
     float fTimerAnimacHaciaMazo = 0f;
     bool bSeEstaAnimandoHaciaMazo = false;
     float[] vecTimersAnimacDesdeMazo = { 0f, 0f, 0f, 0f };
-    bool[] vecSeEstaAnimandoDesdeMazo = { false, false, false, false };
-
-    bool bAgarrandoTotem = false;
-    int iCantEnLlevarCartas = 0;
+    bool[] vecSeEstaAnimandoDesdeMazo = { false, false, false, false };    
 
     int iIndexJugActual;
     UnityAction eventoListenerMazo0, eventoListenerMazo1, eventoListenerMazo2, eventoListenerMazo3;
@@ -53,7 +51,8 @@ public class Main : MonoBehaviour {
     UnityAction eventoListenerRestablecerTotem;
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
         /* Aca en algun momento vamos a meter un menu 
          * para hostear partidas y elegir cant de jugadores
          */
@@ -174,8 +173,7 @@ public class Main : MonoBehaviour {
             contrAnimac = GetType().GetField("contrAnimac" + iJugador + "HaciaMazos").GetValue(this) as RuntimeAnimatorController[];
             for (int iAnimacion = 0; iAnimacion < 3; iAnimacion++)
             {
-                matrizContrAnimacHaciaMazos[iJugador, iAnimacion] = contrAnimac[iAnimacion];
-                //Debug.Log(contrAnimac[iAnimacion].name);
+                matrizContrAnimacHaciaMazos[iJugador, iAnimacion] = contrAnimac[iAnimacion];                
             }
         }
     }
@@ -244,7 +242,8 @@ public class Main : MonoBehaviour {
         {
             if (iIndexJugActual == iIndexMazo)
             {
-                if ((fTimer - fLastTime >= fCoolDown) || bFlechaAfuera) { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
+                if ((fTimer - fLastTime >= fCoolDown) || bFlechaAfuera)
+                { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
                     Carta cartaActual = jugadores[iIndexJugActual].ObtenerSiguienteCarta();
                     if (cartaActual != null)
                     {
@@ -333,45 +332,38 @@ public class Main : MonoBehaviour {
     /// </summary>
     void AgarrarTotem()
     {
-        Debug.Log("bAgarrandoTotem: " + bAgarrandoTotem);
-        if (!bAgarrandoTotem) //Si no lo estoy agarrando, me fijo
+        iJugadorTotem = ObtenerJugadorAgarroTotem();
+        if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
-            bAgarrandoTotem = true;
-            iJugadorTotem = ObtenerJugadorAgarroTotem();
-            if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
+            TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
+            totemBehaviour.SetAgarradoCorrecto();
+            eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(true); });
+            EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
+        }
+        else
+        {
+            List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
+            for (int i = 0; i < listaJugadoresEnemigos.Count; i++)
             {
+                Debug.Log("Enemigo en AgarrarTotem: " + listaJugadoresEnemigos[i]);
+            }
+            //mostrarFormasJugadores(); //SOLO PARA DEBUG
+            if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
+            {
+                Debug.Log("Totem agarrado correctamente, llevatelo");
                 TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
                 totemBehaviour.SetAgarradoCorrecto();
-                eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(true); });
-                EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
+                eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(false, listaJugadoresEnemigos); });
+                EventManager.StartListening("totemtraido", eventoListenerTotemTraido);                
             }
-            else
+            else //Agarro mal el totem
             {
-                List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
-                for (int i = 0; i < listaJugadoresEnemigos.Count; i++)
-                {
-                    Debug.Log("Enemigo en AgarrarTotem: " + listaJugadoresEnemigos[i]);
-                }
-                //mostrarFormasJugadores(); //SOLO PARA DEBUG
-                if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
-                {
-                    Debug.Log(iCantEnLlevarCartas + " - Totem agarrado, ahora es momento de llevarlo a su lugar");
-                    TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
-                    totemBehaviour.SetAgarradoCorrecto();
-                    eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(false, listaJugadoresEnemigos); });
-                    EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
-                    //EventManager.TriggerEvent("totemtraido"); //SOLO PARA DEBUG
-                }
-                else //Agarro mal el totem
-                {
-                    totemMalAgarrado();
-                    Debug.Log("wtf, sacame la manito bro");
-                    ReiniciarTotem();
-                    //TODO: meterle las cartas de los otros y del totem al jugador
-                }
+                totemMalAgarrado();
+                Debug.Log("Totem mal agarrado");
+                ReiniciarTotem();
+                //TODO: meterle las cartas de los otros y del totem al jugador
             }
         }
-        
     }
 
     /// <summary>
@@ -385,7 +377,7 @@ public class Main : MonoBehaviour {
         for (int i = 0; i < CANTJUGADORES; i++)
         {
             if (i != iJugadorTotem)
-            {                
+            {
                 for (int j = 0; j < listaEnemigos.Count; j++)
                 {
                     Debug.Log("Ganador en totemMalAgarrado: " + i);
@@ -393,7 +385,6 @@ public class Main : MonoBehaviour {
                 StartCoroutine(llevarCartasAOtroMazo(i, listaEnemigos));
             }
         }
-        StartCoroutine(desactivarAgarrandoTotem());
     }
 
     int ObtenerJugadorAgarroTotem()
@@ -417,7 +408,8 @@ public class Main : MonoBehaviour {
     /// <param name="jugadoresEnemigos">Indica a que jugadores dar las cartas</param>
     void DarCartas(bool bAlCentro, List<int> jugadoresEnemigos = null)
     {
-        if (!bAlCentro) { //Cartas para todos
+        if (!bAlCentro)
+        { //Cartas para todos
             //string ids = "";
             //for (int i = 0; i < jugadoresEnemigos.Count; i++)
             //{
@@ -425,8 +417,8 @@ public class Main : MonoBehaviour {
             //}
             //Debug.Log("Perdedores: " + ids.Substring(2)); //Le saca el primer ", "
             StartCoroutine(llevarCartasAOtroMazo(iJugadorTotem, jugadoresEnemigos));
-            StartCoroutine(desactivarAgarrandoTotem());
-        } else
+        }
+        else
         {
             //TODO: cartas de iIndexJugador para el mazo
         }
@@ -492,12 +484,12 @@ public class Main : MonoBehaviour {
     /// </summary>
     public void verificarAnimacionesDesdeMazo()
     {
-        for (int i = 0; i < 4; i++) 
+        for (int i = 0; i < 4; i++)
         {
-            if (vecSeEstaAnimandoDesdeMazo[i]) 
+            if (vecSeEstaAnimandoDesdeMazo[i])
             {
                 vecTimersAnimacDesdeMazo[i] += Time.deltaTime;
-                if (vecTimersAnimacDesdeMazo[i] >= fDuracAnimacionDesdeMazo) 
+                if (vecTimersAnimacDesdeMazo[i] >= fDuracAnimacionDesdeMazo)
                 {
                     finAnimacionDesdeMazo(i);
                 }
@@ -572,15 +564,14 @@ public class Main : MonoBehaviour {
          */
         for (int i = 0; i < jugadoresEnemigos.Count; i++)
         {
-            Debug.Log(iCantEnLlevarCartas + " - Enemigo en llevarCartasAMazo: " + jugadoresEnemigos[i]);
-        }
-        iCantEnLlevarCartas++;
-        
+            Debug.Log("Enemigo en llevarCartasAMazo: " + jugadoresEnemigos[i]);
+        }        
+
         GameObject[] gameObjectsEnMesaDelJugador = mesa.obtener_VaciarGameObjectsDelJugador(idJugadorGanador);
         Carta[] cartasEnMesaDelJugador = mesa.obtener_VaciarCartasDelJugador(idJugadorGanador);
         List<RuntimeAnimatorController> contrParaUsar = obtenerContrAnimacHaciaMazos(idJugadorGanador, jugadoresEnemigos);
-        
-        int iCantEnemigos = jugadoresEnemigos.Count, 
+
+        int iCantEnemigos = jugadoresEnemigos.Count,
             iCantCartas = gameObjectsEnMesaDelJugador.Length,
             iPosiEnemigos = 0; //Reparto las cartas entre los enemigos de la lista jugadoresEnemigos
         GameObject gameObject;
@@ -596,13 +587,7 @@ public class Main : MonoBehaviour {
             jugadores[jugadoresEnemigos[iPosiEnemigos]].AgregarCarta(cartasEnMesaDelJugador[i]);
             iPosiEnemigos = (iPosiEnemigos == iCantEnemigos - 1) ? 0 : iPosiEnemigos + 1;
         }
-    }
-
-    public IEnumerator desactivarAgarrandoTotem()
-    {
-        yield return new WaitForSeconds(2f);
-        bAgarrandoTotem = false;
-    }
+    }    
 
     /// <summary>
     /// Elimina el RigidBody y el BoxCollider del GameObject recibido, para que no se choque con nada ni lo afecte la gravedad
