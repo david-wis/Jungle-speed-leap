@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Con esta clase se puede jugar sin tener el leap motion, reemplazando su funcionalidad por comandos
+/// </summary>
 public class SimuladorAnimaciones : MonoBehaviour
 {
     float fTimer;
@@ -50,7 +53,6 @@ public class SimuladorAnimaciones : MonoBehaviour
                 EventManager.TriggerEvent("terminarForzarAgarrado");
                 fTimer = 0f;
             }
-
             if (Input.GetKey(KeyCode.R))
             {
                 EventManager.TriggerEvent("restablecertotem");

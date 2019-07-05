@@ -387,6 +387,10 @@ public class Main : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Obtiene el indice del jugador que agarró el totem
+    /// </summary>
+    /// <returns>Indice del jugador que agarró el totem</returns>
     int ObtenerJugadorAgarroTotem()
     {
         TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();

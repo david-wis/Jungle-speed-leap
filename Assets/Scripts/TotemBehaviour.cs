@@ -37,7 +37,7 @@ public class TotemBehaviour : MonoBehaviour {
         EventManager.StartListening("forzarAgarrado", forzarAgarradoListener);
         terminarForzarAgarradoListener = new UnityAction(terminarForzarAgarrado);
         EventManager.StartListening("terminarForzarAgarrado", terminarForzarAgarradoListener);
-         forzarAgarradoCorrectoListener = new UnityAction(forzarAgarradoCorrecto);
+        forzarAgarradoCorrectoListener = new UnityAction(forzarAgarradoCorrecto);
         EventManager.StartListening("forzarAgarradoCorrecto", forzarAgarradoCorrectoListener);
     }
 
@@ -167,6 +167,9 @@ public class TotemBehaviour : MonoBehaviour {
         return iIndexApretado;
     }
 
+    /// <summary>
+    /// Permite agarrar el totem a través de un evento
+    /// </summary>
     private void forzarAgarrado()
     {
         iIndexApretado = 0;
@@ -179,6 +182,9 @@ public class TotemBehaviour : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Permite traer el totem de manera correcta a través de un evento
+    /// </summary>
     private void forzarAgarradoCorrecto()
     {
         SetAgarradoCorrecto();
@@ -187,6 +193,9 @@ public class TotemBehaviour : MonoBehaviour {
         Debug.Log("Evento de agarrado correcto disparado, recorda apretar 7");
     }
 
+    /// <summary>
+    /// Permite soltar el totem a través de un evento
+    /// </summary>
     private void terminarForzarAgarrado()
     {
         if (bAgarrado)

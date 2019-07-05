@@ -26,6 +26,9 @@ class Mesa
         }
     }
 
+    /// <summary>
+    /// Pone el modo de juego en normal
+    /// </summary>
     public void NormalizarModo()
     {
         //Debug.Log("Modo normalizado exitosamente");
@@ -165,6 +168,11 @@ class Mesa
         return listaCoincidencias;
     }
 
+    /// <summary>
+    /// Obtiene los gameobjects de las cartas de un jugador en forma de array y luego vacía la pila
+    /// </summary>
+    /// <param name="idJugador">Jugador sobre cuya pila de gameobjects de cartas se desea actuar</param>
+    /// <returns>Vector de gameobjects de cartas</returns>
     public GameObject[] obtener_VaciarGameObjectsDelJugador(int idJugador)
     {
         GameObject[] gameObjects = obtenerGameObjectsDelJugador(idJugador);
@@ -172,11 +180,20 @@ class Mesa
         return gameObjects;
     }
 
+    /// <summary>
+    /// Vacia la pila de gameobjects de cartas de un jugador
+    /// </summary>
+    /// <param name="idJugador">Jugador cuya pila se desea vaciar</param>
     public void vaciarGameObjectsDelJugador(int idJugador)
     {
         gameObjectsEnJuego[idJugador].Clear();
     }
 
+    /// <summary>
+    /// Devuelve un vector con los gameobjects de las cartas que corresponden a determinado jugador
+    /// </summary>
+    /// <param name="idJugador">Jugador cuyas cartas se pretende obtener</param>
+    /// <returns>Gameobjects de las cartas del jugador</returns>
     public GameObject[] obtenerGameObjectsDelJugador(int idJugador)
     {
         return gameObjectsEnJuego[idJugador].ToArray();
@@ -192,6 +209,11 @@ class Mesa
         return gameObjectsEnJuego[idJugador].Peek();
     }
 
+    /// <summary>
+    /// Obtiene las cartas de un jugador en forma de array y luego vacía la pila
+    /// </summary>
+    /// <param name="idJugador">Indice del jugador</param>
+    /// <returns>Vector de cartas</returns>
     public Carta[] obtener_VaciarCartasDelJugador(int idJugador)
     {
         Carta[] cartas = obtenerCartasDelJugador(idJugador).ToArray();
@@ -199,6 +221,10 @@ class Mesa
         return cartas;
     }
 
+    /// <summary>
+    /// Vacía la pila de cartas de un jugador
+    /// </summary>
+    /// <param name="idJugador">Indice del jugador</param>
     public void vaciarCartasDelJugador(int idJugador)
     {
         cartasEnJuego[idJugador].Clear();
@@ -209,6 +235,11 @@ class Mesa
         return cartasEnJuego[idJugador].ToArray();
     }*/
 
+    /// <summary>
+    /// Obtiene la pila de cartas de un jugador determinado
+    /// </summary>
+    /// <param name="idJugador">Indice del jugador</param>
+    /// <returns>Stack de cartas</returns>
     public Stack<Carta> obtenerCartasDelJugador(int idJugador)
     {
         return cartasEnJuego[idJugador];
