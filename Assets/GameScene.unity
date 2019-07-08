@@ -1431,7 +1431,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 229255501}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb8f8839ee256bb458e1657c1ee40572, type: 3}
   m_Name: 
@@ -2249,6 +2249,7 @@ GameObject:
   - component: {fileID: 302852186}
   - component: {fileID: 302852185}
   - component: {fileID: 302852184}
+  - component: {fileID: 302852187}
   m_Layer: 0
   m_Name: Jugador 2
   m_TagString: Jugador
@@ -2274,7 +2275,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 302852183}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb8f8839ee256bb458e1657c1ee40572, type: 3}
   m_Name: 
@@ -2304,6 +2305,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &302852187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 302852183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071502d3cbb81094683ffa9d2bf03fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iIndexJug: 1
+  fSpeed: 1
 --- !u!1 &310837794
 GameObject:
   m_ObjectHideFlags: 0
@@ -8925,7 +8939,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1904543952}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb8f8839ee256bb458e1657c1ee40572, type: 3}
   m_Name: 
@@ -9120,6 +9134,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2022951903}
   - component: {fileID: 2022951902}
+  - component: {fileID: 2022951904}
+  - component: {fileID: 2022951905}
   m_Layer: 0
   m_Name: SceneBuilder
   m_TagString: Untagged
@@ -9160,7 +9176,6 @@ MonoBehaviour:
   - {fileID: 9100000, guid: c86ecc52cabead546b876d84c896eca9, type: 2}
   - {fileID: 9100000, guid: a3435fc3a0effb64898527b570c95ee1, type: 2}
   cartasEstaticas: []
-  totem: {fileID: 759419768}
   turnos: {fileID: 32022752}
 --- !u!4 &2022951903
 Transform:
@@ -9175,6 +9190,30 @@ Transform:
   m_Father: {fileID: 678695816}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2022951904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2022951901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36e240bc48651148a2b4b3cdf7dde0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totem: {fileID: 759419768}
+--- !u!114 &2022951905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2022951901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e4192358a36f349a14a3e161a93d51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iIndexJugActual: 0
 --- !u!1 &2044825717
 GameObject:
   m_ObjectHideFlags: 0

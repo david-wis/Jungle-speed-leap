@@ -205,4 +205,13 @@ public class TotemBehaviour : MonoBehaviour {
             iIndexViejo = -1; //Se reinicia el registro de agarradas
         }
     }
+
+    /// <summary>
+    /// Determina si el totem esta siendo agarrado
+    /// </summary>
+    /// <returns>Si esta siendo agarrado</returns>
+    public bool estaAgarrado()
+    {
+        return bAgarrado;
+    }
 }

@@ -24,10 +24,13 @@ public class Main : MonoBehaviour
     public GameObject[] cartasEstaticas = new GameObject[4];
     GameObject[] mazos = new GameObject[4];
 
-    public GameObject totem;
+    GameObject totem;
     public GameObject turnos;
 
-    Mesa mesa = new Mesa();
+    public Mesa mesa {
+       set { MesaManager.instance.mesa = value; }
+       get { return MesaManager.instance.mesa; }
+    }
 
     Vector3[] posicCartasDelMazo = { new Vector3(0.13f, 1.5f, -0.43f),
                                      new Vector3(0.2f, 1.5f, -0.09f),
@@ -45,7 +48,11 @@ public class Main : MonoBehaviour
     float[] vecTimersAnimacDesdeMazo = { 0f, 0f, 0f, 0f };
     bool[] vecSeEstaAnimandoDesdeMazo = { false, false, false, false };    
 
-    int iIndexJugActual;
+    int iIndexJugActual {
+        set { MesaManager.instance.iIndexJugActual = value; }
+        get { return MesaManager.instance.iIndexJugActual; }
+    }
+
     UnityAction eventoListenerMazo0, eventoListenerMazo1, eventoListenerMazo2, eventoListenerMazo3;
     UnityAction eventoListenerTotem;
     UnityAction eventoListenerRestablecerTotem;
@@ -56,6 +63,7 @@ public class Main : MonoBehaviour
         /* Aca en algun momento vamos a meter un menu 
          * para hostear partidas y elegir cant de jugadores
          */
+        totem = TotemManager.instance.totem;
         totem.transform.position += new Vector3(0, 3, 0);
         LlenarMazo();
         ReferenciarCartasEstaticas();

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-class Mesa
+public class Mesa
 {
     Stack<Carta>[] cartasEnJuego = new Stack<Carta>[4];
     Stack<GameObject>[] gameObjectsEnJuego = new Stack<GameObject>[4];
