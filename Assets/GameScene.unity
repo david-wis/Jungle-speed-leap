@@ -1414,6 +1414,7 @@ GameObject:
   - component: {fileID: 229255504}
   - component: {fileID: 229255503}
   - component: {fileID: 229255502}
+  - component: {fileID: 229255505}
   m_Layer: 0
   m_Name: Jugador 3
   m_TagString: Jugador
@@ -1469,6 +1470,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &229255505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 229255501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071502d3cbb81094683ffa9d2bf03fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iIndexJug: 2
+  fSpeed: 1
 --- !u!1001 &231715267
 Prefab:
   m_ObjectHideFlags: 0
@@ -3867,7 +3881,7 @@ Prefab:
         type: 2}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: cc3e0c50c7cea4e4a9823d5a31abd490, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 4430945870454064, guid: 2276723046d707c4f94d431ceb80ab92, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
@@ -4973,7 +4987,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4299111203110852, guid: 8998b2da307be7f419e285784a8495a6, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.008
+      value: -0.038
       objectReference: {fileID: 0}
     - target: {fileID: 4299111203110852, guid: 8998b2da307be7f419e285784a8495a6, type: 2}
       propertyPath: m_LocalPosition.y
@@ -9231,6 +9245,7 @@ GameObject:
   - component: {fileID: 1904543955}
   - component: {fileID: 1904543954}
   - component: {fileID: 1904543953}
+  - component: {fileID: 1904543956}
   m_Layer: 0
   m_Name: Jugador 4
   m_TagString: Jugador
@@ -9286,6 +9301,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1904543956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1904543952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071502d3cbb81094683ffa9d2bf03fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iIndexJug: 3
+  fSpeed: 1
 --- !u!1 &1950323333
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,36 +5,55 @@ public class Lerpeador
     float lerpTime = 1f;
     float currentLerpTime;
 
-    float moveDistance = 10f;
-
     Vector3 startPos;
     Vector3 endPos;
+    Quaternion startRot;
+    Quaternion endRot;
     GameObject gameObject;
+    bool bMovimiento;
+
+    public Lerpeador(float fTiempo)
+    {
+        lerpTime = fTiempo;
+    }
 
     public void Start(GameObject gameObject, Vector3 posFinal)
     {
         this.gameObject = gameObject;
         startPos = gameObject.transform.position;
         endPos = posFinal;
+        bMovimiento = true;
     }
 
-    public void Update()
+    public void Start(GameObject gameObject, Quaternion rotFinal)
     {
-        //reset when we press spacebar
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            currentLerpTime = 0f;
-        }
+        this.gameObject = gameObject;
+        startRot = gameObject.transform.rotation;
+        endRot = rotFinal;
+        bMovimiento = false;
+    }
+
+    public bool Update()
+    {
+        bool bTermino = false;
 
         //increment timer once per frame
         currentLerpTime += Time.deltaTime;
         if (currentLerpTime > lerpTime)
         {
             currentLerpTime = lerpTime;
+            bTermino = true;
         }
-
         //lerp!
         float perc = currentLerpTime / lerpTime;
-        gameObject.transform.position = Vector3.Lerp(startPos, endPos, perc);
+        if (bMovimiento)
+        {
+            gameObject.transform.position = Vector3.Lerp(startPos, endPos, perc);
+        }
+        else
+        {
+            gameObject.transform.rotation = Quaternion.Lerp(startRot, endRot, perc);
+        }
+        return bTermino;
     }
 }

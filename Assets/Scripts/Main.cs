@@ -64,7 +64,7 @@ public class Main : MonoBehaviour
          * para hostear partidas y elegir cant de jugadores
          */
         totem = TotemManager.instance.totem;
-        totem.transform.position += new Vector3(0, 3, 0);
+        //totem.transform.position += new Vector3(0, 3, 0);
         LlenarMazo();
         ReferenciarCartasEstaticas();
         ReferenciarMazos();
