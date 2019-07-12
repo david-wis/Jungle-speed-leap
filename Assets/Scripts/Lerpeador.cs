@@ -2,7 +2,7 @@
 
 public class Lerpeador
 {
-    float lerpTime = 1f;
+    float lerpTime;
     float currentLerpTime;
 
     Vector3 startPos;
@@ -43,6 +43,7 @@ public class Lerpeador
         {
             currentLerpTime = lerpTime;
             bTermino = true;
+            Debug.Log("Termino");
         }
         //lerp!
         float perc = currentLerpTime / lerpTime;
@@ -53,6 +54,7 @@ public class Lerpeador
         else
         {
             gameObject.transform.rotation = Quaternion.Lerp(startRot, endRot, perc);
+            Debug.Log(gameObject.transform.rotation);
         }
         return bTermino;
     }

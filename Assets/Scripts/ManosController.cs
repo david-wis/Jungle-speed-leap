@@ -4,7 +4,6 @@ using UnityEngine;
 public class ManosController : MonoBehaviour {
 
     public int iIndexJug;
-    public float fSpeed = 1.0f;
     GameObject totem;
     GameObject manoIzq, manoDer;
     TotemBehaviour totemBehaviour;
@@ -72,13 +71,13 @@ public class ManosController : MonoBehaviour {
 
     Quaternion ObtenerRotacion()
     {
-        Quaternion rotacion = manoDer.transform.rotation * Quaternion.Euler(90, 0, 0);
+        Quaternion rotacion = Quaternion.Euler(0, 0, 0);
         if (iIndexJug == 1)
         {
-            rotacion = manoDer.transform.rotation * Quaternion.Euler(0, 0, 0);
+            rotacion = Quaternion.Euler(0, 0, 0);
         } else
         {
-            rotacion = manoDer.transform.rotation * Quaternion.Euler(0, 0, 0);
+            rotacion = Quaternion.Euler(0, 90, 0);
         } 
         return rotacion;
     }
