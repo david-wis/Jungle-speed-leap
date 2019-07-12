@@ -9,7 +9,7 @@ using System;
 public class Main : MonoBehaviour
 {
     public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
-    //public const int CANTCARTAS = 32;
+    //public const int CANTCARTAS = 8;
 
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
@@ -341,6 +341,7 @@ public class Main : MonoBehaviour
     void AgarrarTotem()
     {
         iJugadorTotem = ObtenerJugadorAgarroTotem();
+        desactivarCuerposGameObjects(); //Para que el Totem no se choque con las cartas en mesa
         if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
             TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
@@ -370,6 +371,21 @@ public class Main : MonoBehaviour
                 Debug.Log("Totem mal agarrado");
                 ReiniciarTotem();
                 //TODO: meterle las cartas de los otros y del totem al jugador
+            }
+        }
+    }
+
+    /// <summary>
+    /// Desactiva el BoxCollider y la Gravity de todos los GameObjects en Mesa
+    /// </summary>
+    public void desactivarCuerposGameObjects()
+    {
+        for (int i = 0; i < CANTJUGADORES; i++)
+        {
+            GameObject[] gameObjects = mesa.obtenerGameObjectsDelJugador(i);
+            foreach (GameObject gameObject in gameObjects)
+            {
+                sacarCuerpo(gameObject);
             }
         }
     }
@@ -516,7 +532,6 @@ public class Main : MonoBehaviour
     public void finAnimacionDesdeMazo(int idJugador)
     {
         GameObject gameObjFinalizar = mesa.obtenerUltimoGameObjectDelJugador(idJugador);
-        //Debug.Log("FinalizandoAnimacion: " + gameObjFinalizar.name);
         vecSeEstaAnimandoDesdeMazo[idJugador] = false;
         vecTimersAnimacDesdeMazo[idJugador] = 0f;
         gameObjFinalizar.GetComponent<Animator>().enabled = false; //Desactivo la animacion
@@ -525,7 +540,6 @@ public class Main : MonoBehaviour
         boxCollider.size = new Vector3(0.115f, 0.13f, 0.005f);
         Rigidbody rigidbody = gameObjFinalizar.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
         rigidbody.drag = 10f; //Para que la caida sea mas lenta
-        //Debug.Log("FinalizoAnimacion: " + gameObjFinalizar.name);
         cambiarTurno(iIndexJugActual);
     }
 
@@ -561,7 +575,33 @@ public class Main : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             verificarMazoVacioJugador(i);
+            reactivarCuerposGameObjects();
         }
+    }
+
+    /// <summary>
+    /// Activa el BoxCollider y la Gravity de todos los GameObjects en Mesa
+    /// </summary>
+    public void reactivarCuerposGameObjects()
+    {
+        for (int i = 0; i < CANTJUGADORES; i++)
+        {
+            GameObject[] gameObjects = mesa.obtenerGameObjectsDelJugador(i);
+            foreach (GameObject gameObject in gameObjects)
+            {
+                ponerCuerpo(gameObject);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Activa el BoxCollider y la Gravity del GameObject recibido como parametro
+    /// </summary>
+    /// <param name="gameObject">El GameObject al que se quiere activar el BoxCollider y la Gravity</param>
+    public void ponerCuerpo(GameObject gameObject)
+    {
+        gameObject.GetComponent<BoxCollider>().enabled = true;
+        gameObject.GetComponent<Rigidbody>().useGravity = true;
     }
 
     /// <summary>
@@ -574,11 +614,6 @@ public class Main : MonoBehaviour
         /* Como le voy a dar todas las cartas tiradas del ganador a los perdedores, 
          * vacío el Stack de Cartas y de GameObjects del ganador, y se lo meto a cada perdedor
          */
-        for (int i = 0; i < jugadoresEnemigos.Count; i++)
-        {
-            Debug.Log("Enemigo en llevarCartasAMazo: " + jugadoresEnemigos[i]);
-        }        
-
         GameObject[] gameObjectsEnMesaDelJugador = mesa.obtener_VaciarGameObjectsDelJugador(idJugadorGanador);
         Carta[] cartasEnMesaDelJugador = mesa.obtener_VaciarCartasDelJugador(idJugadorGanador);
         List<RuntimeAnimatorController> contrParaUsar = obtenerContrAnimacHaciaMazos(idJugadorGanador, jugadoresEnemigos);
