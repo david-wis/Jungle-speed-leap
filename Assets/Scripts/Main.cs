@@ -9,7 +9,7 @@ using System;
 public class Main : MonoBehaviour
 {
     public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
-    //public const int CANTCARTAS = 8;
+    //public const int CANTCARTAS = 32;
 
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDelMazo = new RuntimeAnimatorController[4];
@@ -42,7 +42,7 @@ public class Main : MonoBehaviour
                                      new Vector3(-90f, -90f, 5f)};
 
     List<GameObject> gameObjectsAnimandoseHaciaMazo = new List<GameObject>();
-    const float fDuracAnimacionDesdeMazo = 1.0f, fDuracAnimacionHaciaMazo = 1.3f;
+    const float fDuracAnimacionDesdeMazo = 1.0f, fDuracAnimacionHaciaMazo = 2f;
     float fTimerAnimacHaciaMazo = 0f;
     bool bSeEstaAnimandoHaciaMazo = false;
     float[] vecTimersAnimacDesdeMazo = { 0f, 0f, 0f, 0f };
@@ -264,7 +264,6 @@ public class Main : MonoBehaviour
                         imagen.sprite = cartaActual.img2D;
                         imagen.color = color;
                         fLastTime = fTimer;
-                        //Debug.Log("Jugador " + iIndexJugActual + " - " + cartaActual.img2D.name + " - " + imagen.name + " - " + mazos[iIndexJugActual].name);
                         verificarMazoVacioJugador(iIndexJugActual);
                         iIndexJugActual = (iIndexJugActual < 3) ? iIndexJugActual + 1 : 0;
                         bCartaEsperando = false;
@@ -402,10 +401,6 @@ public class Main : MonoBehaviour
         {
             if (i != iJugadorTotem)
             {
-                for (int j = 0; j < listaEnemigos.Count; j++)
-                {
-                    Debug.Log("Ganador en totemMalAgarrado: " + i);
-                }
                 StartCoroutine(llevarCartasAOtroMazo(i, listaEnemigos));
             }
         }
@@ -495,7 +490,6 @@ public class Main : MonoBehaviour
     /// <param name="controller">El AnimatorController con el que animar al GameObject</param>
     public void animarCarta(GameObject gameObject, RuntimeAnimatorController controller)
     {
-        //Debug.Log("AnimandoDesdeMazo: " + gameObject.name);
         Animator animator = gameObject.GetComponent<Animator>();
         if (animator == null)
         {
@@ -503,7 +497,6 @@ public class Main : MonoBehaviour
         }
         animator.runtimeAnimatorController = controller;
         animator.enabled = true;
-        //Debug.Log("AnimeDesdeMazo: " + gameObject.name);
     }
 
     /// <summary>
