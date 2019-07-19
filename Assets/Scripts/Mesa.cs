@@ -99,27 +99,60 @@ public class Mesa
         iTopeGameObjects = (iTopeGameObjects < 3) ? iTopeGameObjects + 1 : 0;
     }
 
-    //Metodo deprecado para verificar igualdad entre cartas
-    /*public bool VerificarIgualdadConResto(int iIndexJugador)
+    /// <summary>
+    /// Se fija si el jugador puede agarrar el totem
+    /// </summary>
+    /// <param name="iIndexJugador">Indice del jugador sobre el que se quiere saber</param>
+    /// <returns>Puede agarrar el totem</returns>
+    public bool TieneIgualdadConResto(int iIndexJugador)
     {
         bool bEsCorrecto = false;
         int i = 0;
-        Carta cartaJugador = cartasEnJuego[iIndexJugador].Peek();
-        while (!bEsCorrecto && i < 4)
+        switch (_modo)
         {
-            //No quiero comparar la carta que busco con ella misma
-            //Tampoco me conviene comparar con una carta que no existe :v
-            if (i != iIndexJugador && cartasEnJuego[i].Count != 0) 
-            {
-                if (cartasEnJuego[i].Peek().forma == cartaJugador.forma)
+            case ModoJuego.Normal:
+                if (cartasEnJuego[iIndexJugador].Count != 0)
                 {
-                    bEsCorrecto = true;
+                    Carta cartaJugador = cartasEnJuego[iIndexJugador].Peek();
+                    while (!bEsCorrecto && i < 4)
+                    {
+                        if (i != iIndexJugador && cartasEnJuego[i].Count != 0)
+                        {
+                            if (cartasEnJuego[i].Peek().forma == cartaJugador.forma)
+                            {
+                                bEsCorrecto = true;
+                            }
+                        }
+                        i++;
+                    }
                 }
-            }
-            i++;
+                break;
+            case ModoJuego.Colores:
+                if (cartasEnJuego[iIndexJugador].Count != 0)
+                {
+                    Carta cartaJugador = cartasEnJuego[iIndexJugador].Peek();
+                    while (!bEsCorrecto && i < 4)
+                    {
+                        if (i != iIndexJugador && cartasEnJuego[i].Count != 0)
+                        {
+                            if (cartasEnJuego[i].Peek().color == cartaJugador.color)
+                            {
+                                bEsCorrecto = true;
+                            }
+                        }
+                        i++;
+                    }
+                }
+                break;
+            case ModoJuego.Dentro:
+                bEsCorrecto = true;
+                break;
+            default:
+                bEsCorrecto = false;
+                break;
         }
         return bEsCorrecto;
-    }*/
+    }
 
     /// <summary>
     /// Devuelve los jugadores enemigos en un duelo

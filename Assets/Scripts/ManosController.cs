@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ManosController : MonoBehaviour {
@@ -33,6 +34,13 @@ public class ManosController : MonoBehaviour {
     void Update()
     {
         if (MesaManager.instance.iIndexJugActual == iIndexJug)
+        {
+            //TODO: Animacion tocar mazo
+        }
+
+        bool bAgarrarPosible = MesaManager.instance.mesa.TieneIgualdadConResto(iIndexJug);
+        //Debug.Log("Jugador " + iIndexJug + " " + bAgarrarPosible);
+        if (bAgarrarPosible)
         {
             switch (iEstado)
             {
