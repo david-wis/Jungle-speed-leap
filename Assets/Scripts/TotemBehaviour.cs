@@ -45,7 +45,6 @@ public class TotemBehaviour : MonoBehaviour {
     Vector3 PosAnterior;
     void Update()
     {
-        //Debug.Log(transform.position);
         if (bAgarrado)
         {
             //Debug.Log(iIndexViejo + " - " + iIndexApretado);
@@ -58,7 +57,6 @@ public class TotemBehaviour : MonoBehaviour {
 
             if (bAgarradoCorrecto)
             {
-                //Debug.Log(transform.position);
                 switch (iIndexApretado)
                 {
                     case 0: //Caso del jugador, es el unico que probe asi que despues fijense xd
