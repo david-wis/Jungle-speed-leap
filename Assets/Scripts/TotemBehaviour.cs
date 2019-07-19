@@ -18,6 +18,9 @@ public class TotemBehaviour : MonoBehaviour {
     public Vector3 posicionInicial;
     public Quaternion rotacionInicial;
 
+    private List<GameObject> _gameObjsEnTotem = new List<GameObject>();
+    private List<Carta> _cartasEnTotem = new List<Carta>();
+
     UnityAction forzarAgarradoListener, forzarAgarradoCorrectoListener, terminarForzarAgarradoListener;
 
     // Use this for initialization
@@ -43,6 +46,7 @@ public class TotemBehaviour : MonoBehaviour {
 
 
     Vector3 PosAnterior;
+
     void Update()
     {
         if (bAgarrado)
@@ -212,4 +216,45 @@ public class TotemBehaviour : MonoBehaviour {
     {
         return bAgarrado;
     }
+
+    /// <summary>
+    /// Agrega una Carta a la lista de Cartas en el Totem
+    /// </summary>
+    /// <param name="carta">La Carta a agregar a la lista</param>
+    public void agregarCartaALista(Carta carta)
+    {
+        _cartasEnTotem.Add(carta);
+    }
+
+    /// <summary>
+    /// Agrega un GameObject a la lista de GameObjects en el Totem
+    /// </summary>
+    /// <param name="gameObject">El GameObject a agregar a la lista</param>
+    public void agregarGameObjALista(GameObject gameObject)
+    {
+        _gameObjsEnTotem.Add(gameObject);
+    }
+
+    /// <summary>
+    /// Getter de la lista gameObjsEnTotem
+    /// </summary>
+    public List<GameObject> GameObjsEnTotem
+    {
+        get
+        {
+            return _gameObjsEnTotem;
+        }
+    }
+
+    /// <summary>
+    /// Getter de la lista cartasEnTotem
+    /// </summary>
+    public List<Carta> CartasEnTotem
+    {
+        get
+        {
+            return _cartasEnTotem;
+        }
+    }
+
 }
