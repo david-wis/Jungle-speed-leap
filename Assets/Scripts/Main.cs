@@ -109,14 +109,14 @@ public class Main : MonoBehaviour
     void Update()
     {
         fTimer += Time.deltaTime;
-        if (iIndexJugActual != 0 && !bPause)
+        /*if (iIndexJugActual != 0 && !bPause)
         {
             if (!bCartaEsperando)
             {
                 StartCoroutine(PonerCartaBot(iIndexJugActual));
                 bCartaEsperando = true;
             }
-        }
+        }*/
         verificarAnimacionesDesdeMazo(); //Si alguna carta se esta animando desde el mazo, cuenta para despues sacarle la animacion
         verificarAnimacionesHaciaMazo(); //Si alguna carta se esta animando hacia el mazo, cuenta para despues destruirlo
     }
@@ -635,8 +635,15 @@ public class Main : MonoBehaviour
     /// <param name="gameObject">Al GameObject al cual sacarle el "cuerpo"</param>
     public void sacarCuerpo(GameObject gameObject)
     {
-        gameObject.GetComponent<Rigidbody>().useGravity = false;
-        gameObject.GetComponent<BoxCollider>().enabled = false;
+        if (gameObject.GetComponent<Rigidbody>() != null)
+        {
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+        }
+        if (gameObject.GetComponent<BoxCollider>() != null)
+        {
+            gameObject.GetComponent<BoxCollider>().enabled = false;
+        }       
+        
     }
 
     /// <summary>

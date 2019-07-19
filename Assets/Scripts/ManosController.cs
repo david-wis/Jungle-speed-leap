@@ -9,16 +9,18 @@ public class ManosController : MonoBehaviour {
     GameObject manoIzq, manoDer;
     TotemBehaviour totemBehaviour;
     Vector3[] posicionInicial = new Vector3[2]; //Posicion inicial de las manitos
-    Lerpeador lerpMov;
+    Lerpeador lerpMov, lerpMovBack;
     //Lerpeador lerpRot;
     int iEstado; //0 empieza a moverse - 1 en movimiento - 2 movido
     Vector3 corrimiento;
+    Boolean bLoAgarre;
     
 
     // Use this for initialization
     void Start()
     {
-        lerpMov = new Lerpeador(0.5f);
+        lerpMov = new Lerpeador(1);
+        lerpMovBack = new Lerpeador(1);
         //lerpRot = new Lerpeador(0.5f);
 
         manoIzq = transform.GetChild(0).gameObject;
@@ -29,6 +31,7 @@ public class ManosController : MonoBehaviour {
         iEstado = 0;
         posicionInicial[0] = manoIzq.transform.position;
         posicionInicial[1] = manoDer.transform.position;
+        bLoAgarre = false;
     }
 
     // Update is called once per frame
@@ -43,7 +46,10 @@ public class ManosController : MonoBehaviour {
         bool bAgarrarPosible = MesaManager.instance.mesa.TieneIgualdadConResto(iIndexJug);
         if (bAgarrarPosible)
         {
-            //IntentarAgarrar();   
+            if (!totemBehaviour.estaAgarrado() || totemBehaviour.ObtenerJugador() == iIndexJug)
+            {
+                IntentarAgarrar();
+            }
         }
     }
 
@@ -63,17 +69,15 @@ public class ManosController : MonoBehaviour {
                 break;
             case 2:
                 //Animacion
-                //iEstado = 0;
-
-                if (lerpMov.bTermino)
+                if (lerpMovBack.bTermino)
                 {
                     totemBehaviour.fijarTotemEnMano(manoDer.transform);
                     //totem.transform.parent = manoDer.transform;
-                    lerpMov.Start(manoDer, posicionInicial[1]);
+                    lerpMovBack.Start(manoDer, posicionInicial[1]);
                 }
                 else
                 {
-                    if (lerpMov.Update())
+                    if (lerpMovBack.Update())
                     {
                         iEstado = 0;
                     }
