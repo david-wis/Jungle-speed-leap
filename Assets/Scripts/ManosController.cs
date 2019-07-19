@@ -18,7 +18,7 @@ public class ManosController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        lerpMov = new Lerpeador(0.25f);
+        lerpMov = new Lerpeador(0.5f);
         //lerpRot = new Lerpeador(0.5f);
 
         manoIzq = transform.GetChild(0).gameObject;
@@ -43,36 +43,42 @@ public class ManosController : MonoBehaviour {
         bool bAgarrarPosible = MesaManager.instance.mesa.TieneIgualdadConResto(iIndexJug);
         if (bAgarrarPosible)
         {
-            switch (iEstado)
-            {
-                case 0:
-                    lerpMov.Start(manoDer, totem.transform.position + corrimiento);
+            //IntentarAgarrar();   
+        }
+    }
+
+    private void IntentarAgarrar()
+    {
+        switch (iEstado)
+        {
+            case 0:
+                lerpMov.Start(manoDer, totem.transform.position + corrimiento);
+                iEstado++;
+                break;
+            case 1:
+                if (lerpMov.Update())
+                {
                     iEstado++;
-                    break;
-                case 1:
+                }
+                break;
+            case 2:
+                //Animacion
+                //iEstado = 0;
+
+                if (lerpMov.bTermino)
+                {
+                    totemBehaviour.fijarTotemEnMano(manoDer.transform);
+                    //totem.transform.parent = manoDer.transform;
+                    lerpMov.Start(manoDer, posicionInicial[1]);
+                }
+                else
+                {
                     if (lerpMov.Update())
                     {
-                        iEstado++;
+                        iEstado = 0;
                     }
-                    break;
-                case 2:
-                    //Animacion
-                    //iEstado = 0;
-                    
-                    if (lerpMov.bTermino)
-                    {
-                        totemBehaviour.fijarTotemEnMano(manoDer.transform);
-                        //totem.transform.parent = manoDer.transform;
-                        lerpMov.Start(manoDer, posicionInicial[1]);
-                    } else
-                    {
-                        if (lerpMov.Update())
-                        {
-                            iEstado = 0;
-                        }
-                    }
-                    break;
-            }
+                }
+                break;
         }
     }
 
