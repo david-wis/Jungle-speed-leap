@@ -16,11 +16,14 @@ public class MazoBehaviour : MonoBehaviour {
         _intObj = GetComponent<InteractionBehaviour>();
     }
 
-    void Update () {
+    void Update() {
         //Debug.Log("isPrimaryHovered: " + _intObj.isPrimaryHovered);
         if (_intObj.isPrimaryHovered)
         {
-            GenerarCarta(); 
+            if (MesaManager.instance.mesa.Modo != ModoJuego.Fuera)
+            {
+                GenerarCarta();
+            }
         }
     }
 
