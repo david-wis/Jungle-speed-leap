@@ -18,7 +18,7 @@ public class ManosController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        lerpMov = new Lerpeador(0.5f);
+        lerpMov = new Lerpeador(0.25f);
         //lerpRot = new Lerpeador(0.5f);
 
         manoIzq = transform.GetChild(0).gameObject;
@@ -27,8 +27,8 @@ public class ManosController : MonoBehaviour {
         totemBehaviour = totem.GetComponent<TotemBehaviour>();
         PonerManos();
         iEstado = 0;
-        //posicionInicial[0] = manoIzq.transform;
-        //posicionInicial[1] = manoDer.transform;
+        posicionInicial[0] = manoIzq.transform.position;
+        posicionInicial[1] = manoDer.transform.position;
     }
 
     // Update is called once per frame
@@ -41,7 +41,6 @@ public class ManosController : MonoBehaviour {
         }
 
         bool bAgarrarPosible = MesaManager.instance.mesa.TieneIgualdadConResto(iIndexJug);
-        Debug.Log("Jugador " + iIndexJug + " " + bAgarrarPosible);
         if (bAgarrarPosible)
         {
             switch (iEstado)
@@ -49,19 +48,29 @@ public class ManosController : MonoBehaviour {
                 case 0:
                     lerpMov.Start(manoDer, totem.transform.position + corrimiento);
                     iEstado++;
-                    Debug.Log("Estado 2 terminado");
                     break;
                 case 1:
                     if (lerpMov.Update())
                     {
                         iEstado++;
-                        Debug.Log("Estado 3 terminado");
                     }
                     break;
                 case 2:
                     //Animacion
-                    iEstado = 0;
-                    Debug.Log("Estado 4 terminado");
+                    //iEstado = 0;
+                    
+                    if (lerpMov.bTermino)
+                    {
+                        totemBehaviour.fijarTotemEnMano(manoDer.transform);
+                        //totem.transform.parent = manoDer.transform;
+                        lerpMov.Start(manoDer, posicionInicial[1]);
+                    } else
+                    {
+                        if (lerpMov.Update())
+                        {
+                            iEstado = 0;
+                        }
+                    }
                     break;
             }
         }

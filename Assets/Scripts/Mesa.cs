@@ -62,12 +62,15 @@ public class Mesa
             int i = 0;
             while (!bColorActivado && i < 4)
             {
-                Carta c = cartasEnJuego[i].Peek();
-                if (c.color == Carta.Color.Especial && c.forma == (int) modo)
+                if (cartasEnJuego[i].Count > 0)
                 {
-                    bColorActivado = true;
+                    Carta c = cartasEnJuego[i].Peek();
+                    if (c.color == Carta.Color.Especial && c.forma == (int) modo)
+                    {
+                        bColorActivado = true;
+                    }
+                    i++;
                 }
-                i++;
             }
             if (!bColorActivado)
             {
