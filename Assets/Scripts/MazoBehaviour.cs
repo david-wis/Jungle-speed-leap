@@ -43,19 +43,19 @@ public class MazoBehaviour : MonoBehaviour {
         switch (iNroMazo)
         {
             case 0:
-                _intObj.transform.position = totem.transform.position + new Vector3(0.15f, 0.035f, -0.25f);
+                _intObj.transform.position = totem.transform.position + new Vector3(0.1f, 0.023f, -0.25f);
                 _intObj.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
             case 1:
-                _intObj.transform.position = totem.transform.position + new Vector3(0.25f, 0.035f, 0.15f);
+                _intObj.transform.position = totem.transform.position + new Vector3(0.25f, 0.023f, 0.1f);
                 _intObj.transform.rotation = Quaternion.Euler(0, 90, 0);
                 break;
             case 2:
-                _intObj.transform.position = totem.transform.position + new Vector3(-0.15f, 0.035f, 0.25f);
+                _intObj.transform.position = totem.transform.position + new Vector3(-0.1f, 0.023f, 0.25f);
                 _intObj.transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
             case 3:
-                _intObj.transform.position = totem.transform.position + new Vector3(-0.25f, 0.035f, -0.15f);
+                _intObj.transform.position = totem.transform.position + new Vector3(-0.25f, 0.023f, -0.1f);
                 _intObj.transform.rotation = Quaternion.Euler(0, -90, 0);
                 break;
             default:
