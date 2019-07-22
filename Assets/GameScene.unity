@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44131836, g: 0.49012434, b: 0.570174, a: 1}
+  m_IndirectSpecularColor: {r: 0.44131863, g: 0.49012464, b: 0.57017446, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11635,7 +11635,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.000000002153683
+      value: -0.0000000052968954
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.x
@@ -11643,11 +11643,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.0000000843429
+      value: 0.00000008344068
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -0.000000013620593
+      value: -0.000000013271347
       objectReference: {fileID: 0}
     - target: {fileID: 4608501519327712, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.x
@@ -11655,11 +11655,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4608501519327712, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.00000006191534
+      value: -0.000000063482595
       objectReference: {fileID: 0}
     - target: {fileID: 4608501519327712, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -0.000000008032657
+      value: -0.000000007683412
       objectReference: {fileID: 0}
     - target: {fileID: 4437985243979600, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.x
@@ -11667,7 +11667,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4437985243979600, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0.009242242
+      value: -0.009242243
       objectReference: {fileID: 0}
     - target: {fileID: 4437985243979600, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.z
@@ -11763,11 +11763,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4411577448127944, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.000000007482683
+      value: -0.00000000787503
       objectReference: {fileID: 0}
     - target: {fileID: 4411577448127944, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -0.000000022817403
+      value: -0.000000022584572
       objectReference: {fileID: 0}
     - target: {fileID: 4570656256943866, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.x
@@ -11875,7 +11875,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4437985243979600, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.9943704
+      value: 0.9943705
       objectReference: {fileID: 0}
     - target: {fileID: 4830608005988508, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.x
@@ -11887,7 +11887,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.000000007450578
       objectReference: {fileID: 0}
     - target: {fileID: 4113658506791758, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalScale.x
@@ -17627,7 +17627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a204f2958819134a8ce1d98f979f03a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contrAnimacDelMazo:
+  contrAnimacDesdeMazo:
   - {fileID: 9100000, guid: e8839755c6e06164abceaf18db57c3b5, type: 2}
   - {fileID: 9100000, guid: ca48ca2942877f7428b1642de6ffa635, type: 2}
   - {fileID: 9100000, guid: 403a2134af605c74691766d2a9f55338, type: 2}
@@ -17648,6 +17648,16 @@ MonoBehaviour:
   - {fileID: 9100000, guid: ac91e896f54fe2541a310d4f7349e472, type: 2}
   - {fileID: 9100000, guid: c86ecc52cabead546b876d84c896eca9, type: 2}
   - {fileID: 9100000, guid: a3435fc3a0effb64898527b570c95ee1, type: 2}
+  contrAnimacDesdeTotem:
+  - {fileID: 9100000, guid: 9ecba077518009249945184932e9b958, type: 2}
+  - {fileID: 9100000, guid: 8f2ccfc237d071d44a0454453418abb0, type: 2}
+  - {fileID: 9100000, guid: 90360e3205bbe2547b465fad03d38ec2, type: 2}
+  - {fileID: 9100000, guid: 3ea7680d02689d84bb8a83f0976b461c, type: 2}
+  contrAnimacHaciaTotem:
+  - {fileID: 9100000, guid: 06d75e5f8eab28647a2b7b47193339f0, type: 2}
+  - {fileID: 9100000, guid: 03894bdd287cd754dbd7bbac45e4fe73, type: 2}
+  - {fileID: 9100000, guid: d8088083aac6345439c663c9012a836e, type: 2}
+  - {fileID: 9100000, guid: 1a8b9e47a029c834ea530cdc9768c6ce, type: 2}
   cartasEstaticas: []
   turnos: {fileID: 32022752}
 --- !u!4 &2022951903

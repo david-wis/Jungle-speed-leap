@@ -9,7 +9,7 @@ using System;
 public class Main : MonoBehaviour
 {
     //public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
-    public const int CANTCARTAS = 19;
+    public const int CANTCARTAS = 8;
 
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDesdeMazo = new RuntimeAnimatorController[4];
