@@ -451,7 +451,9 @@ public class Main : MonoBehaviour
         if (!bAlCentro)
         { 
             //Batalla
+            //Les da a los perdedores las cartas del ganador, y las que estaban en el Totem
             StartCoroutine(llevarCartasAOtroMazo(iJugadorTotem, jugadoresEnemigos));
+            StartCoroutine(llevarCartasDesdeTotem(jugadoresEnemigos));
         }
         else
         {
@@ -585,7 +587,10 @@ public class Main : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Si se estan animando cartas hacia el Totem, cuento el tiempo. 
+    /// Si ya paso el tiempo establecido, llamo a finAnimacionHaciaTotem() 
+    /// </summary>
     public void verificarAnimacionesHaciaTotem()
     {
         if (bSeEstaAnimandoHaciaTotem)
@@ -598,7 +603,9 @@ public class Main : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Desactiva las animaciones de los GameObjects y les pone el cuerpo
+    /// </summary>
     public void finAnimacionHaciaTotem()
     {
         foreach (GameObject gameObject in gameObjectsAnimandoseHaciaTotem)
@@ -611,7 +618,10 @@ public class Main : MonoBehaviour
         fTimerAnimacHaciaTotem = 0f;
     }
 
-
+    /// <summary>
+    /// Si se estan animando cartas desde el Totem, cuento el tiempo. 
+    /// Si ya paso el tiempo establecido, llamo a finAnimacionDesdeTotem() 
+    /// </summary>
     public void verificarAnimacionesDesdeTotem()
     {
         if (bSeEstaAnimandoDesdeTotem)
@@ -620,12 +630,13 @@ public class Main : MonoBehaviour
             if (fTimerAnimacDesdeTotem >= fDuracAnimacionDesdeTotem)
             {
                 finAnimacionDesdeTotem();
-
             }
         }
     }
 
-
+    /// <summary>
+    /// Destruyo los GameObjects que se estaban animando desde el Totem
+    /// </summary>
     public void finAnimacionDesdeTotem()
     {
         foreach (GameObject gameObject in gameObjectsAnimandoseDesdeTotem)
@@ -704,7 +715,6 @@ public class Main : MonoBehaviour
         Carta[] cartasEnMesaDelJugador = mesa.obtener_VaciarCartasDelJugador(idJugadorGanador);
         RuntimeAnimatorController contrParaUsar = obtenerContrAnimacHaciaTotem(idJugadorGanador);
 
-        
         int iCantCartas = gameObjectsEnMesaDelJugador.Length;
         GameObject gameObject;
         TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
@@ -719,7 +729,7 @@ public class Main : MonoBehaviour
             gameObjectsAnimandoseHaciaTotem.Add(gameObject);
             sacarCuerpo(gameObject);
             totemBehaviour.agregarCartaALista(cartasEnMesaDelJugador[i]);
-            totemBehaviour.agregarGameObjALista(gameObjectsEnMesaDelJugador[i]);
+            totemBehaviour.agregarGameObjALista(gameObject);
             animarCarta(gameObject, contrParaUsar);
         }
     }
@@ -728,15 +738,18 @@ public class Main : MonoBehaviour
     /// Lleva las cartas del Totem al mazo del Jugador perdedor
     /// </summary>
     /// <param name="idPerdedor">El ID del Jugador perdedor</param>
-    public IEnumerator llevarCartasDesdeTotem(int idPerdedor)
+    public IEnumerator llevarCartasDesdeTotem(List<int> jugadoresEnemigos)
     {
         TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
-        List<Carta> cartasEnTotem = totemBehaviour.CartasEnTotem;
-        List<GameObject> gameObjectsEnTotem = totemBehaviour.GameObjsEnTotem;
-        RuntimeAnimatorController contrParaUsar = obtenerContrAnimacDesdeTotem(idPerdedor);
+        List<Carta> cartasEnTotem = totemBehaviour.obtener_VaciarCartasEnTotem();
+        List<GameObject> gameObjectsEnTotem = totemBehaviour.obtener_VaciarGameObjectsEnTotem();
+        List<RuntimeAnimatorController> contrParaUsar = obtenerContrAnimacDesdeTotem(jugadoresEnemigos);
 
-        int iCantCartas = cartasEnTotem.Count;
+        int iCantEnemigos = jugadoresEnemigos.Count, 
+            iCantCartas = cartasEnTotem.Count, 
+            iPosiEnemigos = 0;
         GameObject gameObject;
+
         bSeEstaAnimandoDesdeTotem = true;
         for (int i = 0; i < iCantCartas; i++)
         {
@@ -744,8 +757,9 @@ public class Main : MonoBehaviour
             gameObject = gameObjectsEnTotem[i];
             gameObjectsAnimandoseDesdeTotem.Add(gameObject);
             sacarCuerpo(gameObject);
-            animarCarta(gameObject, contrParaUsar);
-            jugadores[idPerdedor].AgregarCarta(cartasEnTotem[i]);
+            animarCarta(gameObject, contrParaUsar[iPosiEnemigos]);
+            jugadores[jugadoresEnemigos[iPosiEnemigos]].AgregarCarta(cartasEnTotem[i]);
+            iPosiEnemigos = (iPosiEnemigos == iCantEnemigos - 1) ? 0 : iPosiEnemigos + 1;
         }
     }
 
@@ -792,10 +806,19 @@ public class Main : MonoBehaviour
         return contrAnimacHaciaTotem[idJugadorGanador];
     }
 
-
-    public RuntimeAnimatorController obtenerContrAnimacDesdeTotem(int idJugadorPerdedor)
+    /// <summary>
+    /// Devuelve la lista de controllers de animaciones a usar desde el Totem
+    /// </summary>
+    /// <param name="jugadoresEnemigos">Lista de jugadores que deben recibir las cartas del Totem</param>
+    /// <returns></returns>
+    public List<RuntimeAnimatorController> obtenerContrAnimacDesdeTotem(List<int> jugadoresEnemigos)
     {
-        return contrAnimacDesdeTotem[idJugadorPerdedor];
+        List<RuntimeAnimatorController> controllers = new List<RuntimeAnimatorController>();
+        foreach(int iEnemigo in jugadoresEnemigos)
+        {
+            controllers.Add(contrAnimacDesdeTotem[iEnemigo]);
+        }
+        return controllers;
     }
 
     /// <summary>

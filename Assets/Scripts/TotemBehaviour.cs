@@ -236,6 +236,17 @@ public class TotemBehaviour : MonoBehaviour {
     }
 
     /// <summary>
+    /// Vacia la lista gameObjsEnTotem y la devuelve
+    /// </summary>
+    /// <returns></returns>
+    public List<GameObject> obtener_VaciarGameObjectsEnTotem()
+    {
+        List<GameObject> gameObjects = _gameObjsEnTotem;
+        vaciarGameObjectsEnTotem();
+        return gameObjects;
+    }
+
+    /// <summary>
     /// Getter de la lista gameObjsEnTotem
     /// </summary>
     public List<GameObject> GameObjsEnTotem
@@ -244,6 +255,25 @@ public class TotemBehaviour : MonoBehaviour {
         {
             return _gameObjsEnTotem;
         }
+    }
+
+    /// <summary>
+    /// Vacia la lista gameObjsEnTotem
+    /// </summary>
+    public void vaciarGameObjectsEnTotem()
+    {
+        _gameObjsEnTotem.Clear();
+    }
+
+    /// <summary>
+    /// Vacia la lista cartasEnTotem y la devuelve
+    /// </summary>
+    /// <returns></returns>
+    public List<Carta> obtener_VaciarCartasEnTotem()
+    {
+        List<Carta> cartas = _cartasEnTotem;
+        vaciarCartasEnTotem();
+        return cartas;
     }
 
     /// <summary>
@@ -256,5 +286,14 @@ public class TotemBehaviour : MonoBehaviour {
             return _cartasEnTotem;
         }
     }
+
+    /// <summary>
+    /// Vacia la lista cartasEnTotem
+    /// </summary>
+    public void vaciarCartasEnTotem()
+    {
+        _cartasEnTotem.Clear();
+    }
+
 
 }
