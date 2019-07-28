@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEditor;
 using System;
+using Leap.Unity.Interaction;
 
 public class Main : MonoBehaviour
 {
@@ -317,12 +318,13 @@ public class Main : MonoBehaviour
     {
         if (jugadores[idJugador].ObtenerCantCartas() == 0)
         {
-            mazos[idJugador].SetActive(false);
+            Destroy(mazos[idJugador]); //Evitar null reference sobre el mazo
+            //mazos[idJugador].SetActive(false);
         }
-        else
-        {
-            mazos[idJugador].SetActive(true);
-        }
+        //else
+        //{
+        //    mazos[idJugador].SetActive(true);
+        //}
     }
 
     /// <summary>
