@@ -27,6 +27,14 @@ public class MazoBehaviour : MonoBehaviour {
         }
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+        if (MesaManager.instance.mesa.Modo != ModoJuego.Fuera)
+        {
+            GenerarCarta();
+        }
+    }
+
     /// <summary>
     /// Dispara el evento "agarrarcartaX" dependiendo del mazo tocado
     /// </summary>

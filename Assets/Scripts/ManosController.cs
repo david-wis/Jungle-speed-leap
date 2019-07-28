@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ManosController : MonoBehaviour {
 
     public int iIndexJug;
+    public RuntimeAnimatorController contAnimacManos;
+
     GameObject totem;
     GameObject manoIzq, manoDer;
     TotemBehaviour totemBehaviour;
@@ -14,7 +17,8 @@ public class ManosController : MonoBehaviour {
     int iEstado; //0 empieza a moverse - 1 en movimiento - 2 movido
     Vector3 corrimiento;
     //Boolean bLoAgarre;
-    
+    bool bAnimandose;
+
 
     // Use this for initialization
     void Start()
@@ -23,9 +27,10 @@ public class ManosController : MonoBehaviour {
         lerpMovBack = new Lerpeador(1);
         lerpMovUp = new Lerpeador(0.5f);
         //lerpRot = new Lerpeador(0.5f);
-
+        
         manoIzq = transform.GetChild(0).gameObject;
         manoDer = transform.GetChild(1).gameObject;
+
         totem = TotemManager.instance.totem;
         totemBehaviour = totem.GetComponent<TotemBehaviour>();
         PonerManos();
@@ -33,6 +38,7 @@ public class ManosController : MonoBehaviour {
         posicionInicial[0] = manoIzq.transform.position;
         posicionInicial[1] = manoDer.transform.position;
         //bLoAgarre = false;
+        bAnimandose = false;
     }
 
     // Update is called once per frame
@@ -40,7 +46,12 @@ public class ManosController : MonoBehaviour {
     {
         if (MesaManager.instance.iIndexJugActual == iIndexJug)
         {
-            //TODO: Animacion tocar mazo
+            if (!bAnimandose)
+            {
+                AnimarMano("tocarMazo");
+                StartCoroutine(detenerAnimacion());
+                bAnimandose = true;
+            }
         }
 
         bool bAgarrarPosible = MesaManager.instance.mesa.TieneIgualdadConResto(iIndexJug);
@@ -93,7 +104,6 @@ public class ManosController : MonoBehaviour {
     /// </summary>
     private void IntentarAgarrar()
     {
-
         switch (iEstado)
         {
             case 0:
@@ -108,6 +118,7 @@ public class ManosController : MonoBehaviour {
                 break;
             case 2:
                 //Animacion de cerrar mano
+                AnimarMano("agarrarTotem");
                 lerpMovUp.Start(manoDer, manoDer.transform.position + Vector3.up * 0.2f);
                 totemBehaviour.fijarTotemEnMano(manoDer.transform);
                 iEstado++;
@@ -183,5 +194,29 @@ public class ManosController : MonoBehaviour {
                 Debug.Log("Esto no deberia pasar xdxd");
                 break;
         }
+    }
+
+    /// <summary>
+    /// Detiene la animacion luego de 3 segundos
+    /// </summary>
+    IEnumerator detenerAnimacion()
+    {
+        yield return new WaitForSeconds(3f);
+        bAnimandose = false;
+        Animator animator = manoDer.gameObject.GetComponent<Animator>();
+        animator.runtimeAnimatorController = null;
+    }
+
+
+    /// <summary>
+    /// Permite animar la mano derecha
+    /// </summary>
+    /// <param name="sNomAnimacion">Nombre de la animacion que se desea ejecutar</param>
+    void AnimarMano(string sNomAnimacion)
+    {
+        Animator animator = manoDer.gameObject.GetComponent<Animator>();
+        animator.runtimeAnimatorController = contAnimacManos;
+        animator.enabled = true;
+        animator.Play(sNomAnimacion);
     }
 }
