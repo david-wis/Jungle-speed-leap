@@ -9,8 +9,8 @@ using Leap.Unity.Interaction;
 
 public class Main : MonoBehaviour
 {
-    //public const int CANTCARTAS = 80; //Flechas para adentro y afuera por ahora no van a ser cartas
     public const int CANTCARTAS = 80;
+    //public const int CANTCARTAS = 16;
 
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDesdeMazo = new RuntimeAnimatorController[4];
@@ -316,14 +316,16 @@ public class Main : MonoBehaviour
     {
         if (jugadores[idJugador].ObtenerCantCartas() == 0)
         {
-            Destroy(mazos[idJugador]); //Evitar null reference sobre el mazo
-            Debug.Log("Gano el jugador " + (idJugador + 1));
-            //mazos[idJugador].SetActive(false);
+            Debug.Log("Desactivando " + mazos[idJugador].name);
+            
+            //Destroy(mazos[idJugador]); //Evitar null reference sobre el mazo
+            //Debug.Log("Gano el jugador " + (idJugador + 1));
+            mazos[idJugador].SetActive(false);
         }
-        //else
-        //{
-        //    mazos[idJugador].SetActive(true);
-        //}
+        else
+        {
+            mazos[idJugador].SetActive(true);
+        }
     }
 
     /// <summary>
@@ -415,6 +417,7 @@ public class Main : MonoBehaviour
         /* El jugador que agarro mal el totem es el enemigo, y los demas son ganadores */
         List<int> listaEnemigos = new List<int>();
         listaEnemigos.Add(iJugadorTotem);
+        StartCoroutine(llevarCartasDesdeTotem(listaEnemigos));
         for (int i = 0; i < CANTJUGADORES; i++)
         {
             if (i != iJugadorTotem)
@@ -583,9 +586,9 @@ public class Main : MonoBehaviour
         fTimerAnimacHaciaMazo = 0f;
         for (int i = 0; i < 4; i++)
         {
-            verificarMazoVacioJugador(i);
-            reactivarCuerposGameObjects();
+            verificarMazoVacioJugador(i);            
         }
+        reactivarCuerposGameObjects();
     }
 
     /// <summary>
