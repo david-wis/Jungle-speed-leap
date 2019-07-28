@@ -9,8 +9,8 @@ public class Lerpeador
 
     Vector3 startPos;
     Vector3 endPos;
-    Quaternion startRot;
-    Quaternion endRot;
+    /*Quaternion startRot;
+    Quaternion endRot;*/
     GameObject gameObject;
     bool bMovimiento; //Determina si es un lerpeador de movimiento o rotacion
     
@@ -56,11 +56,11 @@ public class Lerpeador
         {
             gameObject.transform.position = Vector3.Lerp(startPos, endPos, perc);
         }
-        else
+        /*else
         {
             gameObject.transform.rotation = Quaternion.Lerp(startRot, endRot, perc);
             Debug.Log(gameObject.transform.rotation);
-        }
+        }*/
         return bTermino;
     }
 }

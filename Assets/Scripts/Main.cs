@@ -76,9 +76,6 @@ public class Main : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        /* Aca en algun momento vamos a meter un menu 
-         * para hostear partidas y elegir cant de jugadores
-         */
         totem = TotemManager.instance.totem;
         //totem.transform.position += new Vector3(0, 3, 0);
         LlenarMazo();
@@ -117,8 +114,9 @@ public class Main : MonoBehaviour
         iIndexJugActual = 0;
         cambiarTurno(0);
     }
+
     float fTimer = 0.0f; //Bereishit
-    bool bCartaEsperando = false;
+    //bool bCartaEsperando = false;
     float fLastTime = -2.0f; //Ultima vez que se tocó el mazo
     bool bPause = false; //Permite pausar el mundo
     // Update is called once per frame
@@ -284,7 +282,7 @@ public class Main : MonoBehaviour
                         fLastTime = fTimer;
                         verificarMazoVacioJugador(iIndexJugActual);
                         iIndexJugActual = (iIndexJugActual < 3) ? iIndexJugActual + 1 : 0;
-                        bCartaEsperando = false;
+                        //bCartaEsperando = false;
                         if (modo == ModoJuego.Fuera)
                         {
                             bPause = true;
@@ -319,6 +317,7 @@ public class Main : MonoBehaviour
         if (jugadores[idJugador].ObtenerCantCartas() == 0)
         {
             Destroy(mazos[idJugador]); //Evitar null reference sobre el mazo
+            Debug.Log("Gano el jugador " + (idJugador + 1));
             //mazos[idJugador].SetActive(false);
         }
         //else

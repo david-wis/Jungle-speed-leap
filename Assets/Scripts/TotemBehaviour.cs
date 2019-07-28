@@ -127,6 +127,9 @@ public class TotemBehaviour : MonoBehaviour {
         _intObj.enabled = true;
         bAgarrado = false;
         bAgarradoCorrecto = false;
+        //Experimental, no se si cambian algo estas dos ultimas lineas
+        iIndexApretado = -1;
+        iIndexViejo = -1;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -304,6 +307,10 @@ public class TotemBehaviour : MonoBehaviour {
     }
 
     Transform mano = null;
+    /// <summary>
+    /// Setea como gameobject padre a la mano que agarró el totem
+    /// </summary>
+    /// <param name="mano">Mano que agarró el totem</param>
     public void fijarTotemEnMano(Transform mano)
     {
         this.mano = mano;

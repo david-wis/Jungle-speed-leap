@@ -9,15 +9,12 @@ public class MazoBehaviour : MonoBehaviour {
 
     public int iNroMazo;
     GameObject totem;
-    TotemBehaviour totemBehaviour;
 
     // Use this for initialization
     void Start () {
         _intObj = GetComponent<InteractionBehaviour>();
         totem = TotemManager.instance.totem;
-        totemBehaviour = totem.GetComponent<TotemBehaviour>();
-       
-        PonerMazos();
+        PonerMazo();
     }
 
     void Update() {
@@ -38,7 +35,7 @@ public class MazoBehaviour : MonoBehaviour {
         EventManager.TriggerEvent("agarrarcarta" + iNroMazo);
     }
 
-    public void PonerMazos()
+    public void PonerMazo()
     {
         switch (iNroMazo)
         {

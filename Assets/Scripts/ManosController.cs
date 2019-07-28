@@ -13,7 +13,7 @@ public class ManosController : MonoBehaviour {
     //Lerpeador lerpRot;
     int iEstado; //0 empieza a moverse - 1 en movimiento - 2 movido
     Vector3 corrimiento;
-    Boolean bLoAgarre;
+    //Boolean bLoAgarre;
     
 
     // Use this for initialization
@@ -32,7 +32,7 @@ public class ManosController : MonoBehaviour {
         iEstado = 0;
         posicionInicial[0] = manoIzq.transform.position;
         posicionInicial[1] = manoDer.transform.position;
-        bLoAgarre = false;
+        //bLoAgarre = false;
     }
 
     // Update is called once per frame
@@ -59,6 +59,7 @@ public class ManosController : MonoBehaviour {
         }
     }
 
+    //OPTIMIZAR: esto podria fusionarse con la funcion de IntentarAgarrar
     int iEstadoRetroceso = 0;
     /// <summary>
     /// Si la mano se queda en el medio del recorrido en un momento que no corresponde o otro agarra el totem antes, vuelve para atras
