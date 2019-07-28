@@ -24,7 +24,7 @@ public class TotemBehaviour : MonoBehaviour {
     UnityAction forzarAgarradoListener, forzarAgarradoCorrectoListener, terminarForzarAgarradoListener;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         _intObj = GetComponent<InteractionBehaviour>();
         posicionInicial = transform.position;
         rotacionInicial = transform.rotation;
@@ -64,32 +64,35 @@ public class TotemBehaviour : MonoBehaviour {
                 switch (iIndexApretado)
                 {
                     case 0: //Caso del jugador, es el unico que probe asi que despues fijense xd
-                        if (transform.position.z <= -0.35)
+                        if (posicionInicial.z - transform.position.z >= 0.2)
                         {
                             Debug.Log("Totem robado por el jugador 1");
                             bAgarradoCorrecto = false;
-                            EventManager.TriggerEvent("totemtraido");       
+                            EventManager.TriggerEvent("totemtraido");
                         }
                         break;
                     case 1:
-                        if (PosAnterior.x - transform.position.x >= 0.2)
+                        if (PosAnterior.x - transform.position.x <= -0.2)
                         {
                             Debug.Log("Totem robado por el jugador 2");
                             bAgarradoCorrecto = false;
+                            EventManager.TriggerEvent("totemtraido");
                         }
                         break;
                     case 2:
-                        if (transform.position.z - PosAnterior.z  >= 0.2)
+                        if (transform.position.z - PosAnterior.z >= 0.2)
                         {
                             Debug.Log("Totem robado por el jugador 3");
                             bAgarradoCorrecto = false;
+                            EventManager.TriggerEvent("totemtraido");
                         }
                         break;
                     case 3:
-                        if (transform.position.x - PosAnterior.x >= 0.2)
+                        if (transform.position.x - PosAnterior.x <= -0.2)
                         {
                             Debug.Log("Totem robado por el jugador 4");
                             bAgarradoCorrecto = false;
+                            EventManager.TriggerEvent("totemtraido");
                         }
                         break;
                     default:
@@ -97,7 +100,7 @@ public class TotemBehaviour : MonoBehaviour {
                 }
             }
         }
-	}
+    }
 
     /// <summary>
     /// Establece que el totem fue agarrado con exito
@@ -133,6 +136,7 @@ public class TotemBehaviour : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         string sNomMano = other.gameObject.transform.parent.transform.parent.name;
+        Debug.Log(sNomMano);
         int i = 0;
         iIndexApretado = -1;
         while (i < 4 && iIndexApretado == -1) {
@@ -295,5 +299,11 @@ public class TotemBehaviour : MonoBehaviour {
         _cartasEnTotem.Clear();
     }
 
-
+    Transform mano = null;
+    public void fijarTotemEnMano(Transform mano)
+    {
+        this.mano = mano;
+        transform.parent = mano;
+        //transform.SetParent(mano.transform);
+    }
 }

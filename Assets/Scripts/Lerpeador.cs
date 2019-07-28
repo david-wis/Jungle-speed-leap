@@ -2,6 +2,7 @@
 
 public class Lerpeador
 {
+    public bool bTermino;
     float lerpTime;
     float currentLerpTime;
 
@@ -15,6 +16,7 @@ public class Lerpeador
     public Lerpeador(float fTiempo)
     {
         lerpTime = fTiempo;
+        bTermino = true;
     }
 
     public void Start(GameObject gameObject, Vector3 posFinal)
@@ -23,6 +25,7 @@ public class Lerpeador
         startPos = gameObject.transform.position;
         endPos = posFinal;
         bMovimiento = true;
+        bTermino = false;
     }
 
     public void Start(GameObject gameObject, Quaternion rotFinal)
@@ -35,15 +38,12 @@ public class Lerpeador
 
     public bool Update()
     {
-        bool bTermino = false;
-
         //increment timer once per frame
         currentLerpTime += Time.deltaTime;
         if (currentLerpTime > lerpTime)
         {
             currentLerpTime = lerpTime;
             bTermino = true;
-            Debug.Log("Termino");
         }
         //lerp!
         float perc = currentLerpTime / lerpTime;

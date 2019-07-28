@@ -9,16 +9,18 @@ public class ManosController : MonoBehaviour {
     GameObject manoIzq, manoDer;
     TotemBehaviour totemBehaviour;
     Vector3[] posicionInicial = new Vector3[2]; //Posicion inicial de las manitos
-    Lerpeador lerpMov;
+    Lerpeador lerpMov, lerpMovBack;
     //Lerpeador lerpRot;
     int iEstado; //0 empieza a moverse - 1 en movimiento - 2 movido
     Vector3 corrimiento;
+    Boolean bLoAgarre;
     
 
     // Use this for initialization
     void Start()
     {
-        lerpMov = new Lerpeador(0.5f);
+        lerpMov = new Lerpeador(1);
+        lerpMovBack = new Lerpeador(1);
         //lerpRot = new Lerpeador(0.5f);
 
         manoIzq = transform.GetChild(0).gameObject;
@@ -27,8 +29,9 @@ public class ManosController : MonoBehaviour {
         totemBehaviour = totem.GetComponent<TotemBehaviour>();
         PonerManos();
         iEstado = 0;
-        //posicionInicial[0] = manoIzq.transform;
-        //posicionInicial[1] = manoDer.transform;
+        posicionInicial[0] = manoIzq.transform.position;
+        posicionInicial[1] = manoDer.transform.position;
+        bLoAgarre = false;
     }
 
     // Update is called once per frame
@@ -41,29 +44,45 @@ public class ManosController : MonoBehaviour {
         }
 
         bool bAgarrarPosible = MesaManager.instance.mesa.TieneIgualdadConResto(iIndexJug);
-        Debug.Log("Jugador " + iIndexJug + " " + bAgarrarPosible);
         if (bAgarrarPosible)
         {
-            switch (iEstado)
+            if (!totemBehaviour.estaAgarrado() || totemBehaviour.ObtenerJugador() == iIndexJug)
             {
-                case 0:
-                    lerpMov.Start(manoDer, totem.transform.position + corrimiento);
-                    iEstado++;
-                    Debug.Log("Estado 2 terminado");
-                    break;
-                case 1:
-                    if (lerpMov.Update())
-                    {
-                        iEstado++;
-                        Debug.Log("Estado 3 terminado");
-                    }
-                    break;
-                case 2:
-                    //Animacion
-                    iEstado = 0;
-                    Debug.Log("Estado 4 terminado");
-                    break;
+                IntentarAgarrar();
             }
+        }
+    }
+
+    private void IntentarAgarrar()
+    {
+        switch (iEstado)
+        {
+            case 0:
+                lerpMov.Start(manoDer, totem.transform.position + corrimiento);
+                iEstado++;
+                break;
+            case 1:
+                if (lerpMov.Update())
+                {
+                    iEstado++;
+                }
+                break;
+            case 2:
+                //Animacion
+                if (lerpMovBack.bTermino)
+                {
+                    totemBehaviour.fijarTotemEnMano(manoDer.transform);
+                    //totem.transform.parent = manoDer.transform;
+                    lerpMovBack.Start(manoDer, posicionInicial[1]);
+                }
+                else
+                {
+                    if (lerpMovBack.Update())
+                    {
+                        iEstado = 0;
+                    }
+                }
+                break;
         }
     }
 
