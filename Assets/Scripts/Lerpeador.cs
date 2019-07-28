@@ -2,7 +2,8 @@
 
 public class Lerpeador
 {
-    public bool bTermino;
+    public bool bTermino; //Determina si el lerpeador no se esta moviendo
+    public bool bActivado; //Determina si el lerpeador ya empezo
     float lerpTime;
     float currentLerpTime;
 
@@ -11,12 +12,14 @@ public class Lerpeador
     Quaternion startRot;
     Quaternion endRot;
     GameObject gameObject;
-    bool bMovimiento;
+    bool bMovimiento; //Determina si es un lerpeador de movimiento o rotacion
+    
 
     public Lerpeador(float fTiempo)
     {
         lerpTime = fTiempo;
         bTermino = true;
+        bActivado = false;
     }
 
     public void Start(GameObject gameObject, Vector3 posFinal)
@@ -25,16 +28,18 @@ public class Lerpeador
         startPos = gameObject.transform.position;
         endPos = posFinal;
         bMovimiento = true;
+        bActivado = true;
         bTermino = false;
     }
 
-    public void Start(GameObject gameObject, Quaternion rotFinal)
+    //Por ahora la funcionalidad de rotacion no se implementa
+    /*public void Start(GameObject gameObject, Quaternion rotFinal)
     {
         this.gameObject = gameObject;
         startRot = gameObject.transform.rotation;
         endRot = rotFinal;
         bMovimiento = false;
-    }
+    }*/
 
     public bool Update()
     {

@@ -9,7 +9,7 @@ public class ManosController : MonoBehaviour {
     GameObject manoIzq, manoDer;
     TotemBehaviour totemBehaviour;
     Vector3[] posicionInicial = new Vector3[2]; //Posicion inicial de las manitos
-    Lerpeador lerpMov, lerpMovBack;
+    Lerpeador lerpMov, lerpMovBack, lerpMovUp;
     //Lerpeador lerpRot;
     int iEstado; //0 empieza a moverse - 1 en movimiento - 2 movido
     Vector3 corrimiento;
@@ -21,6 +21,7 @@ public class ManosController : MonoBehaviour {
     {
         lerpMov = new Lerpeador(1);
         lerpMovBack = new Lerpeador(1);
+        lerpMovUp = new Lerpeador(0.5f);
         //lerpRot = new Lerpeador(0.5f);
 
         manoIzq = transform.GetChild(0).gameObject;
@@ -35,7 +36,6 @@ public class ManosController : MonoBehaviour {
     }
 
     // Update is called once per frame
-
     void Update()
     {
         if (MesaManager.instance.iIndexJugActual == iIndexJug)
@@ -49,12 +49,50 @@ public class ManosController : MonoBehaviour {
             if (!totemBehaviour.estaAgarrado() || totemBehaviour.ObtenerJugador() == iIndexJug)
             {
                 IntentarAgarrar();
+            } else
+            {
+                Retroceder();
+            }
+        } else
+        {
+            Retroceder();
+        }
+    }
+
+    int iEstadoRetroceso = 0;
+    /// <summary>
+    /// Si la mano se queda en el medio del recorrido en un momento que no corresponde o otro agarra el totem antes, vuelve para atras
+    /// </summary>
+    private void Retroceder()
+    {
+        if (manoDer.transform.position != posicionInicial[1])
+        {
+            if (iEstadoRetroceso == 0)
+            {
+                lerpMovBack.Start(manoDer, posicionInicial[1]);
+                iEstadoRetroceso++;
+            }
+            else if (iEstadoRetroceso == 1)
+            {
+                if (lerpMovBack.Update())
+                {
+                    iEstadoRetroceso++;
+                }
+            }
+            else
+            {
+                iEstadoRetroceso = 0;
+                lerpMovBack = new Lerpeador(1f);
             }
         }
     }
 
+    /// <summary>
+    /// Realiza los movimientos para robar el totem
+    /// </summary>
     private void IntentarAgarrar()
     {
+
         switch (iEstado)
         {
             case 0:
@@ -68,20 +106,33 @@ public class ManosController : MonoBehaviour {
                 }
                 break;
             case 2:
-                //Animacion
-                if (lerpMovBack.bTermino)
+                //Animacion de cerrar mano
+                lerpMovUp.Start(manoDer, manoDer.transform.position + Vector3.up * 0.2f);
+                totemBehaviour.fijarTotemEnMano(manoDer.transform);
+                iEstado++;
+                break;
+            case 3:
+                if (lerpMovUp.Update())
                 {
-                    totemBehaviour.fijarTotemEnMano(manoDer.transform);
-                    //totem.transform.parent = manoDer.transform;
-                    lerpMovBack.Start(manoDer, posicionInicial[1]);
+                    iEstado++;
                 }
-                else
+                break;
+            case 4:
+                lerpMovBack.Start(manoDer, posicionInicial[1]);
+                iEstado++;
+                break;
+            case 5:
+                if (lerpMovBack.Update())
                 {
-                    if (lerpMovBack.Update())
-                    {
-                        iEstado = 0;
-                    }
+                    iEstado++;
                 }
+                break;
+            default:
+                //Se reincian todos los lerpeadores y vuelve al estado inicial
+                iEstado = 0;
+                lerpMov = new Lerpeador(1);
+                lerpMovBack = new Lerpeador(1);
+                lerpMovUp = new Lerpeador(0.5f);
                 break;
         }
     }

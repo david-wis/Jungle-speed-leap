@@ -117,12 +117,16 @@ public class TotemBehaviour : MonoBehaviour {
     public void ReiniciarPosicion()
     {
         _intObj.enabled = false;
-        transform.rotation = rotacionInicial;
-        transform.position = posicionInicial;
+        transform.parent = null;
         Rigidbody rb = GetComponent<Rigidbody>();
+        rb.useGravity = true;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        transform.rotation = rotacionInicial;
+        transform.position = posicionInicial + Vector3.up*0.1f;
         _intObj.enabled = true;
+        bAgarrado = false;
+        bAgarradoCorrecto = false;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -304,6 +308,7 @@ public class TotemBehaviour : MonoBehaviour {
     {
         this.mano = mano;
         transform.parent = mano;
+        GetComponent<Rigidbody>().useGravity = false;
         //transform.SetParent(mano.transform);
     }
 }
