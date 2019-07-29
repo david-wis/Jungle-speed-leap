@@ -44,7 +44,7 @@ public class ManosController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(iIndexJug + ": " + iEstado);
+        //Debug.Log(iIndexJug + ": " + iEstado);
         if (MesaManager.instance.iIndexJugActual == iIndexJug && iEstado == 0)
         {
             if (!bAnimandose)

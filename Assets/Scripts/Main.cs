@@ -316,10 +316,7 @@ public class Main : MonoBehaviour
     {
         if (jugadores[idJugador].ObtenerCantCartas() == 0)
         {
-            Debug.Log("Desactivando " + mazos[idJugador].name);
-            
-            //Destroy(mazos[idJugador]); //Evitar null reference sobre el mazo
-            //Debug.Log("Gano el jugador " + (idJugador + 1));
+            //Debug.Log("Desactivando " + mazos[idJugador].name);
             mazos[idJugador].SetActive(false);
         }
         else
@@ -363,6 +360,7 @@ public class Main : MonoBehaviour
         desactivarCuerposGameObjects(); //Para que el Totem no se choque con las cartas en mesa
         if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
+            EventManager.StopListening("totemtraido", eventoListenerTotemTraido); //INTENTANDO SOLUCIONAR BUG
             TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
             totemBehaviour.SetAgarradoCorrecto();
             eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(true); });
@@ -373,25 +371,43 @@ public class Main : MonoBehaviour
             List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
             for (int i = 0; i < listaJugadoresEnemigos.Count; i++)
             {
-                Debug.Log("Enemigo en AgarrarTotem: " + listaJugadoresEnemigos[i]);
+                Debug.Log("--Enemigo en AgarrarTotem: " + listaJugadoresEnemigos[i]);
             }
-            //mostrarFormasJugadores(); //SOLO PARA DEBUG
             if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
             {
+                EventManager.StopListening("totemtraido", eventoListenerTotemTraido); //INTENTANDO SOLUCIONAR BUG
                 Debug.Log("Totem agarrado correctamente, llevatelo");
                 TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
                 totemBehaviour.SetAgarradoCorrecto();
                 eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(false, listaJugadoresEnemigos); });
-                EventManager.StartListening("totemtraido", eventoListenerTotemTraido);                
+                EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
             }
             else //Agarro mal el totem
             {
                 totemMalAgarrado();
                 Debug.Log("Totem mal agarrado");
                 ReiniciarTotem();
-                //TODO: meterle las cartas de los otros y del totem al jugador
             }
         }
+        //mostrarDiccEventos(); //DEBUG
+    }
+
+    public void mostrarDiccEventos() //DEBUG - Viendo que onda con el diccionario (al final parece que todo cul =)
+    {
+        Debug.Log("---Mostrando el diccionario---");
+        Dictionary<string, UnityEvent> dicEventos = EventManager.instance.EventDictionary;
+        if (dicEventos.Count > 0)
+        {
+            foreach (KeyValuePair<string, UnityEvent> keyValuePair in dicEventos)
+            {
+                Debug.Log(keyValuePair.Key + " - " + keyValuePair.Value);
+            }
+        }
+        else
+        {
+            Debug.Log("No hay datos en el dicc, revisar el objecto");
+        }
+        Debug.Log("---Fin mostrando diccionario---");
     }
 
     /// <summary>
@@ -452,9 +468,25 @@ public class Main : MonoBehaviour
     /// <param name="jugadoresEnemigos">Indica a que jugadores dar las cartas</param>
     void DarCartas(bool bAlCentro, List<int> jugadoresEnemigos = null)
     {
-        if (!bAlCentro)
+        Debug.Log("---Dando cartas---");
+
+        if (jugadoresEnemigos != null)
+        {
+            Debug.Log("Ganador: " + iJugadorTotem);
+            string sEnemigos = "";
+            foreach (int iEnemigo in jugadoresEnemigos)
+            {
+                sEnemigos += " - " + iEnemigo.ToString();
+            }
+            Debug.Log("Enemigos: " + sEnemigos.Substring(3)); //Elimino el primer " - "
+        }
+        else
+        {
+            Debug.Log("Cartas del jugador " + iJugadorTotem + " al Totem");
+        }        
+
+        if (!bAlCentro) //Batalla
         { 
-            //Batalla
             //Les da a los perdedores las cartas del ganador, y las que estaban en el Totem
             StartCoroutine(llevarCartasAOtroMazo(iJugadorTotem, jugadoresEnemigos));
             StartCoroutine(llevarCartasDesdeTotem(jugadoresEnemigos));
@@ -466,7 +498,8 @@ public class Main : MonoBehaviour
         }
         ReiniciarTotem();
         mesa.NormalizarModo(); //Sea lo que sea siempre que se le den cartas a alguien el modo queda en normal
-        EventManager.StopListening("totemtraido", eventoListenerTotemTraido);
+
+        Debug.Log("---Fin dando cartas---");
     }
 
     /// <summary>
@@ -673,8 +706,14 @@ public class Main : MonoBehaviour
     /// <param name="gameObject">El GameObject al que se quiere activar el BoxCollider y la Gravity</param>
     public void ponerCuerpo(GameObject gameObject)
     {
-        gameObject.GetComponent<BoxCollider>().enabled = true;
-        gameObject.GetComponent<Rigidbody>().useGravity = true;
+        if (gameObject.GetComponent<BoxCollider>() != null)
+        {
+            gameObject.GetComponent<BoxCollider>().enabled = true;
+        }
+        if (gameObject.GetComponent<Rigidbody>() != null)
+        {
+            gameObject.GetComponent<Rigidbody>().useGravity = true;
+        }
     }
 
     /// <summary>

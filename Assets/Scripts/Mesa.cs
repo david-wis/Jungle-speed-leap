@@ -266,11 +266,6 @@ public class Mesa
         cartasEnJuego[idJugador].Clear();
     }
 
-    /*public Carta[] obtenerCartasDelJugador_Array(int idJugador)
-    {
-        return cartasEnJuego[idJugador].ToArray();
-    }*/
-
     /// <summary>
     /// Obtiene la pila de cartas de un jugador determinado
     /// </summary>

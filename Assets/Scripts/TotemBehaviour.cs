@@ -51,10 +51,10 @@ public class TotemBehaviour : MonoBehaviour {
     {
         if (bAgarrado)
         {
-            //Debug.Log(iIndexViejo + " - " + iIndexApretado);
+            Debug.Log("IndexViejo: " + iIndexViejo + " -- IndexNuevo:" + iIndexApretado);
             if (iIndexViejo != iIndexApretado)
             {
-                Debug.Log("evento producido agarrartotem");
+                Debug.Log("------Evento producido agarrartotem");
                 EventManager.TriggerEvent("agarrartotem");
                 iIndexViejo = iIndexApretado;
             }
@@ -128,8 +128,8 @@ public class TotemBehaviour : MonoBehaviour {
         bAgarrado = false;
         bAgarradoCorrecto = false;
         //Experimental, no se si cambian algo estas dos ultimas lineas
-        iIndexApretado = -1;
-        iIndexViejo = -1;
+        //iIndexApretado = -1;
+        //iIndexViejo = -1;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -143,7 +143,7 @@ public class TotemBehaviour : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         string sNomMano = other.gameObject.transform.parent.transform.parent.name;
-        Debug.Log(sNomMano);
+        Debug.Log(sNomMano + " agarro el totem");
         int i = 0;
         iIndexApretado = -1;
         while (i < 4 && iIndexApretado == -1) {
