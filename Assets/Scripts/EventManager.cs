@@ -33,6 +33,19 @@ public class EventManager : MonoBehaviour
         }
     }
 
+    public Dictionary<string, UnityEvent> EventDictionary
+    {
+        get
+        {
+            return eventDictionary;
+        }
+
+        /*set
+        {
+            eventDictionary = value;
+        }*/
+    }
+
     void Init()
     {
         if (eventDictionary == null)
