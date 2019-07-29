@@ -44,6 +44,7 @@ public class ManosController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(iIndexJug + ": " + iEstado);
         if (MesaManager.instance.iIndexJugActual == iIndexJug && iEstado == 0)
         {
             if (!bAnimandose)
@@ -63,10 +64,12 @@ public class ManosController : MonoBehaviour {
             } else
             {
                 Retroceder();
+                iEstado = 0;
             }
         } else
         {
             Retroceder();
+            iEstado = 0;
         }
     }
 
