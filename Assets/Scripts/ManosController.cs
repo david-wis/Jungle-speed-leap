@@ -44,7 +44,7 @@ public class ManosController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (MesaManager.instance.iIndexJugActual == iIndexJug)
+        if (MesaManager.instance.iIndexJugActual == iIndexJug && iEstado == 0)
         {
             if (!bAnimandose)
             {
@@ -118,7 +118,7 @@ public class ManosController : MonoBehaviour {
                 break;
             case 2:
                 //Animacion de cerrar mano
-                AnimarMano("agarrarTotem");
+                //AnimarMano("agarrarTotem");
                 lerpMovUp.Start(manoDer, manoDer.transform.position + Vector3.up * 0.2f);
                 totemBehaviour.fijarTotemEnMano(manoDer.transform);
                 iEstado++;
@@ -204,6 +204,8 @@ public class ManosController : MonoBehaviour {
         yield return new WaitForSeconds(3f);
         bAnimandose = false;
         Animator animator = manoDer.gameObject.GetComponent<Animator>();
+        animator.enabled = false;
+        animator.StopPlayback();
         animator.runtimeAnimatorController = null;
     }
 
