@@ -45,9 +45,9 @@ public class ManosController : MonoBehaviour {
     void Update()
     {
         //Debug.Log(iIndexJug + ": " + iEstado);
-        if (MesaManager.instance.iIndexJugActual == iIndexJug && iEstado == 0)
+        if (MesaManager.instance.iIndexJugActual == iIndexJug && iEstado == 0 && !MesaManager.instance.AlguienToca)
         {
-            if (!bAnimandose)
+            if (!bAnimandose && ObtenerPosCorrecta(manoDer, 1) && ObtenerPosCorrecta(manoIzq, 0))
             {
                 AnimarMano("tocarMazo");
                 StartCoroutine(detenerAnimacion());
@@ -73,6 +73,11 @@ public class ManosController : MonoBehaviour {
         }
     }
 
+    private bool ObtenerPosCorrecta(GameObject mano, int iIndex)
+    {
+        return mano.transform.position == posicionInicial[iIndex];
+    }
+
     //OPTIMIZAR: esto podria fusionarse con la funcion de IntentarAgarrar
     int iEstadoRetroceso = 0;
     /// <summary>
@@ -80,7 +85,8 @@ public class ManosController : MonoBehaviour {
     /// </summary>
     private void Retroceder()
     {
-        if (manoDer.transform.position != posicionInicial[1])
+        MesaManager.instance.CambiarEstadoToque(iIndexJug, false); //Ya no esta buscando el totem
+        if (!ObtenerPosCorrecta(manoDer, 1))
         {
             if (iEstadoRetroceso == 0)
             {
@@ -110,6 +116,7 @@ public class ManosController : MonoBehaviour {
         switch (iEstado)
         {
             case 0:
+                MesaManager.instance.CambiarEstadoToque(iIndexJug, true); //Avisamos que estamos buscando el totem
                 lerpMov.Start(manoDer, totem.transform.position + corrimiento);
                 iEstado++;
                 break;
@@ -148,6 +155,7 @@ public class ManosController : MonoBehaviour {
                 lerpMov = new Lerpeador(1);
                 lerpMovBack = new Lerpeador(1);
                 lerpMovUp = new Lerpeador(0.5f);
+                MesaManager.instance.CambiarEstadoToque(iIndexJug, false); //Ya no esta buscando el totem
                 break;
         }
     }

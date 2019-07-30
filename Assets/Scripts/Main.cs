@@ -9,7 +9,7 @@ using Leap.Unity.Interaction;
 
 public class Main : MonoBehaviour
 {
-    public const int CANTCARTAS = 80;
+    public const int CANTCARTAS = 72; //Voy a sacar las cartas especiales hasta nuevo aviso
     //public const int CANTCARTAS = 16;
 
     public const int CANTJUGADORES = 4;
