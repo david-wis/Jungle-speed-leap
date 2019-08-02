@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class ManosController : MonoBehaviour {
 
     public int iIndexJug;
     public RuntimeAnimatorController contAnimacManos;
+    public float fVelocidad;
 
     GameObject totem;
     GameObject manoIzq, manoDer;
@@ -14,20 +13,20 @@ public class ManosController : MonoBehaviour {
     Vector3[] posicionInicial = new Vector3[2]; //Posicion inicial de las manitos
     Lerpeador lerpMov, lerpMovBack, lerpMovUp;
     //Lerpeador lerpRot;
-    int iEstado; //0 empieza a moverse - 1 en movimiento - 2 movido
+    int iEstado;
     Vector3 corrimiento;
     //Boolean bLoAgarre;
     bool bAnimandose;
 
 
+
     // Use this for initialization
     void Start()
     {
-        lerpMov = new Lerpeador(1);
-        lerpMovBack = new Lerpeador(1);
-        lerpMovUp = new Lerpeador(0.5f);
+        fVelocidad = Random.Range(0.8f, 1.8f);
+        initLerpeadores();
         //lerpRot = new Lerpeador(0.5f);
-        
+
         manoIzq = transform.GetChild(0).gameObject;
         manoDer = transform.GetChild(1).gameObject;
 
@@ -39,6 +38,7 @@ public class ManosController : MonoBehaviour {
         posicionInicial[1] = manoDer.transform.position;
         //bLoAgarre = false;
         bAnimandose = false;
+        
     }
 
     // Update is called once per frame
@@ -56,7 +56,8 @@ public class ManosController : MonoBehaviour {
         }
 
         bool bAgarrarPosible = MesaManager.instance.mesa.TieneIgualdadConResto(iIndexJug);
-        if (bAgarrarPosible)
+        Debug.Log("Jugador " + (iIndexJug+1) + ", posibilidad de agarrar el totem: " + bAgarrarPosible);
+        if (bAgarrarPosible && !bAnimandose)
         {
             if (!totemBehaviour.estaAgarrado() || totemBehaviour.ObtenerJugador() == iIndexJug)
             {
@@ -85,9 +86,10 @@ public class ManosController : MonoBehaviour {
     /// </summary>
     private void Retroceder()
     {
-        MesaManager.instance.CambiarEstadoToque(iIndexJug, false); //Ya no esta buscando el totem
         if (!ObtenerPosCorrecta(manoDer, 1))
         {
+            MesaManager.instance.CambiarEstadoToque(iIndexJug, false); //Ya no esta buscando el totem
+            Debug.Log("Yo, el Jugador " + (iIndexJug + 1) + " he decidido retroceder. Estado previo: " + iEstado);
             if (iEstadoRetroceso == 0)
             {
                 lerpMovBack.Start(manoDer, posicionInicial[1]);
@@ -103,7 +105,8 @@ public class ManosController : MonoBehaviour {
             else
             {
                 iEstadoRetroceso = 0;
-                lerpMovBack = new Lerpeador(1f);
+                initLerpeadores();
+                
             }
         }
     }
@@ -116,6 +119,8 @@ public class ManosController : MonoBehaviour {
         switch (iEstado)
         {
             case 0:
+                Debug.Log("Yo, el Jugador " + (iIndexJug + 1) + " comienzo a moverme hacia el totem");
+                initLerpeadores(); //Por las dudas
                 MesaManager.instance.CambiarEstadoToque(iIndexJug, true); //Avisamos que estamos buscando el totem
                 lerpMov.Start(manoDer, totem.transform.position + corrimiento);
                 iEstado++;
@@ -152,12 +157,20 @@ public class ManosController : MonoBehaviour {
             default:
                 //Se reincian todos los lerpeadores y vuelve al estado inicial
                 iEstado = 0;
-                lerpMov = new Lerpeador(1);
-                lerpMovBack = new Lerpeador(1);
-                lerpMovUp = new Lerpeador(0.5f);
+                initLerpeadores();
                 MesaManager.instance.CambiarEstadoToque(iIndexJug, false); //Ya no esta buscando el totem
                 break;
         }
+    }
+
+    /// <summary>
+    /// Carga nuevos lerpeadores
+    /// </summary>
+    private void initLerpeadores()
+    {
+        lerpMov = new Lerpeador(fVelocidad);
+        lerpMovBack = new Lerpeador(fVelocidad);
+        lerpMovUp = new Lerpeador(fVelocidad / 2);
     }
 
     /*Quaternion ObtenerRotacion()

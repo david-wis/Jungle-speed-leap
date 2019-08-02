@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// <para>A pesar de tener un nombre confuso, no temais, puesto que la clase Lerpeador lo unico que hace es mover o rotar un objeto de un estado A a uno B.</para>
+/// <para>Para usarla se debe pasar como parametro al constructor el tiempo deseado; llamar al metodo start con la posicion final e inicial; y llamar a update() una vez por frame</para>
+/// </summary>
 public class Lerpeador
 {
     public bool bTermino; //Determina si el lerpeador no se esta moviendo

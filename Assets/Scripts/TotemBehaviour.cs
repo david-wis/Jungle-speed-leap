@@ -61,9 +61,10 @@ public class TotemBehaviour : MonoBehaviour {
 
             if (bAgarradoCorrecto)
             {
+                Debug.Log("El totem se encuentra agarrado por el Jugador " + (iIndexApretado+1));
                 switch (iIndexApretado)
                 {
-                    case 0: //Caso del jugador, es el unico que probe asi que despues fijense xd
+                    case 0:
                         if (posicionInicial.z - transform.position.z >= 0.2)
                         {
                             Debug.Log("Totem robado por el jugador 1");
@@ -128,8 +129,8 @@ public class TotemBehaviour : MonoBehaviour {
         bAgarrado = false;
         bAgarradoCorrecto = false;
         //Experimental, no se si cambian algo estas dos ultimas lineas
-        //iIndexApretado = -1;
-        //iIndexViejo = -1;
+        iIndexApretado = -1;
+        iIndexViejo = -1;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -143,20 +144,23 @@ public class TotemBehaviour : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         string sNomMano = other.gameObject.transform.parent.transform.parent.name;
-        Debug.Log(sNomMano + " agarro el totem");
         int i = 0;
-        iIndexApretado = -1;
-        while (i < 4 && iIndexApretado == -1) {
+        int iIndexApretadoTemp; //Armo una variable auxiliar asi si no es una mano lo que triggereo el totem no se pierde el registro
+        iIndexApretadoTemp = -1;
+        while (i < 4 && iIndexApretadoTemp == -1) {
             if (sNomMano == sManos[i])
             {
-                iIndexApretado = i;
+                iIndexApretadoTemp = i;
             }
             i++;
         }
 
-        if (iIndexApretado != -1)
+        Debug.Log(sNomMano + " (index: " + iIndexApretadoTemp + ") agarro el totem");
+
+        if (iIndexApretadoTemp != -1)
         {
             bAgarrado = true;
+            iIndexApretado = iIndexApretadoTemp;
             Debug.Log("agarrado");
         }
     }
