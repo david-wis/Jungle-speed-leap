@@ -45,9 +45,11 @@ public class ManosController : MonoBehaviour {
     void Update()
     {
         //Debug.Log(iIndexJug + ": " + iEstado);
+        Debug.Log("Jugador " + (iIndexJug + 1) + ". Es su turno? " + (MesaManager.instance.iIndexJugActual == iIndexJug) + " estado: " + iEstado + ". No puede tocar: " + (!MesaManager.instance.AlguienToca));
         if (MesaManager.instance.iIndexJugActual == iIndexJug && iEstado == 0 && !MesaManager.instance.AlguienToca)
         {
-            if (!bAnimandose && ObtenerPosCorrecta(manoDer, 1) && ObtenerPosCorrecta(manoIzq, 0))
+            Debug.Log("Jugador " + (iIndexJug + 1) + ". Animandose? " + bAnimandose + ". Mano derecha en posicion? " + ObtenerPosCorrecta(manoDer, 1));
+            if (!bAnimandose && ObtenerPosCorrecta(manoDer, 1) /*&& ObtenerPosCorrecta(manoIzq, 0)*/)
             {
                 AnimarMano("tocarMazo");
                 StartCoroutine(detenerAnimacion());

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44131836, g: 0.49012434, b: 0.570174, a: 1}
+  m_IndirectSpecularColor: {r: 0.44131893, g: 0.490125, b: 0.57017505, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1957,6 +1957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iIndexJug: 2
   contAnimacManos: {fileID: 9100000, guid: cc3e0c50c7cea4e4a9823d5a31abd490, type: 2}
+  fVelocidad: 0
 --- !u!1001 &231715267
 Prefab:
   m_ObjectHideFlags: 0
@@ -3032,6 +3033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iIndexJug: 1
   contAnimacManos: {fileID: 9100000, guid: cc3e0c50c7cea4e4a9823d5a31abd490, type: 2}
+  fVelocidad: 0
 --- !u!1 &303589086
 GameObject:
   m_ObjectHideFlags: 0
@@ -7105,7 +7107,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 593128192}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b02e2f8ae628ac4f9faca951fe12db4, type: 3}
   m_Name: 
@@ -7128,6 +7130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6b8e74994c20843949f733f199060f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultColor: {r: 1, g: 0.80784315, b: 0.56078434, a: 1}
+  primaryHoverColor: {r: 0.64705884, g: 1, b: 0.5803922, a: 1}
   iNroMazo: 3
 --- !u!64 &593128196
 MeshCollider:
@@ -12062,7 +12066,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.000000002153683
+      value: -0.0000000052968954
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.x
@@ -12070,11 +12074,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.0000000843429
+      value: 0.00000008344068
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -0.000000013620593
+      value: -0.000000013271347
       objectReference: {fileID: 0}
     - target: {fileID: 4608501519327712, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.x
@@ -12082,11 +12086,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4608501519327712, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.00000006191534
+      value: -0.000000063482595
       objectReference: {fileID: 0}
     - target: {fileID: 4608501519327712, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -0.000000008032657
+      value: -0.000000007683412
       objectReference: {fileID: 0}
     - target: {fileID: 4437985243979600, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.x
@@ -12094,7 +12098,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4437985243979600, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0.009242242
+      value: -0.009242243
       objectReference: {fileID: 0}
     - target: {fileID: 4437985243979600, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.z
@@ -12190,11 +12194,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4411577448127944, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.000000007482683
+      value: -0.00000000787503
       objectReference: {fileID: 0}
     - target: {fileID: 4411577448127944, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -0.000000022817403
+      value: -0.000000022584572
       objectReference: {fileID: 0}
     - target: {fileID: 4570656256943866, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.x
@@ -12302,7 +12306,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4437985243979600, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.9943704
+      value: 0.9943705
       objectReference: {fileID: 0}
     - target: {fileID: 4830608005988508, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.x
@@ -12314,7 +12318,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4464229214925108, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.000000007450578
       objectReference: {fileID: 0}
     - target: {fileID: 4113658506791758, guid: 2aa010a1e75292e49a24f3f71bb9cddb, type: 2}
       propertyPath: m_LocalScale.x
@@ -12547,6 +12551,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6b8e74994c20843949f733f199060f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultColor: {r: 1, g: 0.80784315, b: 0.56078434, a: 1}
+  primaryHoverColor: {r: 0.64705884, g: 1, b: 0.5803922, a: 1}
   iNroMazo: 0
 --- !u!64 &1133837098
 MeshCollider:
@@ -12985,7 +12991,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1228477125}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b02e2f8ae628ac4f9faca951fe12db4, type: 3}
   m_Name: 
@@ -13008,6 +13014,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6b8e74994c20843949f733f199060f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultColor: {r: 1, g: 0.80784315, b: 0.56078434, a: 1}
+  primaryHoverColor: {r: 0.64705884, g: 1, b: 0.5803922, a: 1}
   iNroMazo: 1
 --- !u!64 &1228477129
 MeshCollider:
@@ -17325,6 +17333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iIndexJug: 3
   contAnimacManos: {fileID: 9100000, guid: cc3e0c50c7cea4e4a9823d5a31abd490, type: 2}
+  fVelocidad: 0
 --- !u!1 &1912756154
 GameObject:
   m_ObjectHideFlags: 0
@@ -19031,7 +19040,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2085924639}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b02e2f8ae628ac4f9faca951fe12db4, type: 3}
   m_Name: 
@@ -19054,6 +19063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6b8e74994c20843949f733f199060f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultColor: {r: 1, g: 0.80784315, b: 0.56078434, a: 1}
+  primaryHoverColor: {r: 0.64705884, g: 1, b: 0.5803922, a: 1}
   iNroMazo: 2
 --- !u!64 &2085924643
 MeshCollider:

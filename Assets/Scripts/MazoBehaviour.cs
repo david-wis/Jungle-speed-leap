@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class MazoBehaviour : MonoBehaviour {
     private InteractionBehaviour _intObj;
+    private Material _material;
+    [Header("InteractionBehaviour Colors")]
+    public Color defaultColor = Color.Lerp(Color.black, Color.white, 0.1F);
+    public Color primaryHoverColor = Color.Lerp(Color.black, Color.white, 0.8F);
 
     public int iNroMazo;
     GameObject totem;
@@ -14,6 +18,15 @@ public class MazoBehaviour : MonoBehaviour {
     void Start () {
         _intObj = GetComponent<InteractionBehaviour>();
         totem = TotemManager.instance.totem;
+        Renderer renderer = GetComponent<Renderer>();
+        if (renderer == null)
+        {
+            renderer = GetComponentInChildren<Renderer>();
+        }
+        if (renderer != null)
+        {
+            _material = renderer.material;
+        }
         PonerMazo();
     }
 
@@ -29,11 +42,24 @@ public class MazoBehaviour : MonoBehaviour {
 
     public void OnTriggerEnter(Collider other)
     {
-        if (MesaManager.instance.mesa.Modo != ModoJuego.Fuera)
-        {
-            GenerarCarta();
+        if (iNroMazo != 0) { 
+            _material.color = Color.Lerp(_material.color, primaryHoverColor, 30F * Time.deltaTime);
+
+            if (MesaManager.instance.mesa.Modo != ModoJuego.Fuera)
+            {
+                GenerarCarta();
+            }
         }
     }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (iNroMazo != 0)
+        {
+            _material.color = Color.Lerp(_material.color, defaultColor, 30F * Time.deltaTime);
+        }
+    }
+    
 
     /// <summary>
     /// Dispara el evento "agarrarcartaX" dependiendo del mazo tocado

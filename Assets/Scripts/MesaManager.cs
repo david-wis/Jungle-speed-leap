@@ -39,8 +39,11 @@ public class MesaManager : MonoBehaviour {
             int i = 0;
             while (!bAlguienToca && i < 4)
             {
+                Debug.Log("Jugador " + (i + 1) + " agarrando totem?: " + vecAgarrandoTotem[i]);
                 if (vecAgarrandoTotem[i])
+                {
                     bAlguienToca = true;
+                }
                 i++;
             }
             return bAlguienToca;
