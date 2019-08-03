@@ -99,6 +99,7 @@ public class Mesa
     public void AgregarGameObject(GameObject gameObject)
     {
         gameObjectsEnJuego[iTopeGameObjects].Push(gameObject);
+        Debug.Log(gameObject.name + " agregado al Stack del jugador " + iTopeGameObjects);
         iTopeGameObjects = (iTopeGameObjects < 3) ? iTopeGameObjects + 1 : 0;
     }
 

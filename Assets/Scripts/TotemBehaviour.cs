@@ -51,7 +51,7 @@ public class TotemBehaviour : MonoBehaviour {
     {
         if (bAgarrado)
         {
-            Debug.Log("IndexViejo: " + iIndexViejo + " -- IndexNuevo:" + iIndexApretado);
+            //Debug.Log("IndexViejo: " + iIndexViejo + " -- IndexNuevo:" + iIndexApretado);
             if (iIndexViejo != iIndexApretado)
             {
                 Debug.Log("------Evento producido agarrartotem");
@@ -61,7 +61,7 @@ public class TotemBehaviour : MonoBehaviour {
 
             if (bAgarradoCorrecto)
             {
-                Debug.Log("El totem se encuentra agarrado por el Jugador " + (iIndexApretado+1));
+                Debug.Log("El totem se encuentra agarrado por el Jugador " + (iIndexApretado + 1));
                 switch (iIndexApretado)
                 {
                     case 0:

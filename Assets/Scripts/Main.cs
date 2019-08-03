@@ -392,24 +392,6 @@ public class Main : MonoBehaviour
         //mostrarDiccEventos(); //DEBUG
     }
 
-    public void mostrarDiccEventos() //DEBUG - Viendo que onda con el diccionario (al final parece que todo cul =)
-    {
-        Debug.Log("---Mostrando el diccionario---");
-        Dictionary<string, UnityEvent> dicEventos = EventManager.instance.EventDictionary;
-        if (dicEventos.Count > 0)
-        {
-            foreach (KeyValuePair<string, UnityEvent> keyValuePair in dicEventos)
-            {
-                Debug.Log(keyValuePair.Key + " - " + keyValuePair.Value);
-            }
-        }
-        else
-        {
-            Debug.Log("No hay datos en el dicc, revisar el objecto");
-        }
-        Debug.Log("---Fin mostrando diccionario---");
-    }
-
     /// <summary>
     /// Desactiva el BoxCollider y la Gravity de todos los GameObjects en Mesa
     /// </summary>
@@ -433,8 +415,8 @@ public class Main : MonoBehaviour
         /* El jugador que agarro mal el totem es el enemigo, y los demas son ganadores */
         List<int> listaEnemigos = new List<int>();
         listaEnemigos.Add(iJugadorTotem);
-        StartCoroutine(llevarCartasDesdeTotem(listaEnemigos));
-        for (int i = 0; i < CANTJUGADORES; i++)
+        StartCoroutine(llevarCartasDesdeTotem(listaEnemigos)); //Cartas del Totem al que agarro mal
+        for (int i = 0; i < CANTJUGADORES; i++) //Cartas de todos (menos del que agarro mal) al que agarro mal
         {
             if (i != iJugadorTotem)
             {
@@ -453,14 +435,6 @@ public class Main : MonoBehaviour
         return totemBehaviour.ObtenerJugador();
     }
 
-    /*void mostrarFormasJugadores()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            Debug.Log("Forma del Jugador " + i + ": " + mesa.obtenerCartasDelJugador(i).Peek().forma);
-        }        
-    }*/
-
     /// <summary>
     /// Se le meten cartas a los perdedores o al centro de mesa.
     /// </summary>
@@ -468,6 +442,7 @@ public class Main : MonoBehaviour
     /// <param name="jugadoresEnemigos">Indica a que jugadores dar las cartas</param>
     void DarCartas(bool bAlCentro, List<int> jugadoresEnemigos = null)
     {
+        /* 
         Debug.Log("---Dando cartas---");
 
         if (jugadoresEnemigos != null)
@@ -483,7 +458,8 @@ public class Main : MonoBehaviour
         else
         {
             Debug.Log("Cartas del jugador " + iJugadorTotem + " al Totem");
-        }        
+        }
+        */
 
         if (!bAlCentro) //Batalla
         { 
@@ -499,7 +475,7 @@ public class Main : MonoBehaviour
         ReiniciarTotem();
         mesa.NormalizarModo(); //Sea lo que sea siempre que se le den cartas a alguien el modo queda en normal
 
-        Debug.Log("---Fin dando cartas---");
+        //Debug.Log("---Fin dando cartas---");
     }
 
     /// <summary>
@@ -532,6 +508,7 @@ public class Main : MonoBehaviour
         GameObject gameObject = Instantiate(carta.img3D,
                                 posicCartasDelMazo[iIndexJugActual],
                                 Quaternion.Euler(rotacCartasDelMazo[iIndexJugActual]));
+        Debug.Log("Creando " + gameObject.name + " del jugador " + iIndexJugActual);
         return gameObject;
     }
 
@@ -577,6 +554,7 @@ public class Main : MonoBehaviour
     public void finAnimacionDesdeMazo(int idJugador)
     {
         GameObject gameObjFinalizar = mesa.obtenerUltimoGameObjectDelJugador(idJugador);
+        Debug.Log("--Desactivando animacion de " + gameObjFinalizar.name);
         vecSeEstaAnimandoDesdeMazo[idJugador] = false;
         vecTimersAnimacDesdeMazo[idJugador] = 0f;
         gameObjFinalizar.GetComponent<Animator>().enabled = false; //Desactivo la animacion
