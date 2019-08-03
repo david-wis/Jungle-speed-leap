@@ -118,6 +118,7 @@ public class ManosController : MonoBehaviour {
     /// </summary>
     private void IntentarAgarrar()
     {
+        Debug.Log("Jugador " + (iIndexJug + 1) + " intentando agarrar el totem");
         switch (iEstado)
         {
             case 0:
