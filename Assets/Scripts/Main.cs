@@ -428,6 +428,7 @@ public class Main : MonoBehaviour
                 StartCoroutine(llevarCartasAOtroMazo(i, listaEnemigos));
             }
         }
+        NingunoBuscaTotem();
     }
 
     /// <summary>
@@ -459,9 +460,21 @@ public class Main : MonoBehaviour
             StartCoroutine(llevarCartasAlTotem(iJugadorTotem));
         }
         ReiniciarTotem();
+        NingunoBuscaTotem();
         mesa.NormalizarModo(); //Sea lo que sea siempre que se le den cartas a alguien el modo queda en normal
 
         //Debug.Log("---Fin dando cartas---");
+    }
+
+    /// <summary>
+    /// Pone todo el vecAgarrandoTotem del MesaManager en False
+    /// </summary>
+    private void NingunoBuscaTotem()
+    {
+        for (int i = 0; i < CANTJUGADORES; i++)
+        {
+            MesaManager.instance.CambiarEstadoToque(i, false);
+        }
     }
 
     /// <summary>

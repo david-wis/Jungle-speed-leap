@@ -39,7 +39,7 @@ public class MesaManager : MonoBehaviour {
             int i = 0;
             while (!bAlguienToca && i < 4)
             {
-                Debug.Log("Jugador " + (i + 1) + " agarrando totem?: " + vecAgarrandoTotem[i]);
+                Debug.Log("Jugador " + i + " agarrando totem: " + vecAgarrandoTotem[i]);
                 if (vecAgarrandoTotem[i])
                 {
                     bAlguienToca = true;
@@ -57,6 +57,6 @@ public class MesaManager : MonoBehaviour {
     /// <param name="bEstado">Está moviendose hacia el totem?</param>
     public void CambiarEstadoToque(int iIndexJug, bool bEstado)
     {
-        vecAgarrandoTotem[iIndexJug] = bEstado; 
+        vecAgarrandoTotem[iIndexJug] = bEstado;
     }
 }

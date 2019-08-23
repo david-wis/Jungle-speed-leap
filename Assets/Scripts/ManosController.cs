@@ -45,7 +45,7 @@ public class ManosController : MonoBehaviour {
     void Update()
     {
         //Debug.Log(iIndexJug + ": " + iEstado);
-        Debug.Log("Jugador " + (iIndexJug + 1) + ". Es su turno? " + (MesaManager.instance.iIndexJugActual == iIndexJug) + " estado: " + iEstado + ". No puede tocar: " + (!MesaManager.instance.AlguienToca));
+        Debug.Log("Jugador " + (iIndexJug + 1) + ". Es su turno? " + (MesaManager.instance.iIndexJugActual == iIndexJug) + ". Estado: " + iEstado + ". No puede tocar: " + (!MesaManager.instance.AlguienToca));
         if (MesaManager.instance.iIndexJugActual == iIndexJug && iEstado == 0 && !MesaManager.instance.AlguienToca)
         {
             Debug.Log("Jugador " + (iIndexJug + 1) + ". Animandose? " + bAnimandose + ". Mano derecha en posicion? " + ObtenerPosCorrecta(manoDer, 1));
@@ -64,7 +64,8 @@ public class ManosController : MonoBehaviour {
             if (!totemBehaviour.estaAgarrado() || totemBehaviour.ObtenerJugador() == iIndexJug)
             {
                 IntentarAgarrar();
-            } else
+            }
+            else
             {
                 Retroceder();
                 iEstado = 0;
@@ -78,7 +79,9 @@ public class ManosController : MonoBehaviour {
 
     private bool ObtenerPosCorrecta(GameObject mano, int iIndex)
     {
-        return mano.transform.position == posicionInicial[iIndex];
+        bool bPosCorrecta = (mano.transform.position == posicionInicial[iIndex]);
+        Debug.Log(mano.transform.parent.name + " en posicion correcta: " + bPosCorrecta);
+        return bPosCorrecta;
     }
 
     //OPTIMIZAR: esto podria fusionarse con la funcion de IntentarAgarrar
@@ -192,8 +195,8 @@ public class ManosController : MonoBehaviour {
     void PonerManos()
     {
         float fDistancia = 0.08f; //Espacio contra el totem
-        float fCorrimientoMano = 0.05f; //Evitar atravesar el totem
         float fDistY = 0.08f;
+        float fCorrimientoMano = 0.05f; //Evitar atravesar el totem
         switch (iIndexJug)
         {
             case 1:
