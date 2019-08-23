@@ -9,7 +9,7 @@ using Leap.Unity.Interaction;
 
 public class Main : MonoBehaviour
 {
-    public const int CANTCARTAS = 72; //Voy a sacar las cartas especiales hasta nuevo aviso
+    public const int CANTCARTAS = 80;
     //public const int CANTCARTAS = 16;
 
     public const int CANTJUGADORES = 4;
@@ -48,15 +48,15 @@ public class Main : MonoBehaviour
     List<GameObject> gameObjectsAnimandoseHaciaTotem = new List<GameObject>();
     List<GameObject> gameObjectsAnimandoseDesdeTotem = new List<GameObject>();
 
-    const float fDuracAnimacionHaciaTotem = 2f;
+    const float fDuracAnimacionHaciaTotem = 3.0f;
     float fTimerAnimacHaciaTotem = 0f;
     bool bSeEstaAnimandoHaciaTotem = false;
 
-    const float fDuracAnimacionDesdeTotem = 2f;
+    const float fDuracAnimacionDesdeTotem = 3.0f;
     float fTimerAnimacDesdeTotem = 0f;
     bool bSeEstaAnimandoDesdeTotem = false;
     
-    const float fDuracAnimacionHaciaMazo = 2f;
+    const float fDuracAnimacionHaciaMazo = 3.0f;
     float fTimerAnimacHaciaMazo = 0f;
     bool bSeEstaAnimandoHaciaMazo = false;
 
@@ -360,7 +360,7 @@ public class Main : MonoBehaviour
         desactivarCuerposGameObjects(); //Para que el Totem no se choque con las cartas en mesa
         if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
-            EventManager.StopListening("totemtraido", eventoListenerTotemTraido); //INTENTANDO SOLUCIONAR BUG
+            EventManager.StopListening("totemtraido", eventoListenerTotemTraido);
             TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
             totemBehaviour.SetAgarradoCorrecto();
             eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(true); });
@@ -369,13 +369,10 @@ public class Main : MonoBehaviour
         else
         {
             List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
-            for (int i = 0; i < listaJugadoresEnemigos.Count; i++)
-            {
-                Debug.Log("--Enemigo en AgarrarTotem: " + listaJugadoresEnemigos[i]);
-            }
+            mostrarEnemigosPorDebug(listaJugadoresEnemigos, "AgarrarTotem");
             if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
             {
-                EventManager.StopListening("totemtraido", eventoListenerTotemTraido); //INTENTANDO SOLUCIONAR BUG
+                EventManager.StopListening("totemtraido", eventoListenerTotemTraido);
                 Debug.Log("Totem agarrado correctamente, llevatelo");
                 TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
                 totemBehaviour.SetAgarradoCorrecto();
@@ -390,6 +387,14 @@ public class Main : MonoBehaviour
             }
         }
         //mostrarDiccEventos(); //DEBUG
+    }
+
+    void mostrarEnemigosPorDebug(List<int> listaJugadoresEnemigos, String dondeEstas)
+    {
+        for (int i = 0; i < listaJugadoresEnemigos.Count; i++)
+        {
+            Debug.Log("--Enemigo en " + dondeEstas + ": " + listaJugadoresEnemigos[i]);
+        }
     }
 
     /// <summary>
@@ -442,25 +447,6 @@ public class Main : MonoBehaviour
     /// <param name="jugadoresEnemigos">Indica a que jugadores dar las cartas</param>
     void DarCartas(bool bAlCentro, List<int> jugadoresEnemigos = null)
     {
-        /* 
-        Debug.Log("---Dando cartas---");
-
-        if (jugadoresEnemigos != null)
-        {
-            Debug.Log("Ganador: " + iJugadorTotem);
-            string sEnemigos = "";
-            foreach (int iEnemigo in jugadoresEnemigos)
-            {
-                sEnemigos += " - " + iEnemigo.ToString();
-            }
-            Debug.Log("Enemigos: " + sEnemigos.Substring(3)); //Elimino el primer " - "
-        }
-        else
-        {
-            Debug.Log("Cartas del jugador " + iJugadorTotem + " al Totem");
-        }
-        */
-
         if (!bAlCentro) //Batalla
         { 
             //Les da a los perdedores las cartas del ganador, y las que estaban en el Totem
@@ -742,7 +728,7 @@ public class Main : MonoBehaviour
 
         bSeEstaAnimandoHaciaTotem = true;
         //ReiniciarTotem();
-        totem.transform.position += new Vector3(0f, 10f, 0f); //NO FUNCIONA
+        //totem.transform.position += new Vector3(0f, 10f, 0f); //NO FUNCIONA
         for (int i = 0; i < iCantCartas; i++)
         {
             yield return new WaitForSeconds(0.1f);
@@ -766,6 +752,10 @@ public class Main : MonoBehaviour
         List<GameObject> gameObjectsEnTotem = totemBehaviour.obtener_VaciarGameObjectsEnTotem();
         List<RuntimeAnimatorController> contrParaUsar = obtenerContrAnimacDesdeTotem(jugadoresEnemigos);
 
+        mostrarEnemigosPorDebug(jugadoresEnemigos, "llevarCartasDesdeTotem");
+        Debug.Log("--Cantidad de Cartas en llevarCartasDesdeTotem: " + cartasEnTotem.Count);
+        mostrarNombresGameObjsPorDebug(gameObjectsEnTotem, "llevarCartasDesdeTotem");
+
         int iCantEnemigos = jugadoresEnemigos.Count, 
             iCantCartas = cartasEnTotem.Count, 
             iPosiEnemigos = 0;
@@ -781,6 +771,14 @@ public class Main : MonoBehaviour
             animarCarta(gameObject, contrParaUsar[iPosiEnemigos]);
             jugadores[jugadoresEnemigos[iPosiEnemigos]].AgregarCarta(cartasEnTotem[i]);
             iPosiEnemigos = (iPosiEnemigos == iCantEnemigos - 1) ? 0 : iPosiEnemigos + 1;
+        }
+    }
+
+    void mostrarNombresGameObjsPorDebug(List<GameObject> gameObjs, String dondeEstas)
+    {
+        Debug.Log("Cantidad de gameObjects en " + dondeEstas + ": " + gameObjs.Count);
+        foreach (GameObject gameObj in gameObjs) {
+            Debug.Log("--gameObject en " + dondeEstas + ": " + gameObj.name);
         }
     }
 

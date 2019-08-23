@@ -256,7 +256,7 @@ public class TotemBehaviour : MonoBehaviour {
     /// <returns></returns>
     public List<GameObject> obtener_VaciarGameObjectsEnTotem()
     {
-        List<GameObject> gameObjects = _gameObjsEnTotem;
+        List<GameObject> gameObjects = new List<GameObject>(_gameObjsEnTotem);
         vaciarGameObjectsEnTotem();
         return gameObjects;
     }
@@ -286,7 +286,7 @@ public class TotemBehaviour : MonoBehaviour {
     /// <returns></returns>
     public List<Carta> obtener_VaciarCartasEnTotem()
     {
-        List<Carta> cartas = _cartasEnTotem;
+        List<Carta> cartas = new List<Carta>(_cartasEnTotem);
         vaciarCartasEnTotem();
         return cartas;
     }
