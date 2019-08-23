@@ -23,16 +23,27 @@ public class Main : MonoBehaviour
     private RuntimeAnimatorController[,] matrizContrAnimacHaciaMazos = new RuntimeAnimatorController[4, 3];
 
     Carta[] arrayMazoTotal = new Carta[CANTCARTAS];
-    Jugador[] jugadores = new Jugador[CANTJUGADORES];
     public GameObject[] cartasEstaticas = new GameObject[4];
     GameObject[] mazos = new GameObject[4];
 
-    GameObject totem;
+    //GameObject totem;
     public GameObject turnos;
+
+    public Jugador[] jugadores
+    {
+        set { MesaManager.instance.jugadores = value; }
+        get { return MesaManager.instance.jugadores; }
+    }
 
     public Mesa mesa {
        set { MesaManager.instance.mesa = value; }
        get { return MesaManager.instance.mesa; }
+    }
+
+    public GameObject totem
+    {
+        set { TotemManager.instance.totem = value; }
+        get { return TotemManager.instance.totem; }
     }
 
     Vector3[] posicCartasDelMazo = { new Vector3(0.13f, 1.5f, -0.43f),
@@ -76,7 +87,7 @@ public class Main : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        totem = TotemManager.instance.totem;
+        jugadores = new Jugador[CANTJUGADORES];
         //totem.transform.position += new Vector3(0, 3, 0);
         LlenarMazo();
         ReferenciarCartasEstaticas();
