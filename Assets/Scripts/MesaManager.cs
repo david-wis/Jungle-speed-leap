@@ -24,6 +24,11 @@ public class MesaManager : MonoBehaviour {
     public Mesa mesa = new Mesa();
 
     /// <summary>
+    /// Vector que contiene los jugadores de la partida
+    /// </summary>
+    public Jugador[] jugadores;
+
+    /// <summary>
     /// Vector que indica cuales de los jugadores estan moviendose hacia el totem
     /// </summary>
     private bool[] vecAgarrandoTotem = { false, false, false, false };
