@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEditor;
 using System;
+using System.Reflection;
 using Leap.Unity.Interaction;
 
 public class Main : MonoBehaviour
@@ -55,26 +56,10 @@ public class Main : MonoBehaviour
                                      new Vector3(-90f, -90f, 95f),
                                      new Vector3(-90f, -90f, 5f)};
 
-    List<GameObject> gameObjectsAnimandoseHaciaMazo = new List<GameObject>();
-    List<GameObject> gameObjectsAnimandoseHaciaTotem = new List<GameObject>();
-    List<GameObject> gameObjectsAnimandoseDesdeTotem = new List<GameObject>();
-
-    const float fDuracAnimacionHaciaTotem = 3.0f;
-    float fTimerAnimacHaciaTotem = 0f;
-    bool bSeEstaAnimandoHaciaTotem = false;
-
-    const float fDuracAnimacionDesdeTotem = 3.0f;
-    float fTimerAnimacDesdeTotem = 0f;
-    bool bSeEstaAnimandoDesdeTotem = false;
+    List<GameObjectAnimandose> listaGameObjectsAnimandose = new List<GameObjectAnimandose>();
     
-    const float fDuracAnimacionHaciaMazo = 3.0f;
-    float fTimerAnimacHaciaMazo = 0f;
-    bool bSeEstaAnimandoHaciaMazo = false;
-
-    const float fDuracAnimacionDesdeMazo = 1.0f;
-    float[] vecTimersAnimacDesdeMazo = { 0f, 0f, 0f, 0f };
-    bool[] vecSeEstaAnimandoDesdeMazo = { false, false, false, false };
-
+    public const float fDuracAnimaciones = 1.1f;
+        
     int iIndexJugActual {
         set { MesaManager.instance.iIndexJugActual = value; }
         get { return MesaManager.instance.iIndexJugActual; }
@@ -134,18 +119,7 @@ public class Main : MonoBehaviour
     void Update()
     {
         fTimer += Time.deltaTime;
-        /*if (iIndexJugActual != 0 && !bPause)
-        {
-            if (!bCartaEsperando)
-            {
-                StartCoroutine(PonerCartaBot(iIndexJugActual));
-                bCartaEsperando = true;
-            }
-        */
-        verificarAnimacionesDesdeMazo();
-        verificarAnimacionesHaciaMazo();
-        verificarAnimacionesHaciaTotem();
-        verificarAnimacionesDesdeTotem();
+        verificarAnimaciones();
     }
 
     /// <summary>
@@ -283,7 +257,7 @@ public class Main : MonoBehaviour
                     Carta cartaActual = jugadores[iIndexJugActual].ObtenerSiguienteCarta();
                     if (cartaActual != null)
                     {
-                        ModoJuego modo = mesa.AgregarCarta(cartaActual); //Agregamos la carta al vector de cartas de la mesa
+                        ModoJuego modo = mesa.AgregarCarta(cartaActual, iIndexJugActual); //Agrega la carta al vector de cartas de la mesa
                         Crear_AnimarCarta(cartaActual); //Crea la carta y la anima
                         cartasEstaticas[iIndexJugActual].transform.parent.gameObject.SetActive(true);
                         Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
@@ -440,6 +414,7 @@ public class Main : MonoBehaviour
                 StartCoroutine(llevarCartasAOtroMazo(i, listaEnemigos));
             }
         }
+        reactivarCuerposGameObjects();
         NingunoBuscaTotem();
     }
 
@@ -471,6 +446,7 @@ public class Main : MonoBehaviour
             //Las cartas del que lo agarro van al Totem
             StartCoroutine(llevarCartasAlTotem(iJugadorTotem));
         }
+        reactivarCuerposGameObjects();
         ReiniciarTotem();
         NingunoBuscaTotem();
         mesa.NormalizarModo(); //Sea lo que sea siempre que se le den cartas a alguien el modo queda en normal
@@ -505,9 +481,10 @@ public class Main : MonoBehaviour
     public void Crear_AnimarCarta(Carta cartaActual)
     {
         GameObject cartaCreada = crearCarta(cartaActual);
+        //float fDuracAnimac = buscarDuracionTipoAnimacion("DesdeMazo");
+        listaGameObjectsAnimandose.Add(new GameObjectAnimandose(cartaCreada, 0f, fDuracAnimaciones, TipoAnimacion.DesdeMazo));
         animarCarta(cartaCreada, contrAnimacDesdeMazo[iIndexJugActual]);
-        vecSeEstaAnimandoDesdeMazo[iIndexJugActual] = true;
-        mesa.AgregarGameObject(cartaCreada);
+        mesa.AgregarGameObject(cartaCreada, iIndexJugActual);
     }
 
     /// <summary>
@@ -519,7 +496,7 @@ public class Main : MonoBehaviour
         GameObject gameObject = Instantiate(carta.img3D,
                                 posicCartasDelMazo[iIndexJugActual],
                                 Quaternion.Euler(rotacCartasDelMazo[iIndexJugActual]));
-        Debug.Log("Creando " + gameObject.name + " del jugador " + iIndexJugActual);
+        //Debug.Log("Creando " + gameObject.name + " del jugador " + iIndexJugActual);
         return gameObject;
     }
 
@@ -539,76 +516,54 @@ public class Main : MonoBehaviour
         animator.enabled = true;
     }
 
-    /// <summary>
-    /// Se fija si hay alguna animacion de cualquier mazo que se este animando. 
-    /// Si es asi, se fija si llego a 1seg de animacion, para detenerla
-    /// </summary>
-    public void verificarAnimacionesDesdeMazo()
+    public void verificarAnimaciones()
     {
-        for (int i = 0; i < 4; i++)
+        //Debug.Log("CantidadEnVerificar: " + listaGameObjectsAnimandose.Count);
+        for (int i = 0; i < listaGameObjectsAnimandose.Count; i++)
         {
-            if (vecSeEstaAnimandoDesdeMazo[i])
+            GameObjectAnimandose gameObjectAnimandose = listaGameObjectsAnimandose[i];
+            if (gameObjectAnimandose != null)
             {
-                vecTimersAnimacDesdeMazo[i] += Time.deltaTime;
-                if (vecTimersAnimacDesdeMazo[i] >= fDuracAnimacionDesdeMazo)
+                Debug.Log("CartaVerificando: " + gameObjectAnimandose.GameObject.name);
+
+                gameObjectAnimandose.TimerAnimacion += Time.deltaTime;
+
+                String strTipoAnimacion = gameObjectAnimandose.TipoAnimacion.ToString();
+                if (gameObjectAnimandose.TimerAnimacion >= gameObjectAnimandose.DuracAnimacion)
                 {
-                    finAnimacionDesdeMazo(i);
+                    this.GetType().GetMethod("finAnimacion" + strTipoAnimacion).Invoke(this, new GameObject[] { gameObjectAnimandose.GameObject }); //Llamo a la funcion que corresponda
+                    listaGameObjectsAnimandose.RemoveAt(i);
                 }
             }
-        }
-    }
-
-    /// <summary>
-    /// Detiene la animacion de la carta saliendo del mazo del jugador recibido
-    /// </summary>
-    /// <param name="idJugador">El ID del jugador desde donde sale la carta</param>
-    public void finAnimacionDesdeMazo(int idJugador)
-    {
-        GameObject gameObjFinalizar = mesa.obtenerUltimoGameObjectDelJugador(idJugador);
-        if (gameObjFinalizar != null)
-        {
-            Debug.Log("--Desactivando animacion de " + gameObjFinalizar.name);
-            vecSeEstaAnimandoDesdeMazo[idJugador] = false;
-            vecTimersAnimacDesdeMazo[idJugador] = 0f;
-            gameObjFinalizar.GetComponent<Animator>().enabled = false; //Desactivo la animacion
-            BoxCollider boxCollider = gameObjFinalizar.AddComponent<BoxCollider>(); //Creo un BoxCollider para que choque con el piso y con las cartas que caen despues
-            boxCollider.center = new Vector3(0, 0, 0.065f);
-            boxCollider.size = new Vector3(0.115f, 0.13f, 0.005f);
-            Rigidbody rigidbody = gameObjFinalizar.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
-            rigidbody.drag = 10f; //Para que la caida sea mas lenta
-            cambiarTurno(iIndexJugActual);
-        }
-    }
-
-    /// <summary>
-    /// Si se estan animando cartas hacia algun mazo, cuento el tiempo. 
-    /// Si ya paso el tiempo establecido, llamo a finAnimacionHaciaMazo() 
-    /// </summary>
-    public void verificarAnimacionesHaciaMazo()
-    {
-        if (bSeEstaAnimandoHaciaMazo)
-        {
-            fTimerAnimacHaciaMazo += Time.deltaTime;
-            if (fTimerAnimacHaciaMazo >= fDuracAnimacionHaciaMazo)
+            else
             {
-                finAnimacionHaciaMazo();
-            }
+                Debug.Log("CartaVerificando: NULL");
+            }            
         }
     }
 
-    /// <summary>
-    /// Destruyo los GameObjects que iban a sus mazos de destino, y me fijo si 
-    /// algun mazo que se habia quedado sin cartas ahora tiene (y lo hago aparecer)
-    /// </summary>
-    public void finAnimacionHaciaMazo()
+    /*public float buscarDuracionTipoAnimacion(String strTipoAnimacion)
     {
-        foreach (GameObject gameObject in gameObjectsAnimandoseHaciaMazo)
-        {
-            Destroy(gameObject);
-        }
-        gameObjectsAnimandoseHaciaMazo.Clear();
-        bSeEstaAnimandoHaciaMazo = false;
-        fTimerAnimacHaciaMazo = 0f;
+        return (float) this.GetType().GetField("fDuracAnimacion" + strTipoAnimacion).GetValue(this);
+    }*/
+
+    public void finAnimacionDesdeMazo(GameObject gameObjFinalizar)
+    {
+        Debug.Log("--Desactivando animacion de " + gameObjFinalizar);
+        //vecSeEstaAnimandoDesdeMazo[idJugador] = false;
+        //vecTimersAnimacDesdeMazo[idJugador] = 0f;
+        gameObjFinalizar.GetComponent<Animator>().enabled = false; //Desactivo la animacion
+        BoxCollider boxCollider = gameObjFinalizar.AddComponent<BoxCollider>(); //Creo un BoxCollider para que choque con el piso y con las cartas que caen despues
+        boxCollider.center = new Vector3(0, 0, 0.065f);
+        boxCollider.size = new Vector3(0.115f, 0.13f, 0.005f);
+        Rigidbody rigidbody = gameObjFinalizar.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
+        rigidbody.drag = 10f; //Para que la caida sea mas lenta
+        cambiarTurno(iIndexJugActual);
+    }
+
+    public void finAnimacionHaciaMazo(GameObject gameObjFinalizar)
+    {
+        Destroy(gameObjFinalizar);
         for (int i = 0; i < 4; i++)
         {
             verificarMazoVacioJugador(i);            
@@ -616,65 +571,15 @@ public class Main : MonoBehaviour
         reactivarCuerposGameObjects();
     }
 
-    /// <summary>
-    /// Si se estan animando cartas hacia el Totem, cuento el tiempo. 
-    /// Si ya paso el tiempo establecido, llamo a finAnimacionHaciaTotem() 
-    /// </summary>
-    public void verificarAnimacionesHaciaTotem()
+    public void finAnimacionHaciaTotem(GameObject gameObjFinalizar)
     {
-        if (bSeEstaAnimandoHaciaTotem)
-        {
-            fTimerAnimacHaciaTotem += Time.deltaTime;
-            if (fTimerAnimacHaciaTotem >= fDuracAnimacionHaciaTotem)
-            {
-                finAnimacionHaciaTotem();
-            }
-        }
+        gameObjFinalizar.GetComponent<Animator>().enabled = false;
+        ponerCuerpo(gameObjFinalizar);        
     }
-
-    /// <summary>
-    /// Desactiva las animaciones de los GameObjects y les pone el cuerpo
-    /// </summary>
-    public void finAnimacionHaciaTotem()
+    
+    public void finAnimacionDesdeTotem(GameObject gameObjFinalizar)
     {
-        foreach (GameObject gameObject in gameObjectsAnimandoseHaciaTotem)
-        {
-            gameObject.GetComponent<Animator>().enabled = false;
-            ponerCuerpo(gameObject);
-        }
-        gameObjectsAnimandoseHaciaTotem.Clear();
-        bSeEstaAnimandoHaciaTotem = false;
-        fTimerAnimacHaciaTotem = 0f;
-    }
-
-    /// <summary>
-    /// Si se estan animando cartas desde el Totem, cuento el tiempo. 
-    /// Si ya paso el tiempo establecido, llamo a finAnimacionDesdeTotem() 
-    /// </summary>
-    public void verificarAnimacionesDesdeTotem()
-    {
-        if (bSeEstaAnimandoDesdeTotem)
-        {
-            fTimerAnimacDesdeTotem += Time.deltaTime;
-            if (fTimerAnimacDesdeTotem >= fDuracAnimacionDesdeTotem)
-            {
-                finAnimacionDesdeTotem();
-            }
-        }
-    }
-
-    /// <summary>
-    /// Destruyo los GameObjects que se estaban animando desde el Totem
-    /// </summary>
-    public void finAnimacionDesdeTotem()
-    {
-        foreach (GameObject gameObject in gameObjectsAnimandoseDesdeTotem)
-        {
-            Destroy(gameObject);
-        }
-        gameObjectsAnimandoseDesdeTotem.Clear();
-        bSeEstaAnimandoDesdeTotem = false;
-        fTimerAnimacDesdeTotem = 0f;
+        Destroy(gameObjFinalizar);
     }
 
     /// <summary>
@@ -727,12 +632,12 @@ public class Main : MonoBehaviour
             iPosiEnemigos = 0; //Reparto las cartas entre los enemigos de la lista jugadoresEnemigos
         GameObject gameObject;
 
-        bSeEstaAnimandoHaciaMazo = true;
         for (int i = 0; i < iCantCartas; i++)
         {
             yield return new WaitForSeconds(0.05f);
             gameObject = gameObjectsEnMesaDelJugador[i];
-            gameObjectsAnimandoseHaciaMazo.Add(gameObject);
+            //float fDuracAnimac = buscarDuracionTipoAnimacion("HaciaMazo");
+            listaGameObjectsAnimandose.Add(new GameObjectAnimandose(gameObject, 0f, fDuracAnimaciones, TipoAnimacion.HaciaMazo));
             sacarCuerpo(gameObject);
             animarCarta(gameObject, contrParaUsar[iPosiEnemigos]);
             jugadores[jugadoresEnemigos[iPosiEnemigos]].AgregarCarta(cartasEnMesaDelJugador[i]);
@@ -754,14 +659,12 @@ public class Main : MonoBehaviour
         GameObject gameObject;
         TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
 
-        bSeEstaAnimandoHaciaTotem = true;
-        //ReiniciarTotem();
-        //totem.transform.position += new Vector3(0f, 10f, 0f); //NO FUNCIONA
         for (int i = 0; i < iCantCartas; i++)
         {
             yield return new WaitForSeconds(0.1f);
             gameObject = gameObjectsEnMesaDelJugador[i];
-            gameObjectsAnimandoseHaciaTotem.Add(gameObject);
+            //float fDuracAnimac = buscarDuracionTipoAnimacion("HaciaTotem");
+            listaGameObjectsAnimandose.Add(new GameObjectAnimandose(gameObject, 0f, fDuracAnimaciones, TipoAnimacion.HaciaTotem));
             sacarCuerpo(gameObject);
             totemBehaviour.agregarCartaALista(cartasEnMesaDelJugador[i]);
             totemBehaviour.agregarGameObjALista(gameObject);
@@ -789,12 +692,12 @@ public class Main : MonoBehaviour
             iPosiEnemigos = 0;
         GameObject gameObject;
 
-        bSeEstaAnimandoDesdeTotem = true;
         for (int i = 0; i < iCantCartas; i++)
         {
             yield return new WaitForSeconds(0.1f);
             gameObject = gameObjectsEnTotem[i];
-            gameObjectsAnimandoseDesdeTotem.Add(gameObject);
+            //float fDuracAnimac = buscarDuracionTipoAnimacion("DesdeTotem");
+            listaGameObjectsAnimandose.Add(new GameObjectAnimandose(gameObject, 0f, fDuracAnimaciones, TipoAnimacion.DesdeTotem));
             sacarCuerpo(gameObject);
             animarCarta(gameObject, contrParaUsar[iPosiEnemigos]);
             jugadores[jugadoresEnemigos[iPosiEnemigos]].AgregarCarta(cartasEnTotem[i]);
