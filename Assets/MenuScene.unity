@@ -418,8 +418,8 @@ MonoBehaviour:
     IsRightToBeSpawned: 0
     IsEnabled: 1
     CanDuplicate: 0
---- !u!4 &366390114
-Transform:
+--- !u!224 &366390114
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -430,8 +430,13 @@ Transform:
   m_Children:
   - {fileID: 1438060839}
   m_Father: {fileID: 1853884691}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &366390115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,7 +573,7 @@ GameObject:
   - component: {fileID: 1083902204}
   - component: {fileID: 1083902203}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Fondo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -828,8 +833,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1438060838}
   m_LocalRotation: {x: 0.04361938, y: 0.00000008733958, z: 0.000000003813325, w: 0.9990483}
-  m_LocalPosition: {x: -296.97894, y: -138.37292, z: -0.5437992}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 1.61742, y: -1.1132281, z: -181.49086}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 366390114}
   m_RootOrder: 0
@@ -1413,9 +1418,9 @@ Canvas:
   m_GameObject: {fileID: 1853884687}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_RenderMode: 1
+  m_Camera: {fileID: 1831384221}
+  m_PlaneDistance: 10
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
