@@ -142,8 +142,8 @@ public class Main : MonoBehaviour
                 bCartaEsperando = true;
             }
         */
-        verificarAnimacionesDesdeMazo();    //Si alguna carta se esta animando desde el mazo, cuenta para despues sacarle la animacion
-        verificarAnimacionesHaciaMazo();    //Si alguna carta se esta animando hacia el mazo, cuenta para despues destruirlo
+        verificarAnimacionesDesdeMazo();
+        verificarAnimacionesHaciaMazo();
         verificarAnimacionesHaciaTotem();
         verificarAnimacionesDesdeTotem();
     }
@@ -208,7 +208,7 @@ public class Main : MonoBehaviour
             contrAnimac = GetType().GetField("contrAnimac" + iJugador + "HaciaMazos").GetValue(this) as RuntimeAnimatorController[];
             for (int iAnimacion = 0; iAnimacion < 3; iAnimacion++)
             {
-                matrizContrAnimacHaciaMazos[iJugador, iAnimacion] = contrAnimac[iAnimacion];                
+                matrizContrAnimacHaciaMazos[iJugador, iAnimacion] = contrAnimac[iAnimacion];
             }
         }
     }
@@ -834,7 +834,7 @@ public class Main : MonoBehaviour
         int iCantEnemigos = jugadoresEnemigos.Count;
         for (int i = 0; i < iCantEnemigos; i++)
         {
-            if (jugadoresEnemigos[i] < idJugadorGanador)
+            if (idJugadorGanador > jugadoresEnemigos[i])
             {
                 contrsParaUsar.Add(matrizContrAnimacHaciaMazos[idJugadorGanador, jugadoresEnemigos[i]]);
             }
