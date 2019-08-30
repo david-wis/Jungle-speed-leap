@@ -243,7 +243,12 @@ public class Mesa
     /// <returns>El ultimo GameObject del jugador</returns>
     public GameObject obtenerUltimoGameObjectDelJugador(int idJugador)
     {
-        return gameObjectsEnJuego[idJugador].Peek();
+        GameObject gameObjDevolver = null;
+        if (gameObjectsEnJuego[idJugador].Count > 0)
+        {
+            gameObjDevolver = gameObjectsEnJuego[idJugador].Peek();
+        }
+        return gameObjDevolver;
     }
 
     /// <summary>

@@ -13,6 +13,20 @@ public class MesaManager : MonoBehaviour {
     }
     #endregion
 
+    //Recien se puede agarrar si ya paso tiempoMinimoAgarrar segundos de la ultima vez que se agarro
+    float timerUltimoAgarrado, tiempoMinimoAgarrar = 1f;
+
+    private void Start()
+    {
+        timerUltimoAgarrado = 0f;
+    }
+
+    private void Update()
+    {
+        timerUltimoAgarrado += Time.deltaTime;
+        Debug.Log("Timer: " + timerUltimoAgarrado);
+    }
+
     /// <summary>
     /// Indice del jugador al que le toca actualmente
     /// </summary>
@@ -53,6 +67,31 @@ public class MesaManager : MonoBehaviour {
             }
             return bAlguienToca;
         }
+    }
+
+    public float TimerUltimoAgarrado
+    {
+        get
+        {
+            return timerUltimoAgarrado;
+        }
+
+    }
+
+    /// <summary>
+    /// Pone el timerUltimoAgarrado en 0
+    /// </summary>
+    public void reiniciarTimer()
+    {
+        timerUltimoAgarrado = 0f;
+    }
+
+    /// <summary>
+    /// Compara si ya paso tiempoMinimoAgarrar de la ultima vez que se agarro
+    /// </summary>
+    public bool yaSePuedeSacar()
+    {
+        return timerUltimoAgarrado >= tiempoMinimoAgarrar;
     }
 
     /// <summary>

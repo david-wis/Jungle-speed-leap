@@ -279,6 +279,7 @@ public class Main : MonoBehaviour
             {
                 if ((fTimer - fLastTime >= fCoolDown) || bFlechaAfuera)
                 { //Asi evitamos que mantener la mano apretada cause que haga todo al instante
+                    MesaManager.instance.reiniciarTimer();
                     Carta cartaActual = jugadores[iIndexJugActual].ObtenerSiguienteCarta();
                     if (cartaActual != null)
                     {
@@ -564,16 +565,19 @@ public class Main : MonoBehaviour
     public void finAnimacionDesdeMazo(int idJugador)
     {
         GameObject gameObjFinalizar = mesa.obtenerUltimoGameObjectDelJugador(idJugador);
-        Debug.Log("--Desactivando animacion de " + gameObjFinalizar.name);
-        vecSeEstaAnimandoDesdeMazo[idJugador] = false;
-        vecTimersAnimacDesdeMazo[idJugador] = 0f;
-        gameObjFinalizar.GetComponent<Animator>().enabled = false; //Desactivo la animacion
-        BoxCollider boxCollider = gameObjFinalizar.AddComponent<BoxCollider>(); //Creo un BoxCollider para que choque con el piso y con las cartas que caen despues
-        boxCollider.center = new Vector3(0, 0, 0.065f);
-        boxCollider.size = new Vector3(0.115f, 0.13f, 0.005f);
-        Rigidbody rigidbody = gameObjFinalizar.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
-        rigidbody.drag = 10f; //Para que la caida sea mas lenta
-        cambiarTurno(iIndexJugActual);
+        if (gameObjFinalizar != null)
+        {
+            Debug.Log("--Desactivando animacion de " + gameObjFinalizar.name);
+            vecSeEstaAnimandoDesdeMazo[idJugador] = false;
+            vecTimersAnimacDesdeMazo[idJugador] = 0f;
+            gameObjFinalizar.GetComponent<Animator>().enabled = false; //Desactivo la animacion
+            BoxCollider boxCollider = gameObjFinalizar.AddComponent<BoxCollider>(); //Creo un BoxCollider para que choque con el piso y con las cartas que caen despues
+            boxCollider.center = new Vector3(0, 0, 0.065f);
+            boxCollider.size = new Vector3(0.115f, 0.13f, 0.005f);
+            Rigidbody rigidbody = gameObjFinalizar.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
+            rigidbody.drag = 10f; //Para que la caida sea mas lenta
+            cambiarTurno(iIndexJugActual);
+        }
     }
 
     /// <summary>

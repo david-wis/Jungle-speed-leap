@@ -42,8 +42,11 @@ public class MazoBehaviour : MonoBehaviour {
 
     public void OnTriggerEnter(Collider other)
     {
+        //Debug.Log("Me toco el " + other.gameObject.transform.parent.transform.parent.name);
+        //MesaManager.instance.reiniciarTimer();
+
         if (iNroMazo != 0) { 
-            _material.color = Color.Lerp(_material.color, primaryHoverColor, 30F * Time.deltaTime);
+            _material.color = Color.Lerp(_material.color, primaryHoverColor, 30F * Time.deltaTime);            
 
             if (MesaManager.instance.mesa.Modo != ModoJuego.Fuera)
             {
