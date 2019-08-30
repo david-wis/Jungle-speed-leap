@@ -5,7 +5,6 @@ public class Mesa
 {
     Stack<Carta>[] cartasEnJuego = new Stack<Carta>[4];
     Stack<GameObject>[] gameObjectsEnJuego = new Stack<GameObject>[4];
-    int iTopeCartas = 0, iTopeGameObjects = 0;
     private ModoJuego _modo;
 
     public Mesa()
@@ -40,13 +39,12 @@ public class Mesa
     /// Devuelve el modo de juego actual.
     /// </summary>
     /// <param name="c">Carta a agregar al vector de cartas en juego del Jugador actual</param>
-    public ModoJuego AgregarCarta(Carta c)
+    public ModoJuego AgregarCarta(Carta c, int idJugador)
     {
-        cartasEnJuego[iTopeCartas].Push(c);
+        cartasEnJuego[idJugador].Push(c);
         VerificarFinModo(ModoJuego.Colores); //Se fija (si existe) si terminó la ronda de color
         VerificarFinModo(ModoJuego.Dentro); //Se fija (si existe) si terminó la ronda de flechas para adentro
         VerificarEspecial(c); //Si la carta es especial cambia el modo de juego
-        iTopeCartas = (iTopeCartas < 3) ? iTopeCartas + 1 : 0;
         return _modo;
     }
     
@@ -96,11 +94,10 @@ public class Mesa
     /// Agrega el GameObject recibido al Stack de GameObjects en juego del jugador actual
     /// </summary>
     /// <param name="gameObject">El GameObject a agregar al Stack</param>
-    public void AgregarGameObject(GameObject gameObject)
+    public void AgregarGameObject(GameObject gameObject, int idJugador)
     {
-        gameObjectsEnJuego[iTopeGameObjects].Push(gameObject);
-        Debug.Log(gameObject.name + " agregado al Stack del jugador " + iTopeGameObjects);
-        iTopeGameObjects = (iTopeGameObjects < 3) ? iTopeGameObjects + 1 : 0;
+        gameObjectsEnJuego[idJugador].Push(gameObject);
+        Debug.Log(gameObject.name + " agregado al Stack del jugador " + idJugador);
     }
 
     /// <summary>

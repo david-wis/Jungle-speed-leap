@@ -24,7 +24,7 @@ public class MesaManager : MonoBehaviour {
     private void Update()
     {
         timerUltimoAgarrado += Time.deltaTime;
-        Debug.Log("Timer: " + timerUltimoAgarrado);
+        //Debug.Log("Timer: " + timerUltimoAgarrado);
     }
 
     /// <summary>
