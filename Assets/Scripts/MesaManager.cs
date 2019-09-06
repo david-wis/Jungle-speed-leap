@@ -15,6 +15,7 @@ public class MesaManager : MonoBehaviour {
 
     //Recien se puede agarrar si ya paso tiempoMinimoAgarrar segundos de la ultima vez que se agarro
     float timerUltimoAgarrado, tiempoMinimoAgarrar = 1f;
+    bool cartaAnimandoseEnMesa;
 
     private void Start()
     {
@@ -103,4 +104,18 @@ public class MesaManager : MonoBehaviour {
     {
         vecAgarrandoTotem[iIndexJug] = bEstado;
     }
+    
+    public bool CartaAnimandoseEnMesa
+    {
+        get
+        {
+            return cartaAnimandoseEnMesa;
+        }
+
+        set
+        {
+            cartaAnimandoseEnMesa = value;
+        }
+    }
+    
 }

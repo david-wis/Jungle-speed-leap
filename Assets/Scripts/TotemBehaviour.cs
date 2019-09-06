@@ -51,23 +51,23 @@ public class TotemBehaviour : MonoBehaviour {
     {
         if (bAgarrado)
         {
-            Debug.Log("IndexViejo: " + iIndexViejo + " -- IndexNuevo:" + iIndexApretado);
+            //Debug.Log("IndexViejo: " + iIndexViejo + " -- IndexNuevo:" + iIndexApretado);
             if (iIndexViejo != iIndexApretado)
             {
-                Debug.Log("------Evento producido agarrartotem");
+                //Debug.Log("------Evento producido agarrartotem");
                 EventManager.TriggerEvent("agarrartotem");
                 iIndexViejo = iIndexApretado;
             }
 
             if (bAgarradoCorrecto)
             {
-                Debug.Log("El totem se encuentra agarrado por el Jugador " + (iIndexApretado + 1));
+                //Debug.Log("El totem se encuentra agarrado por el Jugador " + (iIndexApretado + 1));
                 switch (iIndexApretado)
                 {
                     case 0:
                         if (posicionInicial.z - transform.position.z >= 0.2)
                         {
-                            Debug.Log("Totem robado por el jugador 1");
+                            //Debug.Log("Totem robado por el jugador 1");
                             bAgarradoCorrecto = false;
                             EventManager.TriggerEvent("totemtraido");
                         }
@@ -75,7 +75,7 @@ public class TotemBehaviour : MonoBehaviour {
                     case 1:
                         if (PosAnterior.x - transform.position.x <= -0.2)
                         {
-                            Debug.Log("Totem robado por el jugador 2");
+                            //Debug.Log("Totem robado por el jugador 2");
                             bAgarradoCorrecto = false;
                             EventManager.TriggerEvent("totemtraido");
                         }
@@ -83,7 +83,7 @@ public class TotemBehaviour : MonoBehaviour {
                     case 2:
                         if (transform.position.z - PosAnterior.z >= 0.2)
                         {
-                            Debug.Log("Totem robado por el jugador 3");
+                            //Debug.Log("Totem robado por el jugador 3");
                             bAgarradoCorrecto = false;
                             EventManager.TriggerEvent("totemtraido");
                         }
@@ -91,7 +91,7 @@ public class TotemBehaviour : MonoBehaviour {
                     case 3:
                         if (transform.position.x - PosAnterior.x <= -0.2)
                         {
-                            Debug.Log("Totem robado por el jugador 4");
+                            //Debug.Log("Totem robado por el jugador 4");
                             bAgarradoCorrecto = false;
                             EventManager.TriggerEvent("totemtraido");
                         }
@@ -155,13 +155,13 @@ public class TotemBehaviour : MonoBehaviour {
             i++;
         }
 
-        Debug.Log(sNomMano + " (index: " + iIndexApretadoTemp + ") agarro el totem");
+        //Debug.Log(sNomMano + " (index: " + iIndexApretadoTemp + ") agarro el totem");
 
         if (iIndexApretadoTemp != -1)
         {
             bAgarrado = true;
             iIndexApretado = iIndexApretadoTemp;
-            Debug.Log("agarrado");
+            //Debug.Log("agarrado");
         }
     }
 
@@ -193,7 +193,7 @@ public class TotemBehaviour : MonoBehaviour {
         bAgarrado = true;
         if (iIndexViejo != iIndexApretado)
         {
-            Debug.Log("Evento de batalla disparado, recorda apretar 6 para un agarrado correcto y 7 para soltar");
+            //Debug.Log("Evento de batalla disparado, recorda apretar 6 para un agarrado correcto y 7 para soltar");
             EventManager.TriggerEvent("agarrartotem");
             iIndexViejo = iIndexApretado;
         }
@@ -207,7 +207,7 @@ public class TotemBehaviour : MonoBehaviour {
         SetAgarradoCorrecto();
         EventManager.TriggerEvent("totemtraido");
         bAgarradoCorrecto = false;
-        Debug.Log("Evento de agarrado correcto disparado, recorda apretar 7");
+        //Debug.Log("Evento de agarrado correcto disparado, recorda apretar 7");
     }
 
     /// <summary>

@@ -18,8 +18,6 @@ public class ManosController : MonoBehaviour {
     //Boolean bLoAgarre;
     bool bAnimandose;
 
-
-
     // Use this for initialization
     void Start()
     {
@@ -37,16 +35,21 @@ public class ManosController : MonoBehaviour {
         posicionInicial[0] = manoIzq.transform.position;
         posicionInicial[1] = manoDer.transform.position;
         //bLoAgarre = false;
-        bAnimandose = false;
-        
+        bAnimandose = false;        
     }
 
     // Update is called once per frame
     void Update()
     {
+        verificarTocarMazo();
+        verificarAgarrarTotem();
+    }
+
+    private void verificarTocarMazo()
+    {
         //Debug.Log(iIndexJug + ": " + iEstado);
         //Debug.Log("Jugador " + (iIndexJug + 1) + ". Es su turno? " + (MesaManager.instance.iIndexJugActual == iIndexJug) + ". Estado: " + iEstado + ". No puede tocar: " + (!MesaManager.instance.AlguienToca));
-        if ((MesaManager.instance.iIndexJugActual == iIndexJug) && (iEstado == 0) && (!MesaManager.instance.AlguienToca) && (MesaManager.instance.mesa.Modo != ModoJuego.Fuera))
+        if ((MesaManager.instance.iIndexJugActual == iIndexJug) && (iEstado == 0) && !(MesaManager.instance.AlguienToca) && (MesaManager.instance.mesa.Modo != ModoJuego.Fuera))
         {
             //Debug.Log("Jugador " + (iIndexJug + 1) + ". Animandose? " + bAnimandose + ". Mano derecha en posicion? " + ObtenerPosCorrecta(manoDer, 1));
             if ((MesaManager.instance.yaSePuedeSacar()) && (!bAnimandose) && (ObtenerPosCorrecta(manoDer, 1)) /*&& ObtenerPosCorrecta(manoIzq, 0)*/)
@@ -56,11 +59,15 @@ public class ManosController : MonoBehaviour {
                 bAnimandose = true;
             }
         }
+    }
 
+    private void verificarAgarrarTotem()
+    {
         bool bAgarrarPosible = MesaManager.instance.mesa.TieneIgualdadConResto(iIndexJug);
+        bool cartasAnimandoseEnMesa = MesaManager.instance.CartaAnimandoseEnMesa;
         //Debug.Log("Jugador " + (iIndexJug+1) + ", posibilidad de agarrar el totem: " + bAgarrarPosible);
-        if (bAgarrarPosible && !bAnimandose)
-        {
+        if (bAgarrarPosible && !bAnimandose && !cartasAnimandoseEnMesa) {
+            //Se anima solo si no esta yendo al mazo, ni hay cartas animandose
             if (!totemBehaviour.estaAgarrado() || totemBehaviour.ObtenerJugador() == iIndexJug)
             {
                 IntentarAgarrar();
@@ -70,7 +77,8 @@ public class ManosController : MonoBehaviour {
                 Retroceder();
                 iEstado = 0;
             }
-        } else
+        }
+        else
         {
             Retroceder();
             iEstado = 0;
@@ -121,7 +129,7 @@ public class ManosController : MonoBehaviour {
     /// </summary>
     private void IntentarAgarrar()
     {
-        Debug.Log("Jugador " + (iIndexJug + 1) + " intentando agarrar el totem");
+        //Debug.Log("Jugador " + (iIndexJug + 1) + " intentando agarrar el totem");
         switch (iEstado)
         {
             case 0:
@@ -221,7 +229,7 @@ public class ManosController : MonoBehaviour {
                 corrimiento = new Vector3(-fDistancia, fDistY, -fCorrimientoMano);
                 break;
             default:
-                Debug.Log("Esto no deberia pasar xdxd");
+                //Debug.Log("Esto no deberia pasar xdxd");
                 break;
         }
     }
@@ -238,7 +246,6 @@ public class ManosController : MonoBehaviour {
         animator.StopPlayback();
         animator.runtimeAnimatorController = null;
     }
-
 
     /// <summary>
     /// Permite animar la mano derecha

@@ -86,7 +86,7 @@ public class Mesa
         if (c.color == Carta.Color.Especial)
         {
             _modo = (ModoJuego)c.forma;
-            Debug.Log("Nos hemos encontrado con una carta especial de tipo " + _modo);
+            //Debug.Log("Nos hemos encontrado con una carta especial de tipo " + _modo);
         }
     }
 
@@ -97,7 +97,6 @@ public class Mesa
     public void AgregarGameObject(GameObject gameObject, int idJugador)
     {
         gameObjectsEnJuego[idJugador].Push(gameObject);
-        Debug.Log(gameObject.name + " agregado al Stack del jugador " + idJugador);
     }
 
     /// <summary>
@@ -196,7 +195,7 @@ public class Mesa
                 }
                 break;
             default:
-                Debug.Log("Esto no deberia pasar nunca :v");
+                //Debug.Log("Esto no deberia pasar nunca :v");
                 break;
         }
         return listaCoincidencias;
