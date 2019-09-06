@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: a44e4c30aee57814a9a8eb5d59485f7c
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Adega Serif
+  fontNames:
+  - Adega Serif
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 6b0aea5f0e254644295a4c7652d990c5, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
