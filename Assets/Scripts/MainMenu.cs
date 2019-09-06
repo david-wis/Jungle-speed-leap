@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
+    public GameObject reglas;
+
     public void PlayGame()
     {
         int buildIndex = SceneManager.GetActiveScene().buildIndex;
@@ -14,11 +16,13 @@ public class MainMenu : MonoBehaviour {
 
     public void OpenReglas()
     {
-
+        reglas.SetActive(true);
+        gameObject.SetActive(false);
     }
 
     public void Exit()
     {
-
+        Debug.Log("aaaa");
+        Application.Quit();
     }
 }

@@ -7,8 +7,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MouseController : MonoBehaviour {
+    public const int CANT_BOTONES = 6;
     public Sprite manoAbierta, manoCerrada;
-    public Button btnJugar, btnReglas, btnSalir;
+    public Button[] btns = new Button[CANT_BOTONES];
     public Camera c;
     public EventSystem wEvents;
     private bool _bManoCerrada;
@@ -53,9 +54,10 @@ public class MouseController : MonoBehaviour {
         }
         //Debug.Log("Mano: " + c.WorldToScreenPoint(mano.transform.position));
         bool bSeleccionado = false;
-        bSeleccionado = bSeleccionado || CheckearContactoBoton(btnJugar);
-        bSeleccionado = bSeleccionado || CheckearContactoBoton(btnReglas);
-        bSeleccionado = bSeleccionado || CheckearContactoBoton(btnSalir);
+        for (int i = 0; i < CANT_BOTONES; i++)
+        {
+            bSeleccionado = bSeleccionado || CheckearContactoBoton(btns[i]);
+        }
         if (!bSeleccionado)
         {
             wEvents.SetSelectedGameObject(null);
@@ -65,23 +67,26 @@ public class MouseController : MonoBehaviour {
     private bool CheckearContactoBoton(Button btn)
     {
         bool bSeleccionado = false;
-        RectTransform rect = btn.GetComponent<RectTransform>();
-        Vector3 pos = c.WorldToScreenPoint(rect.position);
-        float fAncho = rect.rect.width;
-        float fAlto = rect.rect.height;
-        Vector3 fVeci = (pos - new Vector3(fAncho / 2, fAlto / 2, 0));
-        Vector3 fVecf = (pos + new Vector3(fAncho / 2, fAlto / 2, 0));
-        Debug.Log(btn.name + "- comienzo: " + fVeci + " - fin: " + fVecf);
-        Debug.Log(posMano);
-
-        if (posMano.x >= fVeci.x && posMano.y >= fVeci.y && posMano.x <= fVecf.x && posMano.y <= fVecf.y)
+        if (btn.IsActive())
         {
-            Debug.Log("Adentro de " + btn.name);
-            btn.Select();
-            bSeleccionado = true;
-            if (_bManoCerrada)
+            RectTransform rect = btn.GetComponent<RectTransform>();
+            Vector3 pos = c.WorldToScreenPoint(rect.position);
+            float fAncho = rect.rect.width;
+            float fAlto = rect.rect.height;
+            Vector3 fVeci = (pos - new Vector3(fAncho / 2, fAlto / 2, 0));
+            Vector3 fVecf = (pos + new Vector3(fAncho / 2, fAlto / 2, 0));
+            Debug.Log(btn.name + "- comienzo: " + fVeci + " - fin: " + fVecf);
+            Debug.Log(posMano);
+
+            if (posMano.x >= fVeci.x && posMano.y >= fVeci.y && posMano.x <= fVecf.x && posMano.y <= fVecf.y)
             {
-                btn.onClick.Invoke();
+                Debug.Log("Adentro de " + btn.name);
+                btn.Select();
+                bSeleccionado = true;
+                if (_bManoCerrada)
+                {
+                    btn.onClick.Invoke();
+                }
             }
         }
         return bSeleccionado;
