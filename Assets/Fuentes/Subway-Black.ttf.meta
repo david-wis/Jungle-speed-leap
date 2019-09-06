@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 406b2eb615cc16b4f9e4a32bdd57127b
+guid: 8a71706e41dfd9f4e9ff869c4160cab0
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Get Started MDL2 Assets
+  fontName: Subway
   fontNames:
-  - Get Started MDL2 Assets
+  - Subway
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
