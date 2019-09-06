@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TotemManager : MonoBehaviour {
+public class TotemManager : MonoBehaviour
+{
 
     //Usando un singleton vamos a poder acceder al totem desde cualquier lado
     #region Singleton
