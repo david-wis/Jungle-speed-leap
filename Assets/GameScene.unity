@@ -44,7 +44,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 1
+  m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
-  m_LightingDataAsset: {fileID: 112000002, guid: 98a8012e7a1420e4988c49798542e8d8,
+  m_LightingDataAsset: {fileID: 112000006, guid: 46c2b13a42bdca74bae8c07ed69b96a1,
     type: 2}
   m_UseShadowmask: 0
 --- !u!196 &4
@@ -7770,7 +7770,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 406b2eb615cc16b4f9e4a32bdd57127b, type: 3}
+    m_Font: {fileID: 12800000, guid: da64865387432974e908caa2313e3841, type: 3}
     m_FontSize: 100
     m_FontStyle: 1
     m_BestFit: 1
@@ -16580,7 +16580,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4719071293788696, guid: df84af96020c94b4695aec5c3427db16, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114700673106479202, guid: df84af96020c94b4695aec5c3427db16,
         type: 2}
