@@ -3,17 +3,26 @@ using Leap.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MouseController : MonoBehaviour {
     public Sprite manoAbierta, manoCerrada;
     public Button btnJugar, btnReglas, btnSalir;
+    public Camera c;
+    public EventSystem wEvents;
     HandModelManager handManager;
     LeapProvider _provider;
     Controller _controlador;
     SpriteRenderer imgMano;
     GameObject mano;
-    Camera c;
+    Vector3 posMano
+    {
+        get
+        {
+            return c.WorldToScreenPoint(mano.transform.position);
+        }
+    }
 
     // Use this for initialization
     void Start () {
@@ -38,33 +47,36 @@ public class MouseController : MonoBehaviour {
                 imgMano.sprite = manoAbierta;
             }
         }
-        c = Camera.current;
-        CheckearContactoBoton(btnJugar);
-        CheckearContactoBoton(btnReglas);
-        CheckearContactoBoton(btnSalir);
+        //Debug.Log("Mano: " + c.WorldToScreenPoint(mano.transform.position));
+        bool bSeleccionado = false;
+        bSeleccionado = bSeleccionado || CheckearContactoBoton(btnJugar);
+        bSeleccionado = bSeleccionado || CheckearContactoBoton(btnReglas);
+        bSeleccionado = bSeleccionado || CheckearContactoBoton(btnSalir);
+        if (!bSeleccionado)
+        {
+            wEvents.SetSelectedGameObject(null);
+        }
     }
 
-    private void CheckearContactoBoton(Button btn)
+    private bool CheckearContactoBoton(Button btn)
     {
-        int x = (int)btn.transform.position.x;
-        int y = (int)btn.transform.position.y;
-        /*if (mano.transform.position.x > x && mano.transform.position.x < (x + btn.GetComponent<RectTransform>().rect.width))
-        {
-            if (mano.transform.position.y > y && mano.transform.position.y < (y + btn.GetComponent<RectTransform>().rect.width)) {
-                Debug.Log("Adentro de " + btn.name);
-            }
-        }*/
+        bool bSeleccionado = false;
+        RectTransform rect = btn.GetComponent<RectTransform>();
+        Vector3 pos = c.WorldToScreenPoint(rect.position);
+        float fAncho = rect.rect.width;
+        float fAlto = rect.rect.height;
+        Vector3 fVeci = (pos - new Vector3(fAncho / 2, fAlto / 2, 0));
+        Vector3 fVecf = (pos + new Vector3(fAncho / 2, fAlto / 2, 0));
+        Debug.Log(btn.name + "- comienzo: " + fVeci + " - fin: " + fVecf);
+        Debug.Log(posMano);
 
-        RaycastHit hit;
-        Camera cam = Camera.current;
-        Ray ray = cam.ScreenPointToRay(btn.transform.position);
-
-        if (Physics.Raycast(ray, out hit))
+        if (posMano.x >= fVeci.x && posMano.y >= fVeci.y && posMano.x <= fVecf.x && posMano.y <= fVecf.y)
         {
-            Transform objectHit = hit.transform;
-            Debug.Log("Hay algo en el medio");
-            // Do something with the object that was hit by the raycast.
+            Debug.Log("Adentro de " + btn.name);
+            btn.Select();
+            bSeleccionado = true;
         }
+        return bSeleccionado;
     }
 
     private bool NoExtendido(Finger f)
