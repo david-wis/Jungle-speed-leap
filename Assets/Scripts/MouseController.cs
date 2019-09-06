@@ -11,6 +11,7 @@ public class MouseController : MonoBehaviour {
     public Button btnJugar, btnReglas, btnSalir;
     public Camera c;
     public EventSystem wEvents;
+    private bool _bManoCerrada;
     HandModelManager handManager;
     LeapProvider _provider;
     Controller _controlador;
@@ -31,6 +32,7 @@ public class MouseController : MonoBehaviour {
         imgMano = mano.GetComponent<SpriteRenderer>();
         _provider = handManager.leapProvider;
         imgMano.sprite = manoAbierta;
+        _bManoCerrada = false;
 	}
 
     // Update is called once per frame
@@ -42,9 +44,11 @@ public class MouseController : MonoBehaviour {
             if (mano.Fingers.TrueForAll(NoExtendido))
             {
                 imgMano.sprite = manoCerrada;
+                _bManoCerrada = true;
             } else
             {
                 imgMano.sprite = manoAbierta;
+                _bManoCerrada = false;
             }
         }
         //Debug.Log("Mano: " + c.WorldToScreenPoint(mano.transform.position));
@@ -75,6 +79,10 @@ public class MouseController : MonoBehaviour {
             Debug.Log("Adentro de " + btn.name);
             btn.Select();
             bSeleccionado = true;
+            if (_bManoCerrada)
+            {
+                btn.onClick.Invoke();
+            }
         }
         return bSeleccionado;
     }
