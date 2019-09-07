@@ -28,7 +28,7 @@ public class ManosController : MonoBehaviour {
     void Start()
     {
         fVelocidad = Random.Range(0.8f, 1.8f);
-        initLerpeadores();
+        InitLerpeadores();
         //lerpRot = new Lerpeador(0.5f);
 
         manoIzq = transform.GetChild(0).gameObject;
@@ -49,12 +49,12 @@ public class ManosController : MonoBehaviour {
     {
         if (mesa.Terminada)
             Destroy(this); //Eventually, the bot stopped thinking
-        verificarTocarMazo();
-        verificarAgarrarTotem();
+        VerificarTocarMazo();
+        VerificarAgarrarTotem();
         
     }
 
-    private void verificarTocarMazo()
+    private void VerificarTocarMazo()
     {
         //Debug.Log(iIndexJug + ": " + iEstado);
         //Debug.Log("Jugador " + (iIndexJug + 1) + ". Es su turno? " + (MesaManager.instance.iIndexJugActual == iIndexJug) + ". Estado: " + iEstado + ". No puede tocar: " + (!MesaManager.instance.AlguienToca));
@@ -64,15 +64,15 @@ public class ManosController : MonoBehaviour {
             if ((MesaManager.instance.yaSePuedeSacar()) && (!bAnimandose) && (ObtenerPosCorrecta(manoDer, 1)) /*&& ObtenerPosCorrecta(manoIzq, 0)*/)
             {
                 AnimarMano("tocarMazo");
-                StartCoroutine(detenerAnimacion());
+                StartCoroutine(DetenerAnimacion());
                 bAnimandose = true;
             }
         }
     }
 
-    private void verificarAgarrarTotem()
+    private void VerificarAgarrarTotem()
     {
-        bool bAgarrarPosible = mesa.TieneIgualdadConResto(iIndexJug);
+        bool bAgarrarPosible = mesa.tieneIgualdadConResto(iIndexJug);
         bool cartasAnimandoseEnMesa = MesaManager.instance.CartaAnimandoseEnMesa;
         //Debug.Log("Jugador " + (iIndexJug+1) + ", posibilidad de agarrar el totem: " + bAgarrarPosible);
         if (bAgarrarPosible && !bAnimandose && !cartasAnimandoseEnMesa) {
@@ -127,7 +127,7 @@ public class ManosController : MonoBehaviour {
             else
             {
                 iEstadoRetroceso = 0;
-                initLerpeadores();
+                InitLerpeadores();
                 
             }
         }
@@ -143,7 +143,7 @@ public class ManosController : MonoBehaviour {
         {
             case 0:
                 Debug.Log("Yo, el Jugador " + (iIndexJug + 1) + " comienzo a moverme hacia el totem");
-                initLerpeadores(); //Por las dudas
+                InitLerpeadores(); //Por las dudas
                 MesaManager.instance.CambiarEstadoToque(iIndexJug, true); //Avisamos que estamos buscando el totem
                 lerpMov.Start(manoDer, totem.transform.position + corrimiento);
                 iEstado++;
@@ -180,7 +180,7 @@ public class ManosController : MonoBehaviour {
             default:
                 //Se reincian todos los lerpeadores y vuelve al estado inicial
                 iEstado = 0;
-                initLerpeadores();
+                InitLerpeadores();
                 MesaManager.instance.CambiarEstadoToque(iIndexJug, false); //Ya no esta buscando el totem
                 break;
         }
@@ -189,7 +189,7 @@ public class ManosController : MonoBehaviour {
     /// <summary>
     /// Carga nuevos lerpeadores
     /// </summary>
-    private void initLerpeadores()
+    private void InitLerpeadores()
     {
         lerpMov = new Lerpeador(fVelocidad);
         lerpMovBack = new Lerpeador(fVelocidad);
@@ -246,7 +246,7 @@ public class ManosController : MonoBehaviour {
     /// <summary>
     /// Detiene la animacion luego de 3 segundos
     /// </summary>
-    IEnumerator detenerAnimacion()
+    IEnumerator DetenerAnimacion()
     {
         yield return new WaitForSeconds(3f);
         bAnimandose = false;

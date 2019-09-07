@@ -23,7 +23,7 @@ public class Jugador
     /// <summary>
     /// Devuelve la cantidad de cartas restantes en el mazo del jugador
     /// </summary>
-    public int ObtenerCantCartas()
+    public int obtenerCantCartas()
     {
         return _pilaCartas.Count;
     }
@@ -32,7 +32,7 @@ public class Jugador
     /// Agrega una carta a la pila (mazo) de cartas del jugador
     /// </summary>
     /// <param name="carta">Carta para agregar al mazo del jugador</param>
-    public void AgregarCarta(Carta carta)
+    public void agregarCarta(Carta carta)
     {
         _pilaCartas.Push(carta);
     }
@@ -41,7 +41,7 @@ public class Jugador
     /// Devuelve la siguiente carta de la pila (mazo) de cartas del jugador, y la saca de la pila
     /// </summary>
     /// <returns>La siguiente carta si hay, o null si no tiene mas cartas</returns>
-    public Carta ObtenerSiguienteCarta()
+    public Carta obtenerSiguienteCarta()
     {
         if (_pilaCartas.Count > 0) { 
             _cartaActual = _pilaCartas.Pop();

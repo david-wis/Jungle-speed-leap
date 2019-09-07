@@ -35,7 +35,7 @@ public class Mesa
     /// <summary>
     /// Pone el modo de juego en normal
     /// </summary>
-    public void NormalizarModo()
+    public void normalizarModo()
     {
         //Debug.Log("Modo normalizado exitosamente");
         _modo = ModoJuego.Normal;
@@ -46,12 +46,12 @@ public class Mesa
     /// Devuelve el modo de juego actual.
     /// </summary>
     /// <param name="c">Carta a agregar al vector de cartas en juego del Jugador actual</param>
-    public ModoJuego AgregarCarta(Carta c, int idJugador)
+    public ModoJuego agregarCarta(Carta c, int idJugador)
     {
         cartasEnJuego[idJugador].Push(c);
-        VerificarFinModo(ModoJuego.Colores); //Se fija (si existe) si terminó la ronda de color
-        VerificarFinModo(ModoJuego.Dentro); //Se fija (si existe) si terminó la ronda de flechas para adentro
-        VerificarEspecial(c); //Si la carta es especial cambia el modo de juego
+        verificarFinModo(ModoJuego.Colores); //Se fija (si existe) si terminó la ronda de color
+        verificarFinModo(ModoJuego.Dentro); //Se fija (si existe) si terminó la ronda de flechas para adentro
+        verificarEspecial(c); //Si la carta es especial cambia el modo de juego
         return _modo;
     }
     
@@ -59,7 +59,7 @@ public class Mesa
     /// Se fija si la ronda de determinado modo sigue vigente. Si no lo está, cambia a modo normal
     /// </summary>
     /// <param name="modo">Indica el modo que se quiere verificar</param>
-    private void VerificarFinModo(ModoJuego modo)
+    private void verificarFinModo(ModoJuego modo)
     {
         if (_modo == modo)
         {
@@ -88,7 +88,7 @@ public class Mesa
     /// Cambia el modo de juego si nos encontramos con una carta especial
     /// </summary>
     /// <param name="c"></param>
-    private void VerificarEspecial(Carta c)
+    private void verificarEspecial(Carta c)
     {
         if (c.color == Carta.Color.Especial)
         {
@@ -101,7 +101,7 @@ public class Mesa
     /// Agrega el GameObject recibido al Stack de GameObjects en juego del jugador actual
     /// </summary>
     /// <param name="gameObject">El GameObject a agregar al Stack</param>
-    public void AgregarGameObject(GameObject gameObject, int idJugador)
+    public void agregarGameObject(GameObject gameObject, int idJugador)
     {
         gameObjectsEnJuego[idJugador].Push(gameObject);
     }
@@ -111,7 +111,7 @@ public class Mesa
     /// </summary>
     /// <param name="iIndexJugador">Indice del jugador sobre el que se quiere saber</param>
     /// <returns>Puede agarrar el totem</returns>
-    public bool TieneIgualdadConResto(int iIndexJugador)
+    public bool tieneIgualdadConResto(int iIndexJugador)
     {
         bool bEsCorrecto = false;
         int i = 0;
@@ -164,7 +164,7 @@ public class Mesa
     /// <summary>
     /// Devuelve los jugadores enemigos en un duelo
     /// </summary>
-    public List<int> VerificarIgualdadConResto(int iIndexJugador)
+    public List<int> verificarIgualdadConResto(int iIndexJugador)
     {
         List<int> listaCoincidencias = new List<int>();
         switch (_modo)
