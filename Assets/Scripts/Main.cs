@@ -10,7 +10,7 @@ using Leap.Unity.Interaction;
 
 public class Main : MonoBehaviour
 {
-    public const int CANTCARTAS = 80;
+    public const int CANTCARTAS = 8;
     //public const int CANTCARTAS = 16;
 
     public const int CANTJUGADORES = 4;
@@ -29,6 +29,7 @@ public class Main : MonoBehaviour
 
     //GameObject totem;
     public GameObject turnos;
+    public GameObject btnReinciar;
 
     public Jugador[] jugadores
     {
@@ -120,6 +121,41 @@ public class Main : MonoBehaviour
     {
         fTimer += Time.deltaTime;
         verificarAnimaciones();
+        verificarFinPartida(); //TODO: Por ahi conviene meterlo en otro lado para que no se repita con cada update
+    }
+
+    private void verificarFinPartida()
+    {
+        int i = 0;
+        int iJugadorGanador = -1;
+        while (i < 4 && iJugadorGanador == -1)
+        {
+            if (jugadores[i].ObtenerCantCartas() == 0 && mesa.obtenerCartasDelJugador(i).Count == 0)
+            {
+                iJugadorGanador = i;
+            } else
+            {
+                i++;
+            }
+        }
+
+        if (iJugadorGanador != -1)
+        {
+            Debug.Log("Partida finalizada!");
+            mesa.terminarPartida();
+            TerminarPartida(iJugadorGanador == 0);
+            totem.SetActive(false);
+            btnReinciar.transform.position = new Vector3(-0.42f, 1.8f, -0.4f); //Para que quede cerquita del jugador
+        }
+    }
+
+    /// <summary>
+    /// Muestra el mensaje final que indica el resultado de la partida
+    /// </summary>
+    /// <param name="bUsuarioGanador">Gano el usuario</param>
+    private void TerminarPartida(bool bUsuarioGanador)
+    {
+        //Abril, meté acá el codigo de los mensajes
     }
 
     /// <summary>

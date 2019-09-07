@@ -18393,6 +18393,7 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 1a8b9e47a029c834ea530cdc9768c6ce, type: 2}
   cartasEstaticas: []
   turnos: {fileID: 32022752}
+  btnReinciar: {fileID: 1694794898}
 --- !u!4 &2022951903
 Transform:
   m_ObjectHideFlags: 0

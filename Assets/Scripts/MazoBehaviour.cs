@@ -11,6 +11,12 @@ public class MazoBehaviour : MonoBehaviour {
     public Color defaultColor = Color.Lerp(Color.black, Color.white, 0.1F);
     public Color primaryHoverColor = Color.Lerp(Color.black, Color.white, 0.8F);
 
+    public Mesa mesa
+    {
+        set { MesaManager.instance.mesa = value; }
+        get { return MesaManager.instance.mesa; }
+    }
+
     public int iNroMazo;
     GameObject totem;
 
@@ -31,6 +37,8 @@ public class MazoBehaviour : MonoBehaviour {
     }
 
     void Update() {
+        if (mesa.Terminada)
+            Destroy(this); //Eventually, the mazo stopped thinking
         if (_intObj.isPrimaryHovered)
         {
             if (MesaManager.instance.mesa.Modo != ModoJuego.Fuera)

@@ -7,6 +7,12 @@ public class ManosController : MonoBehaviour {
     public RuntimeAnimatorController contAnimacManos;
     public float fVelocidad;
 
+    public Mesa mesa
+    {
+        set { MesaManager.instance.mesa = value; }
+        get { return MesaManager.instance.mesa; }
+    }
+
     GameObject totem;
     GameObject manoIzq, manoDer;
     TotemBehaviour totemBehaviour;
@@ -41,15 +47,18 @@ public class ManosController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (mesa.Terminada)
+            Destroy(this); //Eventually, the bot stopped thinking
         verificarTocarMazo();
         verificarAgarrarTotem();
+        
     }
 
     private void verificarTocarMazo()
     {
         //Debug.Log(iIndexJug + ": " + iEstado);
         //Debug.Log("Jugador " + (iIndexJug + 1) + ". Es su turno? " + (MesaManager.instance.iIndexJugActual == iIndexJug) + ". Estado: " + iEstado + ". No puede tocar: " + (!MesaManager.instance.AlguienToca));
-        if ((MesaManager.instance.iIndexJugActual == iIndexJug) && (iEstado == 0) && !(MesaManager.instance.AlguienToca) && (MesaManager.instance.mesa.Modo != ModoJuego.Fuera))
+        if ((MesaManager.instance.iIndexJugActual == iIndexJug) && (iEstado == 0) && !(MesaManager.instance.AlguienToca) && (mesa.Modo != ModoJuego.Fuera))
         {
             //Debug.Log("Jugador " + (iIndexJug + 1) + ". Animandose? " + bAnimandose + ". Mano derecha en posicion? " + ObtenerPosCorrecta(manoDer, 1));
             if ((MesaManager.instance.yaSePuedeSacar()) && (!bAnimandose) && (ObtenerPosCorrecta(manoDer, 1)) /*&& ObtenerPosCorrecta(manoIzq, 0)*/)
@@ -63,7 +72,7 @@ public class ManosController : MonoBehaviour {
 
     private void verificarAgarrarTotem()
     {
-        bool bAgarrarPosible = MesaManager.instance.mesa.TieneIgualdadConResto(iIndexJug);
+        bool bAgarrarPosible = mesa.TieneIgualdadConResto(iIndexJug);
         bool cartasAnimandoseEnMesa = MesaManager.instance.CartaAnimandoseEnMesa;
         //Debug.Log("Jugador " + (iIndexJug+1) + ", posibilidad de agarrar el totem: " + bAgarrarPosible);
         if (bAgarrarPosible && !bAnimandose && !cartasAnimandoseEnMesa) {

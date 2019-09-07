@@ -6,9 +6,16 @@ public class Mesa
     Stack<Carta>[] cartasEnJuego = new Stack<Carta>[4];
     Stack<GameObject>[] gameObjectsEnJuego = new Stack<GameObject>[4];
     private ModoJuego _modo;
+    private bool _terminada;
+
+    public bool Terminada
+    {
+        get { return _terminada; }
+    }
 
     public Mesa()
     {
+        _terminada = false;
         _modo = ModoJuego.Normal;
         for (int i = 0; i < 4; i++)
         {
@@ -276,6 +283,14 @@ public class Mesa
     public Stack<Carta> obtenerCartasDelJugador(int idJugador)
     {
         return cartasEnJuego[idJugador];
+    }
+
+    /// <summary>
+    /// Cambia el estado de la partida a terminada
+    /// </summary>
+    public void terminarPartida()
+    {
+        _terminada = true;
     }
 }
 
