@@ -7,11 +7,11 @@ using UnityEditor;
 using System;
 using System.Reflection;
 using Leap.Unity.Interaction;
+using TMPro;
 
 public class Main : MonoBehaviour
 {
     public const int CANTCARTAS = 80;
-    //public const int CANTCARTAS = 16;
 
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDesdeMazo = new RuntimeAnimatorController[4];
@@ -122,8 +122,20 @@ public class Main : MonoBehaviour
     void Update()
     {
         fTimer += Time.deltaTime;
+        verificarSalteoJugadores();
         verificarAnimaciones();
         verificarFinPartida(); //TODO: Por ahi conviene meterlo en otro lado para que no se repita con cada update
+    }
+
+    /// <summary>
+    /// Si le toca a un jugador que ya no tiene mazo, este resulta salteado
+    /// </summary>
+    private void verificarSalteoJugadores()
+    {
+        if (jugadores[iIndexJugActual].ObtenerCantCartas() == 0)
+        {
+            iIndexJugActual = (iIndexJugActual < 3) ? iIndexJugActual + 1 : 0;
+        }
     }
 
     private void verificarFinPartida()
@@ -157,14 +169,14 @@ public class Main : MonoBehaviour
     /// <param name="bUsuarioGanador">Gano el usuario</param>
     private void TerminarPartida(bool bUsuarioGanador)
     {
-        TextMesh txt = mensaje.GetComponent<TextMesh>();
+        TextMeshProUGUI txt = mensaje.GetComponent<TextMeshProUGUI>();
         if (bUsuarioGanador)
         {
-            txt.text = "Ganaste!!!";
+            txt.SetText("Ganaste!!!");
         }
         else
         {
-            txt.text = "Perdiste :(";
+            txt.SetText("Perdiste :(");
         }
         //Abril, meté acá el codigo de los mensajes
     }
