@@ -125,7 +125,7 @@ public class Mesa
                     {
                         if (i != iIndexJugador && cartasEnJuego[i].Count != 0)
                         {
-                            if (cartasEnJuego[i].Peek().forma == cartaJugador.forma)
+                            if (cartasEnJuego[i].Peek().forma == cartaJugador.forma && cartaJugador.color != Carta.Color.Especial)
                             {
                                 bEsCorrecto = true;
                             }
@@ -142,7 +142,7 @@ public class Mesa
                     {
                         if (i != iIndexJugador && cartasEnJuego[i].Count != 0)
                         {
-                            if (cartasEnJuego[i].Peek().color == cartaJugador.color)
+                            if (cartasEnJuego[i].Peek().color == cartaJugador.color && cartaJugador.color != Carta.Color.Especial)
                             {
                                 bEsCorrecto = true;
                             }
@@ -177,7 +177,7 @@ public class Mesa
                     {
                         if (i != iIndexJugador && cartasEnJuego[i].Count != 0)
                         {
-                            if (cartasEnJuego[i].Peek().forma == cartaJugador.forma)
+                            if (cartasEnJuego[i].Peek().forma == cartaJugador.forma && cartaJugador.color != Carta.Color.Especial)
                             {
                                 listaCoincidencias.Add(i);
                             }
@@ -193,7 +193,7 @@ public class Mesa
                     {
                         if (i != iIndexJugador && cartasEnJuego[i].Count != 0)
                         {
-                            if (cartasEnJuego[i].Peek().color == cartaJugador.color)
+                            if (cartasEnJuego[i].Peek().color == cartaJugador.color && cartaJugador.color != Carta.Color.Especial)
                             {
                                 listaCoincidencias.Add(i);
                             }

@@ -10,7 +10,7 @@ using Leap.Unity.Interaction;
 
 public class Main : MonoBehaviour
 {
-    public const int CANTCARTAS = 8;
+    public const int CANTCARTAS = 80;
     //public const int CANTCARTAS = 16;
 
     public const int CANTJUGADORES = 4;
@@ -373,7 +373,7 @@ public class Main : MonoBehaviour
     void AgarrarTotem()
     {
         iJugadorTotem = ObtenerJugadorAgarroTotem();
-        desactivarCuerposGameObjects(); //Para que el Totem no se choque con las cartas en mesa
+        //desactivarCuerposGameObjects(); //Para que el Totem no se choque con las cartas en mesa
         if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
             EventManager.StopListening("totemtraido", eventoListenerTotemTraido);
