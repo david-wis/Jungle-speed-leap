@@ -31,6 +31,8 @@ public class Main : MonoBehaviour
     public GameObject turnos;
     public GameObject btnReinciar;
 
+    public GameObject mensaje;
+
     public Jugador[] jugadores
     {
         set { MesaManager.instance.jugadores = value; }
@@ -155,6 +157,15 @@ public class Main : MonoBehaviour
     /// <param name="bUsuarioGanador">Gano el usuario</param>
     private void TerminarPartida(bool bUsuarioGanador)
     {
+        TextMesh txt = mensaje.GetComponent<TextMesh>();
+        if (bUsuarioGanador)
+        {
+            txt.text = "Ganaste!!!";
+        }
+        else
+        {
+            txt.text = "Perdiste :(";
+        }
         //Abril, meté acá el codigo de los mensajes
     }
 
