@@ -13,6 +13,6 @@ public class TextController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        txt.text = MesaManager.instance.jugadores[0].obtenerCantCartas().ToString();
+        txt.text = MesaManager.instance.jugadores[0].ObtenerCantCartas().ToString();
 	}
 }
