@@ -11,7 +11,7 @@ using TMPro;
 
 public class Main : MonoBehaviour
 {
-    public const int CANTCARTAS = 80;
+    public const int CANTCARTAS = 24;
 
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDesdeMazo = new RuntimeAnimatorController[4];
@@ -397,7 +397,7 @@ public class Main : MonoBehaviour
     void AgarrarTotem()
     {
         iJugadorTotem = ObtenerJugadorAgarroTotem();
-        //desactivarCuerposGameObjects(); //Para que el Totem no se choque con las cartas en mesa
+        desactivarCuerposGameObjects(); //Para que el Totem no se choque con las cartas en mesa
         if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
             EventManager.StopListening("totemtraido", eventoListenerTotemTraido);
@@ -444,9 +444,11 @@ public class Main : MonoBehaviour
     {
         for (int i = 0; i < CANTJUGADORES; i++)
         {
+            Debug.Log("---Desactivando del jugador " + i);
             GameObject[] gameObjects = mesa.obtenerGameObjectsDelJugador(i);
             foreach (GameObject gameObject in gameObjects)
             {
+                Debug.Log("-Desactivando " + gameObject.name);
                 sacarCuerpo(gameObject);
             }
         }
@@ -502,7 +504,7 @@ public class Main : MonoBehaviour
             StartCoroutine(llevarCartasAlTotem(iJugadorTotem));
         }
         cartasEstaticas[iJugadorTotem].SetActive(false);
-        //reactivarCuerposGameObjects();
+        reactivarCuerposGameObjects();
         ReiniciarTotem();
         NingunoBuscaTotem();
         mesa.NormalizarModo(); //Sea lo que sea siempre que se le den cartas a alguien el modo queda en normal
@@ -628,7 +630,7 @@ public class Main : MonoBehaviour
         {
             verificarMazoVacioJugador(i);            
         }
-        reactivarCuerposGameObjects();
+        //reactivarCuerposGameObjects();
     }
 
     public void finAnimacionHaciaTotem(GameObject gameObjFinalizar)
@@ -649,11 +651,14 @@ public class Main : MonoBehaviour
     {
         for (int i = 0; i < CANTJUGADORES; i++)
         {
+            Debug.Log("---Reactivando del jugador " + i);
             GameObject[] gameObjects = mesa.obtenerGameObjectsDelJugador(i);
-            foreach (GameObject gameObject in gameObjects)
+            for (int iPosiGameObject = gameObjects.Length - 1; iPosiGameObject >= 0; iPosiGameObject--)
             {
+                GameObject gameObject = gameObjects[iPosiGameObject];
+                Debug.Log("-Reactivando " + gameObject.name);
                 ponerCuerpo(gameObject);
-            }
+            }            
         }
     }
 

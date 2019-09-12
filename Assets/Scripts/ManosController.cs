@@ -111,7 +111,7 @@ public class ManosController : MonoBehaviour {
         if (!ObtenerPosCorrecta(manoDer, 1))
         {
             MesaManager.instance.CambiarEstadoToque(iIndexJug, false); //Ya no esta buscando el totem
-            Debug.Log("Yo, el Jugador " + (iIndexJug + 1) + " he decidido retroceder. Estado previo: " + iEstado);
+            //Debug.Log("Yo, el Jugador " + (iIndexJug + 1) + " he decidido retroceder. Estado previo: " + iEstado);
             if (iEstadoRetroceso == 0)
             {
                 lerpMovBack.Start(manoDer, posicionInicial[1]);
@@ -142,7 +142,7 @@ public class ManosController : MonoBehaviour {
         switch (iEstado)
         {
             case 0:
-                Debug.Log("Yo, el Jugador " + (iIndexJug + 1) + " comienzo a moverme hacia el totem");
+                //Debug.Log("Yo, el Jugador " + (iIndexJug + 1) + " comienzo a moverme hacia el totem");
                 initLerpeadores(); //Por las dudas
                 MesaManager.instance.CambiarEstadoToque(iIndexJug, true); //Avisamos que estamos buscando el totem
                 lerpMov.Start(manoDer, totem.transform.position + corrimiento);
