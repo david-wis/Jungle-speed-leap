@@ -314,6 +314,7 @@ public class Main : MonoBehaviour
                         ModoJuego modo = mesa.AgregarCarta(cartaActual, iIndexJugActual); //Agrega la carta al vector de cartas de la mesa
                         Crear_AnimarCarta(cartaActual); //Crea la carta y la anima
                         cartasEstaticas[iIndexJugActual].transform.parent.gameObject.SetActive(true);
+                        cartasEstaticas[iIndexJugActual].SetActive(true);
                         Image imagen = cartasEstaticas[iIndexJugActual].GetComponent<Image>();
                         var color = imagen.color;
                         color.a = 1;
@@ -408,7 +409,7 @@ public class Main : MonoBehaviour
         else
         {
             List<int> listaJugadoresEnemigos = mesa.VerificarIgualdadConResto(iJugadorTotem);
-            mostrarEnemigosPorDebug(listaJugadoresEnemigos, "AgarrarTotem");
+            //mostrarEnemigosPorDebug(listaJugadoresEnemigos, "AgarrarTotem");
             if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
             {
                 EventManager.StopListening("totemtraido", eventoListenerTotemTraido);
@@ -465,6 +466,7 @@ public class Main : MonoBehaviour
             if (i != iJugadorTotem)
             {
                 StartCoroutine(llevarCartasAOtroMazo(i, listaEnemigos));
+                cartasEstaticas[i].SetActive(false);
             }
         }
         reactivarCuerposGameObjects();
@@ -499,7 +501,8 @@ public class Main : MonoBehaviour
             //Las cartas del que lo agarro van al Totem
             StartCoroutine(llevarCartasAlTotem(iJugadorTotem));
         }
-        reactivarCuerposGameObjects();
+        cartasEstaticas[iJugadorTotem].SetActive(false);
+        //reactivarCuerposGameObjects();
         ReiniciarTotem();
         NingunoBuscaTotem();
         mesa.NormalizarModo(); //Sea lo que sea siempre que se le den cartas a alguien el modo queda en normal
