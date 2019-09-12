@@ -31,7 +31,9 @@ public class Main : MonoBehaviour
     public GameObject turnos;
     public GameObject btnReinciar;
 
-    public GameObject mensaje;
+    public GameObject mensajeFinal;
+	public GameObject mensajeInicial;
+    public GameObject mensajePrisma;
 
     public Jugador[] jugadores
     {
@@ -169,7 +171,9 @@ public class Main : MonoBehaviour
     /// <param name="bUsuarioGanador">Gano el usuario</param>
     private void TerminarPartida(bool bUsuarioGanador)
     {
-        TextMeshProUGUI txt = mensaje.GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI txt = mensajeFinal.GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI txtPrisma = mensajePrisma.GetComponent<TextMeshProUGUI>();
+        txtPrisma.SetText("toca el prisma del eterno retorno para reiniciar");
         if (bUsuarioGanador)
         {
             txt.SetText("Ganaste!!!");

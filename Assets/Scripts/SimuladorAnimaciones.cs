@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 
+
 /// <summary>
 /// Con esta clase se puede jugar sin tener el leap motion, reemplazando su funcionalidad por comandos
 /// </summary>
 public class SimuladorAnimaciones : MonoBehaviour
 {
     float fTimer;
+	public GameObject mensajeInicial;
     // Use this for initialization
     void Start()
     {
@@ -21,6 +23,11 @@ public class SimuladorAnimaciones : MonoBehaviour
             if (Input.GetKey(KeyCode.Alpha1))
             {
                 EventManager.TriggerEvent("agarrarcarta0");
+                if (mensajeInicial != null)
+                {
+                    Destroy(mensajeInicial);
+                    mensajeInicial = null;
+                }
                 fTimer = 0f;
             }
             if (Input.GetKey(KeyCode.Alpha2))
