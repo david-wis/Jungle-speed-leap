@@ -13,7 +13,7 @@ public class MensajeInicial : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		_intObj.GetComponent<InteractionBehaviour>();
+		_intObj = GetComponent<InteractionBehaviour>();
 	}
 
 	// Update is called once per frame

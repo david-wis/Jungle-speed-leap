@@ -11,7 +11,7 @@ using TMPro;
 
 public class Main : MonoBehaviour
 {
-    public const int CANTCARTAS = 24;
+    public const int CANTCARTAS = 80;
 
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDesdeMazo = new RuntimeAnimatorController[4];
