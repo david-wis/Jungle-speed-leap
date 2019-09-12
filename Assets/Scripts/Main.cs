@@ -792,11 +792,16 @@ public class Main : MonoBehaviour
         {
             gameObject.GetComponent<Rigidbody>().useGravity = false;
         }
+		else {
+			Debug.Log(gameObject.name + " tiene el RigidBody en NULL");
+		}
         if (gameObject.GetComponent<BoxCollider>() != null)
         {
             gameObject.GetComponent<BoxCollider>().enabled = false;
-        }       
-        
+        }
+		else {
+			Debug.Log(gameObject.name + " tiene el BoxCollider en NULL");
+		}        
     }
 
     /// <summary>
