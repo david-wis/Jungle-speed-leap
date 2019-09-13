@@ -190,12 +190,14 @@ public class Main : MonoBehaviour
     /// </summary>
     private void LlenarMazo()
     {
-        string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
-        for (int i = 0; i < CANTCARTAS; i++)
+        //string[] rutaCartitas = AssetDatabase.FindAssets("b:carta", new[] { "Assets/Cartas" });
+        /*for (int i = 0; i < CANTCARTAS; i++)
         {
             string ruta = AssetDatabase.GUIDToAssetPath(rutaCartitas[i]);
             arrayMazoTotal[i] = (Carta)AssetDatabase.LoadAssetAtPath(ruta, typeof(Carta));
-        }
+        }*/
+        arrayMazoTotal = Resources.LoadAll<Carta>("Cartas");
+
     }
 
     /// <summary>
