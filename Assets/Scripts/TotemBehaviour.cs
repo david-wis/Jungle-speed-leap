@@ -138,6 +138,15 @@ public class TotemBehaviour : MonoBehaviour {
         if (collision.collider.name == "floor") //dato: tuve que meterle un box collider xq no funciona con el mesh
         {
             ReiniciarPosicion();
+        } else if (collision.gameObject.name == "Platte")
+        {
+            if (bAgarradoCorrecto)
+            {
+                Debug.Log("Se cayó el totem!!!!");
+                EventManager.TriggerEvent("totemfallido");
+                //bAgarradoCorrecto = false;
+                ReiniciarPosicion();
+            }
         }
     }
 

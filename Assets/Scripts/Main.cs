@@ -391,6 +391,7 @@ public class Main : MonoBehaviour
     int iJugadorTotem = 0; //Jugador que agarro el totem
 
     UnityAction eventoListenerTotemTraido;
+    UnityAction eventoListenerTotemFallido;
     /// <summary>
     ///Funcion que se ejecuta cuando se produce el evento de agarrartotem.
     ///<para>Si el modo de juego de la mesa es dentro, todos pueden agarrar el totem. </para>
@@ -405,10 +406,13 @@ public class Main : MonoBehaviour
         if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
             EventManager.StopListening("totemtraido", eventoListenerTotemTraido);
+            EventManager.StopListening("totemfallido", eventoListenerTotemFallido);
             TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
             totemBehaviour.SetAgarradoCorrecto();
             eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(true); });
             EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
+            eventoListenerTotemFallido = new UnityAction(totemMalAgarrado);
+            EventManager.StartListening("totemfallido", eventoListenerTotemFallido);
         }
         else
         {
@@ -417,11 +421,14 @@ public class Main : MonoBehaviour
             if (listaJugadoresEnemigos.Count > 0) //Si hay algun jugador con el mismo simbolo
             {
                 EventManager.StopListening("totemtraido", eventoListenerTotemTraido);
+                EventManager.StopListening("totemfallido", eventoListenerTotemFallido);
                 //Debug.Log("Totem agarrado correctamente, llevatelo");
                 TotemBehaviour totemBehaviour = totem.GetComponent<TotemBehaviour>();
                 totemBehaviour.SetAgarradoCorrecto();
                 eventoListenerTotemTraido = new UnityAction(delegate () { DarCartas(false, listaJugadoresEnemigos); });
                 EventManager.StartListening("totemtraido", eventoListenerTotemTraido);
+                eventoListenerTotemFallido = new UnityAction(totemMalAgarrado);
+                EventManager.StartListening("totemfallido", eventoListenerTotemFallido);
             }
             else //Agarro mal el totem
             {
