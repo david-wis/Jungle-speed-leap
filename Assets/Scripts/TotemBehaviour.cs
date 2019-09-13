@@ -42,6 +42,7 @@ public class TotemBehaviour : MonoBehaviour {
         EventManager.StartListening("terminarForzarAgarrado", terminarForzarAgarradoListener);
         forzarAgarradoCorrectoListener = new UnityAction(forzarAgarradoCorrecto);
         EventManager.StartListening("forzarAgarradoCorrecto", forzarAgarradoCorrectoListener);
+        gameObject.layer = 8; //Le asigna el layer "Totem"
     }
 
 
@@ -135,9 +136,15 @@ public class TotemBehaviour : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Totem colisiono con " + collision.gameObject.name);
+
         if (collision.collider.name == "floor") //dato: tuve que meterle un box collider xq no funciona con el mesh
         {
             ReiniciarPosicion();
+        }
+        else if (collision.gameObject.CompareTag("GameObjCarta"))
+        {
+            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>()); //No funciona
         } else if (collision.gameObject.name == "Platte")
         {
             if (bAgarradoCorrecto)

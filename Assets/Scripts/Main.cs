@@ -568,6 +568,8 @@ public class Main : MonoBehaviour
         GameObject gameObject = Instantiate(carta.img3D,
                                 posicCartasDelMazo[iIndexJugActual],
                                 Quaternion.Euler(rotacCartasDelMazo[iIndexJugActual]));
+        gameObject.tag = "GameObjCarta"; //Le asigna el tag al GameObject
+        gameObject.layer = 9; //Le asigna el layer "Cartas"
         //Debug.Log("Creando " + gameObject.name + " del jugador " + iIndexJugActual);
         return gameObject;
     }

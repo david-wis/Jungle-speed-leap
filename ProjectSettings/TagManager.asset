@@ -7,6 +7,7 @@ TagManager:
   - CartasEstaticas
   - Jugador
   - Mazo
+  - GameObjCarta
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Totem
+  - Cartas
   - 
   - 
   - 
