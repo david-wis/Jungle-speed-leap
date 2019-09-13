@@ -11,7 +11,7 @@ using TMPro;
 
 public class Main : MonoBehaviour
 {
-    public const int CANTCARTAS = 28;
+    public const int CANTCARTAS = 80;
 
     public const int CANTJUGADORES = 4;
     public RuntimeAnimatorController[] contrAnimacDesdeMazo = new RuntimeAnimatorController[4];
@@ -404,7 +404,7 @@ public class Main : MonoBehaviour
     void AgarrarTotem()
     {
         iJugadorTotem = ObtenerJugadorAgarroTotem();
-        desactivarCuerposGameObjects(); //Para que el Totem no se choque con las cartas en mesa
+        //desactivarCuerposGameObjects(); //Para que el Totem no se choque con las cartas en mesa
         if (mesa.Modo == ModoJuego.Dentro) //Todos se tiran a por el totem
         {
             EventManager.StopListening("totemtraido", eventoListenerTotemTraido);
@@ -484,7 +484,7 @@ public class Main : MonoBehaviour
                 cartasEstaticas[i].SetActive(false);
             }
         }
-        reactivarCuerposGameObjects();
+        //reactivarCuerposGameObjects();
         NingunoBuscaTotem();
     }
 
@@ -517,7 +517,7 @@ public class Main : MonoBehaviour
             StartCoroutine(llevarCartasAlTotem(iJugadorTotem));
         }
         cartasEstaticas[iJugadorTotem].SetActive(false);
-        reactivarCuerposGameObjects();
+        //reactivarCuerposGameObjects();
         ReiniciarTotem();
         NingunoBuscaTotem();
         mesa.NormalizarModo(); //Sea lo que sea siempre que se le den cartas a alguien el modo queda en normal
