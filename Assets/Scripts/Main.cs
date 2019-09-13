@@ -31,9 +31,9 @@ public class Main : MonoBehaviour
     public GameObject turnos;
     public GameObject btnReinciar;
 
-    public GameObject mensajeFinal;
-	public GameObject mensajeInicial;
-    public GameObject mensajePrisma;
+    public TextMeshProUGUI mensajeFinal;
+    public TextMeshProUGUI mensajePrisma;
+    public TextMeshProUGUI tresDosUno;
 
     public Jugador[] jugadores
     {
@@ -171,18 +171,17 @@ public class Main : MonoBehaviour
     /// <param name="bUsuarioGanador">Gano el usuario</param>
     private void TerminarPartida(bool bUsuarioGanador)
     {
-        TextMeshProUGUI txt = mensajeFinal.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI txtPrisma = mensajePrisma.GetComponent<TextMeshProUGUI>();
-        txtPrisma.SetText("toca el prisma del eterno retorno para reiniciar");
+        //TextMeshProUGUI txt = mensajeFinal.GetComponent<TextMeshProUGUI>();
+        //TextMeshProUGUI txtPrisma = mensajePrisma.GetComponent<TextMeshProUGUI>();
+        mensajePrisma.SetText("toca el prisma del eterno retorno para reiniciar");
         if (bUsuarioGanador)
         {
-            txt.SetText("Ganaste!!!");
+            mensajeFinal.SetText("Ganaste!!!");
         }
         else
         {
-            txt.SetText("Perdiste :(");
+            mensajeFinal.SetText("Perdiste :(");
         }
-        //Abril, meté acá el codigo de los mensajes
     }
 
     /// <summary>
@@ -376,8 +375,17 @@ public class Main : MonoBehaviour
     /// </summary>
     IEnumerator LevantarCartasModoFlechaFuera()
     {
+        //TextMeshProUGUI txt = tresDosUno.GetComponent<TextMeshProUGUI>();
         cambiarTurno(4);
-        yield return new WaitForSeconds(3f);
+        tresDosUno.SetText("3...");
+        yield return new WaitForSeconds(1f);
+        tresDosUno.SetText("2...");
+        yield return new WaitForSeconds(1f);
+        tresDosUno.SetText("1...");
+        yield return new WaitForSeconds(1f);
+        tresDosUno.SetText("YA!");
+        yield return new WaitForSeconds(1f);
+        tresDosUno.SetText(" ");
         mesa.NormalizarModo();
         //Debug.Log("Flechas para afuera");
         int iIndexAux = iIndexJugActual;
