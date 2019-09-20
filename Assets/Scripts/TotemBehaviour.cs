@@ -42,9 +42,8 @@ public class TotemBehaviour : MonoBehaviour {
         EventManager.StartListening("terminarForzarAgarrado", terminarForzarAgarradoListener);
         forzarAgarradoCorrectoListener = new UnityAction(forzarAgarradoCorrecto);
         EventManager.StartListening("forzarAgarradoCorrecto", forzarAgarradoCorrectoListener);
-        gameObject.layer = 8; //Le asigna el layer "Totem"
+        //gameObject.layer = 8; //Le asigna el layer "Totem"
     }
-
 
     Vector3 PosAnterior;
 
@@ -66,7 +65,8 @@ public class TotemBehaviour : MonoBehaviour {
                 switch (iIndexApretado)
                 {
                     case 0:
-                        if (posicionInicial.z - transform.position.z >= 0.2)
+                        //Debug.Log("Diferencia en Z: " + (posicionInicial.z - transform.position.z));
+                        if (posicionInicial.z - transform.position.z >= 0.18)
                         {
                             //Debug.Log("Totem robado por el jugador 1");
                             bAgarradoCorrecto = false;
@@ -74,7 +74,7 @@ public class TotemBehaviour : MonoBehaviour {
                         }
                         break;
                     case 1:
-                        if (PosAnterior.x - transform.position.x <= -0.2)
+                        if (PosAnterior.x - transform.position.x <= -0.18)
                         {
                             //Debug.Log("Totem robado por el jugador 2");
                             bAgarradoCorrecto = false;
@@ -82,7 +82,7 @@ public class TotemBehaviour : MonoBehaviour {
                         }
                         break;
                     case 2:
-                        if (transform.position.z - PosAnterior.z >= 0.2)
+                        if (transform.position.z - PosAnterior.z >= 0.18)
                         {
                             //Debug.Log("Totem robado por el jugador 3");
                             bAgarradoCorrecto = false;
@@ -90,7 +90,7 @@ public class TotemBehaviour : MonoBehaviour {
                         }
                         break;
                     case 3:
-                        if (transform.position.x - PosAnterior.x <= -0.2)
+                        if (transform.position.x - PosAnterior.x <= -0.18)
                         {
                             //Debug.Log("Totem robado por el jugador 4");
                             bAgarradoCorrecto = false;
@@ -306,7 +306,7 @@ public class TotemBehaviour : MonoBehaviour {
         vaciarCartasEnTotem();
         return cartas;
     }
-
+        
     /// <summary>
     /// Getter de la lista cartasEnTotem
     /// </summary>
