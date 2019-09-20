@@ -49,8 +49,10 @@ public class ManosController : MonoBehaviour {
     {
         if (mesa.Terminada)
             Destroy(this); //Eventually, the bot stopped thinking
-        verificarTocarMazo();
-        verificarAgarrarTotem();
+        if (!verificarAgarrarTotem())
+        {
+            verificarTocarMazo();
+        }    
         
     }
 
@@ -70,12 +72,12 @@ public class ManosController : MonoBehaviour {
         }
     }
 
-    private void verificarAgarrarTotem()
+    private bool verificarAgarrarTotem()
     {
         bool bAgarrarPosible = mesa.TieneIgualdadConResto(iIndexJug);
-        bool cartasAnimandoseEnMesa = MesaManager.instance.CartaAnimandoseEnMesa;
+        bool cartaAnimandoseEnMesa = MesaManager.instance.CartaAnimandoseEnMesa;
         //Debug.Log("Jugador " + (iIndexJug+1) + ", posibilidad de agarrar el totem: " + bAgarrarPosible);
-        if (bAgarrarPosible && !bAnimandose && !cartasAnimandoseEnMesa) {
+        if (bAgarrarPosible && !bAnimandose && !cartaAnimandoseEnMesa) {
             //Se anima solo si no esta yendo al mazo, ni hay cartas animandose
             if (!totemBehaviour.estaAgarrado() || totemBehaviour.ObtenerJugador() == iIndexJug)
             {
@@ -92,6 +94,7 @@ public class ManosController : MonoBehaviour {
             Retroceder();
             iEstado = 0;
         }
+        return bAgarrarPosible;
     }
 
     private bool ObtenerPosCorrecta(GameObject mano, int iIndex)
