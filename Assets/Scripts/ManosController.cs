@@ -47,8 +47,11 @@ public class ManosController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (mesa.Terminada)
+        if (mesa.Terminada) {
+            Destroy(manoIzq);
+            Destroy(manoDer);
             Destroy(this); //Eventually, the bot stopped thinking
+        }
         if (!verificarAgarrarTotem())
         {
             verificarTocarMazo();
