@@ -65,6 +65,10 @@ public class SimuladorAnimaciones : MonoBehaviour
                 EventManager.TriggerEvent("restablecertotem");
                 fTimer = 0f;
             }
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
         
     }

@@ -111,6 +111,7 @@ public class TotemBehaviour : MonoBehaviour {
     {
         bAgarradoCorrecto = true;
         PosAnterior = transform.position;
+        _intObj.enabled = true;
     }
 
     /// <summary>
@@ -177,6 +178,9 @@ public class TotemBehaviour : MonoBehaviour {
         {
             bAgarrado = true;
             iIndexApretado = iIndexApretadoTemp;
+            if (iIndexApretadoTemp != 0) {
+                _intObj.enabled = false;
+            }
             //Debug.Log("agarrado");
         }
     }
