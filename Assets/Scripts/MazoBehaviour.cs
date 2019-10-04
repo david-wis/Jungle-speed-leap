@@ -4,7 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MazoBehaviour : MonoBehaviour {
+public class MazoBehaviour : MonoBehaviour
+{
     private InteractionBehaviour _intObj;
     private Material _material;
     [Header("InteractionBehaviour Colors")]
@@ -21,7 +22,8 @@ public class MazoBehaviour : MonoBehaviour {
     GameObject totem;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         _intObj = GetComponent<InteractionBehaviour>();
         totem = TotemManager.instance.totem;
         Renderer renderer = GetComponent<Renderer>();
@@ -36,7 +38,8 @@ public class MazoBehaviour : MonoBehaviour {
         PonerMazo();
     }
 
-    void Update() {
+    void Update()
+    {
         if (mesa.Terminada)
             Destroy(this); //Eventually, the mazo stopped thinking
         if (_intObj.isPrimaryHovered)
@@ -53,8 +56,9 @@ public class MazoBehaviour : MonoBehaviour {
         //Debug.Log("Me toco el " + other.gameObject.transform.parent.transform.parent.name);
         //MesaManager.instance.reiniciarTimer();
 
-        if (iNroMazo != 0) { 
-            _material.color = Color.Lerp(_material.color, primaryHoverColor, 30F * Time.deltaTime);            
+        if (iNroMazo != 0)
+        {
+            _material.color = Color.Lerp(_material.color, primaryHoverColor, 30F * Time.deltaTime);
 
             if (MesaManager.instance.mesa.Modo != ModoJuego.Fuera)
             {
@@ -70,7 +74,7 @@ public class MazoBehaviour : MonoBehaviour {
             _material.color = Color.Lerp(_material.color, defaultColor, 30F * Time.deltaTime);
         }
     }
-    
+
 
     /// <summary>
     /// Dispara el evento "agarrarcartaX" dependiendo del mazo tocado
@@ -103,6 +107,6 @@ public class MazoBehaviour : MonoBehaviour {
             default:
                 break;
         }
-        
+
     }
 }
