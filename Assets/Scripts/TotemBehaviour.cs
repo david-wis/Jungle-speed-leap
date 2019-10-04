@@ -176,10 +176,17 @@ public class TotemBehaviour : MonoBehaviour {
 
         if (iIndexApretadoTemp != -1)
         {
-            bAgarrado = true;
-            iIndexApretado = iIndexApretadoTemp;
-            if (iIndexApretadoTemp != 0) {
+            if (iIndexApretadoTemp != 0) { //Si intenta agarrar un bot, impedimos que el jugador pueda agarrar el totem 
                 _intObj.enabled = false;
+                bAgarrado = true;
+                iIndexApretado = iIndexApretadoTemp;
+            } else
+            {
+                if (_intObj.enabled) //El jugador uno solo va a cambiar el index si puede hacerlo
+                {
+                    bAgarrado = true;
+                    iIndexApretado = iIndexApretadoTemp;
+                }
             }
             //Debug.Log("agarrado");
         }
