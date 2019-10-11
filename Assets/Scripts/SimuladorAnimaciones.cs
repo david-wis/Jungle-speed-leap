@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Con esta clase se puede jugar sin tener el leap motion, reemplazando su funcionalidad por comandos
@@ -68,6 +68,15 @@ public class SimuladorAnimaciones : MonoBehaviour
             if (Input.GetKey(KeyCode.Escape))
             {
                 Application.Quit();
+            }
+            if (Input.GetKey(KeyCode.F5))
+            {
+                int buildIndex = SceneManager.GetActiveScene().buildIndex;
+                SceneManager.LoadSceneAsync(buildIndex - 1, LoadSceneMode.Single);
+            }
+            if (Input.GetKey(KeyCode.F6))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
         

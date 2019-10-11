@@ -49,7 +49,12 @@ public class DemoMain : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log("En el Start del Main Demo");
+        string strTutorialActivado = Ini.IniReadValue("config", "tutorial-activado");
+        if (strTutorialActivado == "false")
+        {
+            int buildIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadSceneAsync(buildIndex + 1, LoadSceneMode.Single);
+        }
 
         LlenarMazo();
         ReferenciarMazo();

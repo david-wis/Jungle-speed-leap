@@ -48,7 +48,7 @@ public class Ini : MonoBehaviour
         GetPrivateProfileString(Section, Key, "", temp, 255, path);
         if (temp.ToString() == "")
         {
-            IniWriteValue("config", "tutorial-activado", "true");
+            IniWriteValue(Section, Key, "true");
             temp.Append("true");
         }
         return temp.ToString();
