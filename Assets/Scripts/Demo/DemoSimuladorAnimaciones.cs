@@ -35,6 +35,10 @@ public class DemoSimuladorAnimaciones : MonoBehaviour
                 EventManager.TriggerEvent("restablecertotemdemo");
                 fTimer = 0f;
             }
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
 
     }
