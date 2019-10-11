@@ -15,4 +15,14 @@ public class DemoTotemManager : MonoBehaviour
     #endregion
 
     public GameObject totem;
+
+    public void PermitirGrasp()
+    {
+        totem.GetComponent<DemoTotemBehaviour>().PermitirGrasp();
+    }
+
+    public void DestruirTotem()
+    {
+        totem.GetComponent<DemoTotemBehaviour>().Destruirme();
+    }
 }

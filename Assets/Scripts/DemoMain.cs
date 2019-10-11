@@ -8,6 +8,7 @@ using System;
 using System.Reflection;
 using Leap.Unity.Interaction;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DemoMain : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class DemoMain : MonoBehaviour
     GameObjectAnimandose gameObjectAnimandose;
 
     public const float fDuracAnimaciones = 1.1f;
+    float cuentoTres = 0f;
 
     UnityAction eventoListenerMazo0;
     UnityAction eventoListenerTotem;
@@ -112,32 +114,22 @@ public class DemoMain : MonoBehaviour
         totemBehaviour.ReiniciarPosicion();
     }
 
-    /// <summary>
-    /// Si es su turno, hace la operacion de levantar la carta de un jugador
-    /// </summary>
-    /// <param name="iIndexMazo">Indice del jugador que intenta levantar su carta</param>
-    /// <param name="bFlechaAfuera">Si se quieren levantar todas las cartas al mismo tiempo, no hay intervalo de tiempo</param>
     void PonerCarta(int iIndexMazo, bool bFlechaAfuera = false)
     {
-        //Mostrar mensaje "Bien hecho!
+        DemoMensajesManager.instance.PonerMensaje("Bien hecho!");
+        Debug.Log("Toco el mazo");
         if (cartaJuego != null)
         {
             Crear_AnimarCarta(cartaJuego); //Crea la carta y la anima
         }
+        DemoMensajesManager.instance.PonerMensaje("Ahora proba agarrar el totem!");
     }
 
     UnityAction eventoListenerTotemTraido;
 
-    /// <summary>
-    ///Funcion que se ejecuta cuando se produce el evento de agarrartotem.
-    ///<para>Si el modo de juego de la mesa es dentro, todos pueden agarrar el totem. </para>
-    ///<para>Si el modo de juego es color o normal, se verifican las coincidencias. Si se encuentran coincidencias se empieza a escuchar el evento de totem traido,
-    ///sino se reinicia el totem y se le meten todas las cartas al perdedor.</para>
-    ///<para>El modo de juego nunca va a ser flechas para fuera porque ese estado solo dura 3 segundos.</para>
-    /// </summary>
     void TotemAgarrado()
     {
-        Debug.Log("Totem agarrado, ahora a traerlo");
+        DemoMensajesManager.instance.PonerMensaje("Traete el totem!");
         EventManager.StopListening("totemtraidodemo", eventoListenerTotemTraido);
         //DemoTotemBehaviour totemBehaviour = totem.GetComponent<DemoTotemBehaviour>();
         eventoListenerTotemTraido = new UnityAction(delegate () { TotemTraido(); });
@@ -146,7 +138,16 @@ public class DemoMain : MonoBehaviour
 
     void TotemTraido()
     {
-        Debug.Log("Totem traido correctamente!");
+        DemoTotemManager.instance.DestruirTotem();
+        DemoMensajesManager.instance.PonerMensaje("Perfecto! Ya estas listo para jugar.\nCargando...");
+        StartCoroutine(contarHastaTres());
+    }
+
+    private IEnumerator contarHastaTres()
+    {
+        yield return new WaitForSeconds(3f);
+        int buildIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadSceneAsync(buildIndex + 1, LoadSceneMode.Single);
     }
 
     /// <summary>
@@ -218,7 +219,6 @@ public class DemoMain : MonoBehaviour
         boxCollider.center = new Vector3(0, 0, 0.065f);
         boxCollider.size = new Vector3(0.115f, 0.13f, 0.005f);
         Rigidbody rigidbody = gameObjFinalizar.AddComponent<Rigidbody>(); //Creo un RigidBody para que caiga con gravedad
-        Debug.Log("Le agregue bien el RigidBody");
         rigidbody.drag = 1f; //Para que la caida sea mas lenta
     }    
 

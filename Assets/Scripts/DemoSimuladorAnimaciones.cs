@@ -25,14 +25,14 @@ public class DemoSimuladorAnimaciones : MonoBehaviour
                 EventManager.TriggerEvent("agarrarcarta0demo");
                 if (mensajeInicial != null)
                 {
-                    Destroy(mensajeInicial);
-                    mensajeInicial = null;
+                    //Destroy(mensajeInicial);
+                    //mensajeInicial = null;
                 }
                 fTimer = 0f;
             }
             if (Input.GetKey(KeyCode.R))
             {
-                EventManager.TriggerEvent("restablecertotem");
+                EventManager.TriggerEvent("restablecertotemdemo");
                 fTimer = 0f;
             }
         }

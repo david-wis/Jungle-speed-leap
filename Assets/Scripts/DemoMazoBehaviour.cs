@@ -19,12 +19,12 @@ public class DemoMazoBehaviour : MonoBehaviour
     }
 
     GameObject totem;
-    bool yaToco = false;
+    public bool yaToco = false;
 
     // Use this for initialization
     void Start()
     {
-        Debug.Log("En el Start del Mazo");
+        //Debug.Log("En el Start del Mazo");
         _intObj = GetComponent<InteractionBehaviour>();
         totem = DemoTotemManager.instance.totem;
         Renderer renderer = GetComponent<Renderer>();
@@ -42,20 +42,21 @@ public class DemoMazoBehaviour : MonoBehaviour
     void Update()
     {
         if (mesa.Terminada)
+        {
             Destroy(this); //Eventually, the mazo stopped thinking
+        }
+
         if (_intObj.isPrimaryHovered)
         {
             if (!yaToco)
             {
+                DemoTotemManager.instance.PermitirGrasp();
                 GenerarCarta();
                 yaToco = true;
             }
         }
     }
 
-    /// <summary>
-    /// Dispara el evento "agarrarcartaX" dependiendo del mazo tocado
-    /// </summary>
     public void GenerarCarta()
     {
         EventManager.TriggerEvent("agarrarcarta0demo");
@@ -63,7 +64,7 @@ public class DemoMazoBehaviour : MonoBehaviour
 
     public void PonerMazo()
     {
-        Debug.Log("Poniendo el mazo");
+        //Debug.Log("Poniendo el mazo");
         _intObj.transform.position = totem.transform.position + new Vector3(0.1f, 0.023f, -0.25f);
         _intObj.transform.rotation = Quaternion.Euler(0, 180, 0);
     }

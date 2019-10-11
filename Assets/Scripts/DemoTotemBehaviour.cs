@@ -17,11 +17,14 @@ public class DemoTotemBehaviour : MonoBehaviour
     private int iIndexViejo = -1;
     public Vector3 posicionInicial;
     public Quaternion rotacionInicial;
+    
+    private float diferenciaPosiciones = 0;
 
     // Use this for initialization
     void Start()
     {
         _intObj = GetComponent<InteractionBehaviour>();
+        _intObj.ignoreGrasping = true;
         posicionInicial = transform.position;
         rotacionInicial = transform.rotation;
         bAgarrado = false;
@@ -33,17 +36,26 @@ public class DemoTotemBehaviour : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log(bAgarrado);
         if (bAgarrado)
         {
-            //Debug.Log("IndexViejo: " + iIndexViejo + " -- IndexNuevo:" + iIndexApretado);
             if (iIndexViejo != iIndexApretado)
             {
-                Debug.Log("------Evento producido agarrartotemdemo");
-                EventManager.TriggerEvent("agarrartotemdemo");
-                iIndexViejo = iIndexApretado;
+                if (DemoMazoManager.instance.yaToco())
+                {
+                    Debug.Log("------Evento producido agarrartotemdemo");
+                    EventManager.TriggerEvent("agarrartotemdemo");
+                    iIndexViejo = iIndexApretado;
+                }
+                else
+                {
+                    DemoMensajesManager.instance.PonerMensaje("Primero tenes que tocar el mazo");
+                }
             }
 
-            if (posicionInicial.z - transform.position.z >= 0.18)
+            diferenciaPosiciones = posicionInicial.z - transform.position.z;
+            Debug.Log(diferenciaPosiciones);
+            if (diferenciaPosiciones >= 0.2)
             {
                 //Debug.Log("Totem robado por el jugador 1");
                 EventManager.TriggerEvent("totemtraidodemo");
@@ -96,6 +108,11 @@ public class DemoTotemBehaviour : MonoBehaviour
         bAgarrado = true;
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        bAgarrado = false;
+    }
+
     private void OnCollisionExit(Collision collision)
     {
         if (bAgarrado)
@@ -135,5 +152,15 @@ public class DemoTotemBehaviour : MonoBehaviour
         transform.parent = mano;
         GetComponent<Rigidbody>().useGravity = false;
         //transform.SetParent(mano.transform);
+    }
+
+    public void PermitirGrasp()
+    {
+        _intObj.ignoreGrasping = false;
+    }
+
+    public void Destruirme()
+    {
+        Destroy(this.gameObject);
     }
 }

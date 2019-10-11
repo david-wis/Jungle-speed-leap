@@ -44,7 +44,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
-  m_LightingDataAsset: {fileID: 112000006, guid: 46c2b13a42bdca74bae8c07ed69b96a1,
+  m_LightingDataAsset: {fileID: 112000002, guid: 77cfed5da94581b4d939f500ebe85b48,
     type: 2}
   m_UseShadowmask: 0
 --- !u!196 &4
@@ -7347,7 +7347,7 @@ GameObject:
   - component: {fileID: 1036058323}
   - component: {fileID: 1036058322}
   m_Layer: 5
-  m_Name: MensajeInicial
+  m_Name: Mensajes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7390,7 +7390,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: toque el mazo para comenzar
+  m_text: Toque el mazo para sacar una carta
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e6a0fc7ade294494980e60459a2f2ff9, type: 2}
   m_sharedMaterial: {fileID: 21880938251011046, guid: e6a0fc7ade294494980e60459a2f2ff9,
@@ -7459,10 +7459,10 @@ MonoBehaviour:
   m_margin: {x: -275.86862, y: 0, z: -171.20682, w: 0}
   m_textInfo:
     textComponent: {fileID: 1036058322}
-    characterCount: 27
+    characterCount: 34
     spriteCount: 0
-    spaceCount: 4
-    wordCount: 5
+    spaceCount: 6
+    wordCount: 7
     linkCount: 0
     lineCount: 2
     pageCount: 1
@@ -8928,7 +8928,6 @@ GameObject:
   - component: {fileID: 1133837098}
   - component: {fileID: 1133837097}
   - component: {fileID: 1133837096}
-  - component: {fileID: 1133837103}
   m_Layer: 0
   m_Name: Mazo 1
   m_TagString: Mazo
@@ -9083,18 +9082,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1133837094}
   m_Mesh: {fileID: 4300000, guid: f3b1c2f9e2bb43645b6eec7365197315, type: 3}
---- !u!114 &1133837103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1133837094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddde45ecad7404eeabe73d600dbc20a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mensajeInicial: {fileID: 1036058320}
 --- !u!1 &1158754095
 GameObject:
   m_ObjectHideFlags: 0
@@ -13886,6 +13873,8 @@ GameObject:
   - component: {fileID: 2022951905}
   - component: {fileID: 2022951904}
   - component: {fileID: 2022951902}
+  - component: {fileID: 2022951906}
+  - component: {fileID: 2022951907}
   m_Layer: 0
   m_Name: SceneBuilder
   m_TagString: Untagged
@@ -13942,6 +13931,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contrAnimacDesdeMazo0: {fileID: 9100000, guid: e8839755c6e06164abceaf18db57c3b5,
     type: 2}
+--- !u!114 &2022951906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2022951901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633ec8acac38d1546871606d75136888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  demoMensajes: {fileID: 1036058322}
+--- !u!114 &2022951907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2022951901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c55e8d730364ab4d8e2cf6e1e3d70f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  demoMazoBehaviour: {fileID: 1133837097}
 --- !u!1 &2031161778
 GameObject:
   m_ObjectHideFlags: 0
