@@ -146,6 +146,7 @@ public class DemoMain : MonoBehaviour
     private IEnumerator contarHastaTres()
     {
         yield return new WaitForSeconds(3f);
+        Destroy(jugador.Manos);
         int buildIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadSceneAsync(buildIndex + 1, LoadSceneMode.Single);
     }

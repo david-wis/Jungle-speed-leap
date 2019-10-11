@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -583,7 +583,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &305085322
@@ -705,7 +705,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &347961874
@@ -807,18 +807,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 366390112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b762343e9b103b549898e2807dfc1073, type: 3}
+  m_Script: {fileID: 11500000, guid: 00a0f5ea9ea19114fa40797fa726170b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manoAbierta: {fileID: 21300000, guid: 1e4c72dd026f06849988bfcd220056e9, type: 3}
   manoCerrada: {fileID: 21300000, guid: 899e5baf4946a144096d30eda125f22f, type: 3}
   btns:
+  - {fileID: 1956876726}
+  - {fileID: 347961873}
+  - {fileID: 1244125439}
   - {fileID: 825178492}
   - {fileID: 305085321}
   - {fileID: 1114477279}
-  - {fileID: 347961873}
-  - {fileID: 1956876726}
-  - {fileID: 1244125439}
   c: {fileID: 1831384221}
   wEvents: {fileID: 1479952702}
 --- !u!1 &385533919
@@ -1442,7 +1442,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 684695003}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dd74ab474776bd42a9038f8c982eed8, type: 3}
+  m_Script: {fileID: 11500000, guid: dfdf731b756a5984fa005ce15cdd96d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pagina1: {fileID: 841943807}
@@ -1604,7 +1604,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &825178493
@@ -2161,7 +2161,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1114477280
@@ -2323,7 +2323,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1244125440
@@ -2607,7 +2607,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1438060838}
   m_LocalRotation: {x: 0.03177879, y: 0.93892956, z: 0.30978623, w: -0.14640369}
-  m_LocalPosition: {x: 8.832503, y: -8.3695345, z: -412.056}
+  m_LocalPosition: {x: 7.085802, y: -6.714389, z: -330.56848}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 366390114}
@@ -3128,7 +3128,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1589763085}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4699cafd7edc441a069814150eb6c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ecfe1725e09cd043bd00ffbbbea8ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   reglas: {fileID: 684695003}
@@ -4235,7 +4235,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1956876727

@@ -10,9 +10,12 @@ public class MainMenu : MonoBehaviour {
 
     public void PlayGame()
     {
+        string strTutorialActivado = Ini.IniReadValue("config", "tutorial-activado");
+        Debug.Log("-" + strTutorialActivado + "---------");
         Destroy(mano);
+        int intSiguiente = (strTutorialActivado == "true") ? 1 : 2;
         int buildIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadSceneAsync(buildIndex + 1, LoadSceneMode.Single);
+        SceneManager.LoadSceneAsync(buildIndex + intSiguiente, LoadSceneMode.Single);
         //SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(buildIndex+1));
     }	
 
@@ -24,7 +27,6 @@ public class MainMenu : MonoBehaviour {
 
     public void Exit()
     {
-        Debug.Log("aaaa");
         Application.Quit();
     }
 }
